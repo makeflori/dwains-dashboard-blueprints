@@ -6,8 +6,8 @@
       "description": "AdGuard Page by mase",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/AdGuard/blueprint.yaml",
-      "image": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/AdGuard/screenshot_light1.0.1.png",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/AdGuard/blueprint.yaml",
+      "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/AdGuard/screenshot_light1.0.1.png",
       "custom_cards": [
         "button-card",
         "mini-graph-card"
@@ -18,7 +18,7 @@
       "description": "An afvalwijzer blueprint page by Jeroen Klompen",
       "type": "page",
       "version": "1.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/afvalwijzer/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/afvalwijzer/blueprint.yaml",
       "custom_cards": [
         "auto-entities"
       ]
@@ -28,7 +28,7 @@
       "description": "Automation Page by Bourner",
       "type": "page",
       "version": "1.1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/automation/automation_page.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/automation/automation_page.yaml",
       "custom_cards": [
         "button-card",
         "auto-entities",
@@ -41,7 +41,7 @@
       "description": "Battery page by Bourner",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/battery-page/battery_page.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/battery-page/battery_page.yaml",
       "custom_cards": [
         "button-card",
         "auto-entities"
@@ -52,7 +52,7 @@
       "description": "Battery Page with colored Icons by Bourner",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/battery-page/battery_page_color.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/battery-page/battery_page_color.yaml",
       "custom_cards": [
         "button-card",
         "auto-entities"
@@ -63,7 +63,7 @@
       "description": "Battery page with graphs by Bourner",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/battery-page/battery_page_graph.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/battery-page/battery_page_graph.yaml",
       "custom_cards": [
         "button-card",
         "auto-entities"
@@ -74,7 +74,7 @@
       "description": "Birthdays bleuprint by Michel Jourdain",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/Birthdays/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/Birthdays/blueprint.yaml",
       "custom_cards": [
         "button-card",
         "atomic-calendar-revive"
@@ -85,7 +85,7 @@
       "description": "Birthdays and Holidays blueprint by Michel Jourdain",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/HolidaysBirthdays/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/HolidaysBirthdays/blueprint.yaml",
       "custom_cards": [
         "button-card",
         "atomic-calendar-revive"
@@ -96,14 +96,14 @@
       "description": "Boilerplate page example",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/boilerplate/blueprint.yaml"
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/boilerplate/blueprint.yaml"
     },
     {
       "name": "Docker Page Blueprint",
       "description": "Docker Page by Bourner",
       "type": "page",
       "version": "2.1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/docker_monitor/docker_monitor_page.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/docker_monitor/docker_monitor_page.yaml",
       "custom_cards": [
         "button-card",
         "bar-card",
@@ -116,7 +116,7 @@
       "description": "Eight Panels Blueprint by Michel Jourdain",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/%20EightPanels/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/%20EightPanels/blueprint.yaml",
       "custom_cards": [
         "button-card",
         "mini-graph-card"
@@ -127,7 +127,7 @@
       "description": "Five persons bleuprint by Michel Jourdain",
       "type": "page",
       "version": "2.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/Persons/FivePersonsBlueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/Persons/FivePersonsBlueprint.yaml",
       "custom_cards": [
         "tabbed-card",
         "mini-graph-card",
@@ -139,7 +139,7 @@
       "description": "Formula One page by LRvdLinden",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/Formula%201/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/Formula%201/blueprint.yaml",
       "custom_cards": [
         "button-card"
       ]
@@ -149,7 +149,7 @@
       "description": "Formula One Blueprint by Michel Jourdain",
       "type": "page",
       "version": "5.3",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/Formula_One/Blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/Formula_One/Blueprint.yaml",
       "custom_cards": [
         "formulaone-card",
         "tabbed-card"
@@ -160,7 +160,7 @@
       "description": "Four persons bleuprint by Michel Jourdain",
       "type": "page",
       "version": "2.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/Persons/FourPersonsBlueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/Persons/FourPersonsBlueprint.yaml",
       "custom_cards": [
         "tabbed-card",
         "mini-graph-card",
@@ -172,7 +172,7 @@
       "description": "One Energy Imput page by Michel Jourdain",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/Energy/OneEnergyImputBlueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/Energy/OneEnergyImputBlueprint.yaml",
       "custom_cards": [
         "button-card"
       ]
@@ -182,7 +182,7 @@
       "description": "One persons bleuprint by Michel Jourdain",
       "type": "page",
       "version": "2.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/Persons/OnePersonBlueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/Persons/OnePersonBlueprint.yaml",
       "custom_cards": [
         "tabbed-card",
         "mini-graph-card",
@@ -194,7 +194,7 @@
       "description": "Pi-Hole page by Bourner",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/pi_hole_page/pi_hole.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/pi_hole_page/pi_hole.yaml",
       "custom_cards": [
         "mushroom-template-card",
         "mini-graph-card"
@@ -205,7 +205,7 @@
       "description": "Scene page by Bourner",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/scene_page/scene_page_blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/scene_page/scene_page_blueprint.yaml",
       "custom_cards": [
         "auto-entities",
         "mushroom-title-card",
@@ -217,7 +217,7 @@
       "description": "SpeedTest Blueprint by Michel Jourdain",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/SpeedTests/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/SpeedTests/blueprint.yaml",
       "custom_cards": [
         "mini-graph-card"
       ]
@@ -227,7 +227,7 @@
       "description": "System And Update Info page by Michel Jourdain",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/System%26UpdatesInfos/Blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/System%26UpdatesInfos/Blueprint.yaml",
       "custom_cards": [
         "mushroom-title-card",
         "mushroom-entity-card",
@@ -243,7 +243,7 @@
       "description": "Systemmonitor page by Bourner",
       "type": "page",
       "version": "2.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/systemmonitor_page/systemmonitor.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/systemmonitor_page/systemmonitor.yaml",
       "custom_cards": [
         "mushroom-title-card",
         "mushroom-template-card",
@@ -260,7 +260,7 @@
       "description": "Three Energy Imput page by Michel Jourdain",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/Energy/ThreeEnergyImputBlueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/Energy/ThreeEnergyImputBlueprint.yaml",
       "custom_cards": [
         "button-card"
       ]
@@ -270,7 +270,7 @@
       "description": "Three persons bleuprint by Michel Jourdain",
       "type": "page",
       "version": "2.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/Persons/ThreePersonsBlueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/Persons/ThreePersonsBlueprint.yaml",
       "custom_cards": [
         "tabbed-card",
         "mini-graph-card",
@@ -282,7 +282,7 @@
       "description": "Tow Energy Imput page by Michel Jourdain",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/Energy/TwoEnergyImputBlueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/Energy/TwoEnergyImputBlueprint.yaml",
       "custom_cards": [
         "button-card"
       ]
@@ -292,7 +292,7 @@
       "description": "Two persons bleuprint by Michel Jourdain",
       "type": "page",
       "version": "2.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/Persons/TwoPersonsBlueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/Persons/TwoPersonsBlueprint.yaml",
       "custom_cards": [
         "tabbed-card",
         "mini-graph-card",
@@ -304,7 +304,7 @@
       "description": "UnRAID Server Montitoring page by Michiel Holewijn",
       "type": "page",
       "version": "1.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/unRAID/unraid_page_blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/unRAID/unraid_page_blueprint.yaml",
       "custom_cards": [
         "button-card",
         "bar-card",
@@ -318,7 +318,7 @@
       "description": "Update page by Bourner",
       "type": "page",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/update_page/update_page.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/update_page/update_page.yaml",
       "custom_cards": [
         "mushroom-update-card",
         "auto-entities"
@@ -329,7 +329,7 @@
       "description": "An weather dashboard page by Robert Wilson based on orginial page by Leon van der Linden with upgrades from Nate Harris",
       "type": "page",
       "version": "4.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/weather-dashboard-openweathermap/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/weather-dashboard-openweathermap/blueprint.yaml",
       "custom_cards": [
         "weather-card",
         "mini-graph-card",
@@ -346,7 +346,7 @@
       "description": "An weather dashboard page by Leon van der Linden",
       "type": "page",
       "version": "1.2",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/page-blueprints/weather-dashboard/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/weather-dashboard/blueprint.yaml",
       "custom_cards": [
         "button-card",
         "weather-card",
@@ -362,8 +362,8 @@
       "description": "Battery card by mase",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/battery-button-card/blueprint.yaml",
-      "image": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/battery-button-card/screenshot_light.png",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/battery-button-card/blueprint.yaml",
+      "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/battery-button-card/screenshot_light.png",
       "custom_cards": [
         "button-card"
       ]
@@ -373,7 +373,7 @@
       "description": "An calendar card by Jeroen Klompen",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/calendar/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/calendar/blueprint.yaml",
       "custom_cards": [
         "atomic-calendar-revive",
         "card-mod"
@@ -384,7 +384,7 @@
       "description": "An button card camera card by Jeroen Klompen",
       "type": "card",
       "version": "1.0.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/camera_card/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/camera_card/blueprint.yaml",
       "custom_cards": [
         "button-card"
       ]
@@ -394,7 +394,7 @@
       "description": "Clock, Weather and Calendar card by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/ClockWeatherCalendar/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/ClockWeatherCalendar/blueprint.yaml",
       "custom_cards": [
         "digital-clock",
         "atomic-calendar-revive",
@@ -406,7 +406,7 @@
       "description": "Eight Ink Printer Cartridges bleuprint by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/EightInkPrinterCartridgesBlueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/EightInkPrinterCartridgesBlueprint.yaml",
       "custom_cards": [
         "button-card"
       ]
@@ -416,7 +416,7 @@
       "description": "Entitiy Card with Header for two Entities by Bourner",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/entity-header-card/entity_card_header_two_entities.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/entity-header-card/entity_card_header_two_entities.yaml",
       "custom_cards": [
         "button-card",
         "card-mod"
@@ -427,7 +427,7 @@
       "description": "Five Ink Printer Cartridges bleuprint by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/FiveInkPrinterCartridgesBlueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/FiveInkPrinterCartridgesBlueprint.yaml",
       "custom_cards": [
         "button-card"
       ]
@@ -437,7 +437,7 @@
       "description": "Four Ink Printer Cartridges bleuprint by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/FourInkPrinterCartridgesBlueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/FourInkPrinterCartridgesBlueprint.yaml",
       "custom_cards": [
         "button-card"
       ]
@@ -447,7 +447,7 @@
       "description": "Lock card by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Lock/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Lock/blueprint.yaml",
       "custom_cards": [
         "vertical-stack-in-card",
         "mushroom-lock-card"
@@ -458,8 +458,8 @@
       "description": "Mercedes card by Bourner",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/mercedes-card/mercedes.yaml",
-      "image": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/mercedes-card/Screenshot_2022-05-01_om_12.21.30.jpg",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/mercedes-card/mercedes.yaml",
+      "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/mercedes-card/Screenshot_2022-05-01_om_12.21.30.jpg",
       "custom_cards": [
         "button-card"
       ]
@@ -469,7 +469,7 @@
       "description": "Mushroom Alert Chips card by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Alert-Mushroom/Alert-Mushroom-Chips.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Alert-Mushroom/Alert-Mushroom-Chips.yaml",
       "custom_cards": [
         "mushroom-chips-card",
         "mushroom-template-card",
@@ -481,7 +481,7 @@
       "description": "Mushroom Alert Chips Content card by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Alert-Mushroom/Alert-Mushroom-Chips-Content.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Alert-Mushroom/Alert-Mushroom-Chips-Content.yaml",
       "custom_cards": [
         "mushroom-chips-card",
         "mushroom-template-card",
@@ -493,7 +493,7 @@
       "description": "Mushroom Alert Template card by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Alert-Mushroom/Alert-Mushroom-Template.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Alert-Mushroom/Alert-Mushroom-Template.yaml",
       "custom_cards": [
         "mushroom-template-card",
         "card-mod"
@@ -504,7 +504,7 @@
       "description": "adds motion/window/door sensors with mushroom chip card by Bourner",
       "type": "card",
       "version": "1.0.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/mushroom-chip-cards/mushroom_chip_card_sensors.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/mushroom-chip-cards/mushroom_chip_card_sensors.yaml",
       "custom_cards": [
         "mushroom-chips-card"
       ]
@@ -514,7 +514,7 @@
       "description": "adds three motion/window/door sensors with mushroom chip card by Bourner",
       "type": "card",
       "version": "1.0.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/mushroom-chip-cards/mushroom_chip_card_three_sensors.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/mushroom-chip-cards/mushroom_chip_card_three_sensors.yaml",
       "custom_cards": [
         "mushroom-chips-card"
       ]
@@ -524,7 +524,7 @@
       "description": "adds two motion/window/door sensors with mushroom chip card by Bourner",
       "type": "card",
       "version": "1.0.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/mushroom-chip-cards/mushroom_chip_card_two_sensors.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/mushroom-chip-cards/mushroom_chip_card_two_sensors.yaml",
       "custom_cards": [
         "mushroom-chips-card"
       ]
@@ -534,9 +534,19 @@
       "description": "My Alert card by Michel Jourdain",
       "type": "card",
       "version": "1.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/MyAlert/bueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/MyAlert/bueprint.yaml",
       "custom_cards": [
         "button-card"
+      ]
+    },
+    {
+      "name": "Next Sensor Graph Card",
+      "description": "Modern sensor replacement with a large value and a compact history graph, styled to match Dwains Dashboard Next.",
+      "type": "card",
+      "version": "1.0.0",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/next_sensor_graph/blueprint.yaml",
+      "custom_cards": [
+        "card-mod"
       ]
     },
     {
@@ -544,7 +554,7 @@
       "description": "Person Pop-Up bleuprint by Michel Jourdain",
       "type": "card",
       "version": "1.6",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/PersonPopUp/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/PersonPopUp/blueprint.yaml",
       "custom_cards": [
         "mini-graph-card",
         "button-card",
@@ -556,7 +566,7 @@
       "description": "Plants card by Michel Jourdain",
       "type": "card",
       "version": "1.1.2",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Plants/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Plants/blueprint.yaml",
       "custom_cards": [
         "button-card",
         "mini-graph-card",
@@ -569,7 +579,7 @@
       "description": "Single entity printer By PCPAI",
       "type": "card",
       "version": "1.1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/auto_printer_card_blueprint.yml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/auto_printer_card_blueprint.yml",
       "custom_cards": [
         "vertical-stack-in-card",
         "mushroom-template-card",
@@ -582,8 +592,8 @@
       "description": "Display recently added media or upcoming media, support for Plex, Radarr and Sonarr",
       "type": "card",
       "version": "1.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/RecentlyAdded-UpcomingMedia/Recently%20Added%2C%20Upcoming%20Media%20Card.yaml",
-      "image": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/RecentlyAdded-UpcomingMedia/AddedMedia.PNG",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/RecentlyAdded-UpcomingMedia/Recently%20Added%2C%20Upcoming%20Media%20Card.yaml",
+      "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/RecentlyAdded-UpcomingMedia/AddedMedia.PNG",
       "custom_cards": [
         "upcoming-media-card"
       ]
@@ -593,7 +603,7 @@
       "description": "replaces light card with mushroom light card by Bourner",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_title/replace_mushroom_title.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_title/replace_mushroom_title.yaml",
       "custom_cards": [
         "mushroom-light-card"
       ]
@@ -603,8 +613,8 @@
       "description": "Scenes card by mase",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/scene-button-card/blueprint.yaml",
-      "image": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/scene-button-card/screenshot_light.png",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/scene-button-card/blueprint.yaml",
+      "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/scene-button-card/screenshot_light.png",
       "custom_cards": [
         "button-card"
       ]
@@ -614,7 +624,7 @@
       "description": "Seven Ink Printer Cartridges bleuprint by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/SevenInkPrinterCartridgesBlueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/SevenInkPrinterCartridgesBlueprint.yaml",
       "custom_cards": [
         "button-card"
       ]
@@ -624,7 +634,7 @@
       "description": "Six Ink Printer Cartridges bleuprint by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/SixInkPrinterCartridgesBlueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/SixInkPrinterCartridgesBlueprint.yaml",
       "custom_cards": [
         "button-card"
       ]
@@ -634,7 +644,7 @@
       "description": "Small Waste Card by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/SmallWasteCard/Blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/SmallWasteCard/Blueprint.yaml",
       "custom_cards": [
         "garbage-collection-card"
       ]
@@ -644,8 +654,8 @@
       "description": "Sun elevation and Azimut, Moom phase and Season by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/SunMoonSeason/blueprint.yaml",
-      "image": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/SunMoonSeason/Sun.png",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/SunMoonSeason/blueprint.yaml",
+      "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/SunMoonSeason/Sun.png",
       "custom_cards": [
         "compass-card",
         "sun-card"
@@ -656,7 +666,7 @@
       "description": "Thermostat and A/C card by Michel Jourdain",
       "type": "card",
       "version": "1.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/ThermostatAndAC/Blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/ThermostatAndAC/Blueprint.yaml",
       "custom_cards": [
         "simple-thermostat"
       ]
@@ -666,7 +676,7 @@
       "description": "Three Graphics Blueprint by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/ThreeCardGraphics/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/ThreeCardGraphics/blueprint.yaml",
       "custom_cards": [
         "mini-graph-card"
       ]
@@ -676,7 +686,7 @@
       "description": "Three Ink Printer Cartridges bleuprint by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/ThreeInkPrinterCartridgesBlueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/ThreeInkPrinterCartridgesBlueprint.yaml",
       "custom_cards": [
         "button-card"
       ]
@@ -686,8 +696,8 @@
       "description": "Toggle card by mase",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/toggle-button-card/blueprint.yaml",
-      "image": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/toggle-button-card/screenshot_light.png",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/toggle-button-card/blueprint.yaml",
+      "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/toggle-button-card/screenshot_light.png",
       "custom_cards": [
         "button-card"
       ]
@@ -697,7 +707,7 @@
       "description": "Tow Ink Printer Cartridges bleuprint by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/TwoInkPrinterCartridgesBlueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/InkPrinterCartridges/TwoInkPrinterCartridgesBlueprint.yaml",
       "custom_cards": [
         "button-card"
       ]
@@ -707,8 +717,8 @@
       "description": "A TV Card to control samsung TVs.  Navigation is hardcoded and set up identically on each TV inorder for this to work.  SVG for youtubekids is not perfect and when new one available I will update",
       "type": "card",
       "version": "1.2",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/TVCard/blueprint.yaml",
-      "image": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/TVCard/TVCardScreenShot.png",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/TVCard/blueprint.yaml",
+      "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/TVCard/TVCardScreenShot.png",
       "custom_cards": [
         "tv-card"
       ]
@@ -718,7 +728,7 @@
       "description": "Vacuum bleuprint by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Vacuum/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Vacuum/blueprint.yaml",
       "custom_cards": [
         "vacuum-card"
       ]
@@ -728,9 +738,19 @@
       "description": "Waste card by Michel Jourdain",
       "type": "card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Wastes_Reminder/Blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Wastes_Reminder/Blueprint.yaml",
       "custom_cards": [
         "mushroom-template-card"
+      ]
+    },
+    {
+      "name": "Next Sensor Graph",
+      "description": "Modern sensor replacement with a large value and a compact history graph, styled to match Dwains Dashboard Next.",
+      "type": "replace-card",
+      "version": "1.0.0",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/next_sensor_graph/blueprint.yaml",
+      "custom_cards": [
+        "card-mod"
       ]
     },
     {
@@ -738,7 +758,7 @@
       "description": "Replaces entity popup card with door status history by Jeroen Klompen",
       "type": "replace-card",
       "version": "1.0.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/popup_door_history_card/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/popup_door_history_card/blueprint.yaml",
       "custom_cards": [
         "logbook-card"
       ]
@@ -748,7 +768,7 @@
       "description": "Replaces entity popup card with window status history by Jeroen Klompen",
       "type": "replace-card",
       "version": "1.0.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/popup_window_history_card/blueprint.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/popup_window_history_card/blueprint.yaml",
       "custom_cards": [
         "logbook-card"
       ]
@@ -758,7 +778,7 @@
       "description": "replaces alarm card with mushroom alarm card by Bourner",
       "type": "replace-card",
       "version": "1.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_alarm/replace_mushroom_alarm.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_alarm/replace_mushroom_alarm.yaml",
       "custom_cards": [
         "mushroom-alarm-control-panel-card"
       ]
@@ -768,7 +788,7 @@
       "description": "replaces climate card with mushroom climate card by Bourner",
       "type": "replace-card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_climate/replace_mushroom_climate.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_climate/replace_mushroom_climate.yaml",
       "custom_cards": [
         "mushroom-climate-card"
       ]
@@ -778,7 +798,7 @@
       "description": "replaces cover card with mushroom cover card by Bourner",
       "type": "replace-card",
       "version": "1.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_cover/replace_mushroom_cover.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_cover/replace_mushroom_cover.yaml",
       "custom_cards": [
         "mushroom-cover-card"
       ]
@@ -788,7 +808,7 @@
       "description": "replaces entity card with mushroom entity card by Bourner",
       "type": "replace-card",
       "version": "1.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_entity/replace_mushroom_entity.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_entity/replace_mushroom_entity.yaml",
       "custom_cards": [
         "mushroom-entity-card"
       ]
@@ -798,7 +818,7 @@
       "description": "replaces fan card with mushroom fan card by Bourner",
       "type": "replace-card",
       "version": "1.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_fan/replace_mushroom_fan.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_fan/replace_mushroom_fan.yaml",
       "custom_cards": [
         "mushroom-fan-card"
       ]
@@ -808,7 +828,7 @@
       "description": "replaces light card with mushroom light card by Bourner",
       "type": "replace-card",
       "version": "1.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_light/replace_mushroom_light_card.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_light/replace_mushroom_light_card.yaml",
       "custom_cards": [
         "mushroom-light-card"
       ]
@@ -818,7 +838,7 @@
       "description": "replaces lock card with mushroom lock card by Bourner",
       "type": "replace-card",
       "version": "1.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_lock/mushroom_lock.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_lock/mushroom_lock.yaml",
       "custom_cards": [
         "mushroom-lock-card"
       ]
@@ -828,7 +848,7 @@
       "description": "replaces media player card with mushroom media player card by Bourner",
       "type": "replace-card",
       "version": "1.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_mediaplayer/mushroom_mediaplayer.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_mediaplayer/mushroom_mediaplayer.yaml",
       "custom_cards": [
         "mushroom-media-player-card"
       ]
@@ -838,7 +858,7 @@
       "description": "replaces person card with mushroom person card by Bourner",
       "type": "replace-card",
       "version": "1.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_person/replace_mushroom_person.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_person/replace_mushroom_person.yaml",
       "custom_cards": [
         "mushroom-person-card"
       ]
@@ -848,7 +868,7 @@
       "description": "replaces update card with mushroom update card by Bourner",
       "type": "replace-card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_update/mushroom_update.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_update/mushroom_update.yaml",
       "custom_cards": [
         "mushroom-update-card"
       ]
@@ -858,7 +878,7 @@
       "description": "replaces vaccum card with mushroom vacuum card by Bourner",
       "type": "replace-card",
       "version": "1.1",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_vacuum/replace_mushroom_vacuum.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_vacuum/replace_mushroom_vacuum.yaml",
       "custom_cards": [
         "mushroom-vacuum-card"
       ]
@@ -868,7 +888,7 @@
       "description": "replaces motion/window/door sensors with mushroom chip card by Bourner",
       "type": "replace-card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_chip/replace_sensor_mushroom_chip_card.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_chip/replace_sensor_mushroom_chip_card.yaml",
       "custom_cards": [
         "mushroom-chips-card"
       ]
@@ -878,7 +898,7 @@
       "description": "replaces cover card with slider-button cover card by Gessink",
       "type": "replace-card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/slider-button-cards/slider-button-cover/replace_slider_button_cover_card",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/slider-button-cards/slider-button-cover/replace_slider_button_cover_card",
       "custom_cards": [
         "slider-button-card"
       ]
@@ -888,7 +908,7 @@
       "description": "replaces fan card with slider-button fan card by Gessink",
       "type": "replace-card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/slider-button-cards/slider-button-fan/replace_slider_button_fan_card",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/slider-button-cards/slider-button-fan/replace_slider_button_fan_card",
       "custom_cards": [
         "slider-button-card"
       ]
@@ -898,7 +918,7 @@
       "description": "replaces light card with slider-button light card by Gessink",
       "type": "replace-card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/slider-button-cards/slider-button-light/replace_slider_button_light_card.yaml",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/slider-button-cards/slider-button-light/replace_slider_button_light_card.yaml",
       "custom_cards": [
         "slider-button-card"
       ]
@@ -908,7 +928,7 @@
       "description": "replaces switch card with slider-button cover switch by Gessink",
       "type": "replace-card",
       "version": "1.0",
-      "url": "https://raw.githubusercontent.com/dwainscheeren/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/slider-button-cards/slider-button-switch/replace_slider_button_switch_card",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/slider-button-cards/slider-button-switch/replace_slider_button_switch_card",
       "custom_cards": [
         "slider-button-card"
       ]
