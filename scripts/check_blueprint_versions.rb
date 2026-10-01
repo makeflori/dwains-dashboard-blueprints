@@ -23,6 +23,9 @@ rescue ArgumentError
 end
 
 def blueprint_meta_from_text(text)
+  # Ignore README files and images; some legacy blueprint files have no extension.
+  return nil unless text.b.match?(/^blueprint:[ \t]*\r?$/n)
+
   doc = load_yaml_text(text)
   return nil unless doc.is_a?(Hash) && doc["blueprint"].is_a?(Hash) && doc.key?("card")
 

@@ -6,8 +6,7 @@ require "date"
 require "json"
 require "yaml"
 
-OWNER = "dwainscheeren"
-REPO = "dwains-dashboard-blueprints"
+OWNER, REPO = ENV.fetch("GITHUB_REPOSITORY", "makeflori/dwains-dashboard-blueprints").split("/", 2)
 BRANCH = "main"
 BASE_RAW = "https://raw.githubusercontent.com/#{OWNER}/#{REPO}/#{BRANCH}"
 ROOT = File.expand_path("..", __dir__)
