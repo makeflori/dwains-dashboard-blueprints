@@ -737,7 +737,7 @@
       "name": "Replace Binary Sensor Mushroom Chip Card",
       "description": "Replaces door, window and motion sensor cards with always-visible Mushroom chips by Bourner, updated by makeflori.",
       "type": "replace-card",
-      "version": "1.0.1",
+      "version": "1.1",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_chip/replace_sensor_mushroom_chip_card.yaml",
       "custom_cards": [
         "mushroom-chips-card"
@@ -877,7 +877,7 @@
       "name": "Replace Sensor Card",
       "description": "Replaces sensor cards with a large reading and a history graph by makeflori.",
       "type": "replace-card",
-      "version": "1.0.0",
+      "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/next_sensor_graph/blueprint.yaml",
       "custom_cards": [
         "card-mod"

@@ -1,7 +1,7 @@
 blueprint:
   name: Replace Sensor Card
   description: Replaces sensor cards with a large reading and a history graph by makeflori.
-  version: "1.0.0"
+  version: "1.0"
   type: replace-card
   author: makeflori
   source_url: https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/next_sensor_graph/blueprint.yaml
