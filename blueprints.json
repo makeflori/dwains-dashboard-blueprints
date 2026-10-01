@@ -610,16 +610,6 @@
       ]
     },
     {
-      "name": "Sensor Card Blueprint",
-      "description": "Numeric sensor card with a large value and history graph for Dwains Dashboard Next by makeflori.",
-      "type": "card",
-      "version": "1.0.0",
-      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/next_sensor_graph/blueprint.yaml",
-      "custom_cards": [
-        "card-mod"
-      ]
-    },
-    {
       "name": "SevenInkPrinterCartridges",
       "description": "Seven Ink Printer Cartridges bleuprint by Michel Jourdain",
       "type": "card",
@@ -741,6 +731,16 @@
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Wastes_Reminder/Blueprint.yaml",
       "custom_cards": [
         "mushroom-template-card"
+      ]
+    },
+    {
+      "name": "Replace Binary Sensor Mushroom Chip Card",
+      "description": "Replaces door, window and motion sensor cards with always-visible Mushroom chips by Bourner, updated by makeflori.",
+      "type": "replace-card",
+      "version": "1.0.1",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_chip/replace_sensor_mushroom_chip_card.yaml",
+      "custom_cards": [
+        "mushroom-chips-card"
       ]
     },
     {
@@ -875,22 +875,12 @@
     },
     {
       "name": "Replace Sensor Card",
-      "description": "Replaces numeric sensor cards with a large value and history graph for Dwains Dashboard Next by makeflori.",
+      "description": "Replaces sensor cards with a large reading and a history graph by makeflori.",
       "type": "replace-card",
       "version": "1.0.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/next_sensor_graph/blueprint.yaml",
       "custom_cards": [
         "card-mod"
-      ]
-    },
-    {
-      "name": "Replace Sensor Mushroom Chip Card",
-      "description": "replaces motion/window/door sensors with mushroom chip card by Bourner",
-      "type": "replace-card",
-      "version": "1.0",
-      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_chip/replace_sensor_mushroom_chip_card.yaml",
-      "custom_cards": [
-        "mushroom-chips-card"
       ]
     },
     {

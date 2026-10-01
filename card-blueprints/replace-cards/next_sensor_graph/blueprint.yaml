@@ -1,6 +1,6 @@
 blueprint:
   name: Replace Sensor Card
-  description: Replaces numeric sensor cards with a large value and history graph for Dwains Dashboard Next by makeflori.
+  description: Replaces sensor cards with a large reading and a history graph by makeflori.
   version: "1.0.0"
   type: replace-card
   author: makeflori

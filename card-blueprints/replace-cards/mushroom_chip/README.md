@@ -26,12 +26,16 @@
 ---
 
 This is a Blueprint for replacing a card which fits into DD3 Design.
-This is made to show certain sensors when the state is not "off".
+Version 1.0.1 keeps binary sensors visible in every state, including `off`. The original version deliberately hid inactive sensors. Door, window and motion entities use the `binary_sensor` domain.
 
 
 ### Screenshots:
 ![image](https://user-images.githubusercontent.com/64064679/161817042-f5c88c23-49a0-422c-8f6a-52d8d2f45365.png)
 
 ### Changelog
+#### 1.0.1
+- Keep the entity chip visible when the sensor is inactive.
+- Clarify the binary sensor name and description; update by makeflori.
+
 #### 1.0.0
 - First release

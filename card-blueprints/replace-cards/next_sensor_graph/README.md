@@ -1,6 +1,6 @@
 # Replace Sensor Card
 
-Replaces numeric sensor cards with a large value and history graph for Dwains Dashboard Next by makeflori.
+Replaces sensor cards with a large reading and a history graph by makeflori.
 
 A compact sensor card inspired by the classic Dwains sensor tile and styled to match Dashboard Next.
 
@@ -17,12 +17,11 @@ Install and load [card-mod](https://github.com/thomasloven/lovelace-card-mod). N
 
 Use numeric `sensor.*` entities. Text sensors and binary sensors need a different card. Recorder must retain the selected entity's history. The graph is a compact trend overview with automatic scaling.
 
-## Two formats
+## Usage
 
 - This file is a `replace-card` blueprint. DD Next supplies the entity and its friendly name through `$replace_with_input_entity$` and `$replace_with_input_name$`. It can be assigned to individual sensors or sensor types through the replacement manager once it is available in that manager's gallery.
-- [Standalone card blueprint](../../normal-cards/next_sensor_graph/blueprint.yaml): select a sensor manually when importing it through a DD Next blueprint dialog that accepts a URL or pasted YAML.
 
-The standalone card can be tested without changing the default sensor layout. The replacement blueprint changes only assigned sensor cards; it is not automatically applied to Home Assistant.
+The replacement blueprint changes only assigned sensor cards; it is not automatically applied to Home Assistant.
 
 ## Inputs
 
