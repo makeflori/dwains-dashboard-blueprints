@@ -1,4 +1,6 @@
-# Next Sensor Graph
+# Replace Sensor Card
+
+Replaces numeric sensor cards with a large value and history graph for Dwains Dashboard Next by makeflori.
 
 A compact sensor card inspired by the classic Dwains sensor tile and styled to match Dashboard Next.
 

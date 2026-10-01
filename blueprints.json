@@ -540,16 +540,6 @@
       ]
     },
     {
-      "name": "Next Sensor Graph Card",
-      "description": "Modern sensor replacement with a large value and a compact history graph, styled to match Dwains Dashboard Next.",
-      "type": "card",
-      "version": "1.0.0",
-      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/next_sensor_graph/blueprint.yaml",
-      "custom_cards": [
-        "card-mod"
-      ]
-    },
-    {
       "name": "PersonsPopUpBlueprint",
       "description": "Person Pop-Up bleuprint by Michel Jourdain",
       "type": "card",
@@ -617,6 +607,16 @@
       "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/scene-button-card/screenshot_light.png",
       "custom_cards": [
         "button-card"
+      ]
+    },
+    {
+      "name": "Sensor Card Blueprint",
+      "description": "Numeric sensor card with a large value and history graph for Dwains Dashboard Next by makeflori.",
+      "type": "card",
+      "version": "1.0.0",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/next_sensor_graph/blueprint.yaml",
+      "custom_cards": [
+        "card-mod"
       ]
     },
     {
@@ -741,16 +741,6 @@
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/normal-cards/Wastes_Reminder/Blueprint.yaml",
       "custom_cards": [
         "mushroom-template-card"
-      ]
-    },
-    {
-      "name": "Next Sensor Graph",
-      "description": "Modern sensor replacement with a large value and a compact history graph, styled to match Dwains Dashboard Next.",
-      "type": "replace-card",
-      "version": "1.0.0",
-      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/next_sensor_graph/blueprint.yaml",
-      "custom_cards": [
-        "card-mod"
       ]
     },
     {
@@ -881,6 +871,16 @@
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/mushroom_vacuum/replace_mushroom_vacuum.yaml",
       "custom_cards": [
         "mushroom-vacuum-card"
+      ]
+    },
+    {
+      "name": "Replace Sensor Card",
+      "description": "Replaces numeric sensor cards with a large value and history graph for Dwains Dashboard Next by makeflori.",
+      "type": "replace-card",
+      "version": "1.0.0",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/next_sensor_graph/blueprint.yaml",
+      "custom_cards": [
+        "card-mod"
       ]
     },
     {

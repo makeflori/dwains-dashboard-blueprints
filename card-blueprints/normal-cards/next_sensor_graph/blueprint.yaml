@@ -1,6 +1,6 @@
 blueprint:
-  name: Next Sensor Graph Card
-  description: Modern sensor replacement with a large value and a compact history graph, styled to match Dwains Dashboard Next.
+  name: Sensor Card Blueprint
+  description: Numeric sensor card with a large value and history graph for Dwains Dashboard Next by makeflori.
   version: "1.0.0"
   type: card
   author: makeflori
