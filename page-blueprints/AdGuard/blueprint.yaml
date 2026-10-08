@@ -77,7 +77,10 @@
           "custom_fields":
             "content": "[[[\n      const on=entity.state==='on';\n      const mobile=window.innerWidth<=520;\n      const pad=mobile?'0 8px':'0 18px';\n      const gap=mobile?'7px':'14px';\n      const iconBox=mobile?34:48;\n      const iconSize=mobile?20:28;\n      const titleSize=mobile?13:16;\n      const stateSize=mobile?11:13;\n      const toggleW=mobile?46:74;\n      const toggleH=mobile?26:38;\n      const knob=mobile?20:30;\n      return '<div style=\"height:100%;display:flex;align-items:center;justify-content:space-between;padding:'+pad+';box-sizing:border-box;gap:6px\">'+\n      '<div style=\"display:flex;align-items:center;gap:'+gap+';min-width:0;flex:1\">'+\n      '<div style=\"width:'+iconBox+'px;height:'+iconBox+'px;flex:0 0 '+iconBox+'px;border-radius:50%;background:'+(on?'rgba(255,193,7,.16)':'rgba(120,120,120,.08)')+';display:flex;align-items:center;justify-content:center;color:'+(on?'#f5b400':'var(--secondary-text-color)')+'\"><ha-icon icon=\"'+variables.icon+'\" style=\"--mdc-icon-size:'+iconSize+'px\"></ha-icon></div>'+\n      '<div style=\"text-align:left;min-width:0\"><div style=\"font-size:'+titleSize+'px;font-weight:700;white-space:nowrap\">'+variables.title+'</div><div style=\"font-size:'+stateSize+'px;color:var(--secondary-text-color);margin-top:1px\">'+(on?'Ein':'Aus')+'</div></div>'+\n      '</div>'+\n      '<div style=\"width:'+toggleW+'px;height:'+toggleH+'px;flex:0 0 '+toggleW+'px;border-radius:999px;background:'+(on?'#ffc107':'rgba(120,120,120,.14)')+';display:flex;align-items:center;justify-content:'+(on?'flex-end':'flex-start')+';padding:3px;box-sizing:border-box\"><div style=\"width:'+knob+'px;height:'+knob+'px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.18)\"></div></div>'+\n      '</div>';\n    ]]]"
           "variables":
-            "title": "Schutz"
+            "title":
+              "i18n":
+                "de": "Schutz"
+                "en": "Protection"
             "icon": "mdi:shield-check"
           "styles":
             "card":
@@ -123,7 +126,10 @@
           "custom_fields":
             "content": "[[[\n      const on=entity.state==='on';\n      const mobile=window.innerWidth<=520;\n      const pad=mobile?'0 8px':'0 18px';\n      const gap=mobile?'7px':'14px';\n      const iconBox=mobile?34:48;\n      const iconSize=mobile?20:28;\n      const titleSize=mobile?13:16;\n      const stateSize=mobile?11:13;\n      const toggleW=mobile?46:74;\n      const toggleH=mobile?26:38;\n      const knob=mobile?20:30;\n      return '<div style=\"height:100%;display:flex;align-items:center;justify-content:space-between;padding:'+pad+';box-sizing:border-box;gap:6px\">'+\n      '<div style=\"display:flex;align-items:center;gap:'+gap+';min-width:0;flex:1\">'+\n      '<div style=\"width:'+iconBox+'px;height:'+iconBox+'px;flex:0 0 '+iconBox+'px;border-radius:50%;background:'+(on?'rgba(255,193,7,.16)':'rgba(120,120,120,.08)')+';display:flex;align-items:center;justify-content:center;color:'+(on?'#f5b400':'var(--secondary-text-color)')+'\"><ha-icon icon=\"'+variables.icon+'\" style=\"--mdc-icon-size:'+iconSize+'px\"></ha-icon></div>'+\n      '<div style=\"text-align:left;min-width:0\"><div style=\"font-size:'+titleSize+'px;font-weight:700;white-space:nowrap\">'+variables.title+'</div><div style=\"font-size:'+stateSize+'px;color:var(--secondary-text-color);margin-top:1px\">'+(on?'Ein':'Aus')+'</div></div>'+\n      '</div>'+\n      '<div style=\"width:'+toggleW+'px;height:'+toggleH+'px;flex:0 0 '+toggleW+'px;border-radius:999px;background:'+(on?'#ffc107':'rgba(120,120,120,.14)')+';display:flex;align-items:center;justify-content:'+(on?'flex-end':'flex-start')+';padding:3px;box-sizing:border-box\"><div style=\"width:'+knob+'px;height:'+knob+'px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.18)\"></div></div>'+\n      '</div>';\n    ]]]"
           "variables":
-            "title": "Filter"
+            "title":
+              "i18n":
+                "de": "Filter"
+                "en": "Filtering"
             "icon": "mdi:filter"
           "styles":
             "card":
@@ -165,7 +171,10 @@
               "show_icon": true
               "show_name": true
               "show_state": true
-              "name": "DNS-Anfragen"
+              "name":
+                "i18n":
+                  "de": "DNS-Anfragen"
+                  "en": "DNS queries"
               "icon": "mdi:dns"
               "tap_action":
                 "action": "more-info"
@@ -243,7 +252,10 @@
               "entities":
                 -
                   "entity": "$adguard_dns_queries$"
-                  "name": "DNS-Anfragen"
+                  "name":
+                    "i18n":
+                      "de": "DNS-Anfragen"
+                      "en": "DNS queries"
                   "color": "#ff9800"
               "card_mod":
                 "style": "\n    ha-card {\n      border:0;\n      box-shadow:none;\n      background:transparent;\n      padding:0 10px 10px;\n      overflow:visible !important;\n    }\n  "
@@ -260,7 +272,10 @@
               "show_icon": true
               "show_name": true
               "show_state": true
-              "name": "Geblockte Anfragen"
+              "name":
+                "i18n":
+                  "de": "Geblockte Anfragen"
+                  "en": "Blocked queries"
               "icon": "mdi:shield-off-outline"
               "tap_action":
                 "action": "more-info"
@@ -338,7 +353,10 @@
               "entities":
                 -
                   "entity": "$adguard_dns_queries_blocked$"
-                  "name": "Geblockte Anfragen"
+                  "name":
+                    "i18n":
+                      "de": "Geblockte Anfragen"
+                      "en": "Blocked queries"
                   "color": "#ff9800"
               "card_mod":
                 "style": "\n    ha-card {\n      border:0;\n      box-shadow:none;\n      background:transparent;\n      padding:0 10px 10px;\n      overflow:visible !important;\n    }\n  "
