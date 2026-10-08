@@ -26,8 +26,7 @@
       "suggest": "coin"
       "entity_domain": "sensor"
       "default_icon": "mdi:circle-multiple"
-      "default":
-        []
+      "default": []
 "card":
   "type": "vertical-stack"
   "cards":
