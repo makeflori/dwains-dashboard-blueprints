@@ -29,11 +29,13 @@
       "name_de": "Schutz aktivieren"
       "description": "Select the entity used for switch.adguard_protection."
       "type": "entity-picker"
+      "default": ""
     "adguard_filtering":
       "name": "Adguard Filtering"
       "name_de": "Filter aktivieren"
       "description": "Select the entity used for switch.adguard_filtering."
       "type": "entity-picker"
+      "default": ""
     "adguard_dns_queries":
       "name": "Adguard Dns Queries"
       "name_de": "DNS-Anfragen"
@@ -77,6 +79,7 @@
       "cards":
         -
           "type": "custom:button-card"
+          "requires_input": "adguard_protection"
           "entity": "$adguard_protection$"
           "show_icon": false
           "show_name": false
@@ -126,6 +129,7 @@
             "grid-area": "protection"
         -
           "type": "custom:button-card"
+          "requires_input": "adguard_filtering"
           "entity": "$adguard_filtering$"
           "show_icon": false
           "show_name": false
