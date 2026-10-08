@@ -16,11 +16,13 @@
       "name": "Blocked queries ratio (optional)"
       "name_de": "Anteil blockierter Anfragen (optional)"
       "type": "entity-picker"
+      "suggest_entity": "sensor.adguard_dns_queries_blocked_ratio"
       "default": ""
     "adguard_average_processing_speed":
       "name": "Average processing speed (optional)"
       "name_de": "Durchschnittliche Verarbeitungszeit (optional)"
       "type": "entity-picker"
+      "suggest_entity": "sensor.adguard_average_processing_speed"
       "default": ""
     "adguard_protection":
       "name": "Adguard Protection"
@@ -42,6 +44,7 @@
       "name_de": "Blockierte DNS-Anfragen"
       "description": "Select the entity used for sensor.adguard_dns_queries_blocked."
       "type": "entity-picker"
+      "suggest_entity": "sensor.adguard_dns_queries_blocked"
 "card":
   "type": "custom:layout-card"
   "layout_type": "custom:grid-layout"
