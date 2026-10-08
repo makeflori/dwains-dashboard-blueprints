@@ -4,7 +4,7 @@
   "description": "Portfolio charts and any number of configurable crypto assets."
   "description_de": "Portfolio-Graphen und beliebig viele konfigurierbare Kryptowährungen."
   "type": "page"
-  "version": "1.0.0"
+  "version": "1.0.1"
   "icon": "mdi:wallet-outline"
   "author": "makeflori"
   "custom_cards":
