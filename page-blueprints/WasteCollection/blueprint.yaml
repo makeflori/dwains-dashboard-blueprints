@@ -4,7 +4,7 @@
   "description": "Flexible waste collection schedule with an arbitrary number of types."
   "description_de": "Flexible Abfuhrübersicht mit beliebig vielen Müllarten."
   "type": "page"
-  "version": "1.0.0"
+  "version": "1.0.1"
   "icon": "mdi:trash-can-outline"
   "author": "makeflori"
   "custom_cards":
