@@ -1,233 +1,383 @@
-blueprint:
-  custom_cards:
-  - button-card
-  - mini-graph-card
-  description: AdGuard Page by mase
-  input:
-    adguard_dns_queries:
-      description: Select DNS Queries
-      name: e.g. sensor.adguard_dns_queries
-      type: entity-picker
-    adguard_dns_queries_blocked:
-      description: Select DNS Queries Blocked
-      name: e.g. sensor.adguard_dns_queries_blocked
-      type: entity-picker
-    adguard_filtering:
-      description: Select AdGuard Filtering
-      name: e.g. switch.adguard_filtering
-      type: entity-picker
-    adguard_protection:
-      description: Select AdGuard Protection
-      name: e.g. switch.adguard_protection
-      type: entity-picker
-    adguard_dns_queries_blocked_ratio:
-      description: Select Queries blocked ratio
-      name: e.g. sensor.adguard_dns_queries_blocked_ratio
-      type: entity-picker
-    adguard_average_processing_speed:
-      description: Select average processing speed
-      name: e.g. sensor.adguard_average_processing_speed
-      type: entity-picker
-  name: AdGuard
-  type: page
-  version: '1.0'
-card:
-  items_classes: 'col-xs-12 col-sm-6 col-md-4 col-lg-4'
-  type: custom:dwains-flexbox-card
-  cards:
-    - type: vertical-stack
-      cards:
-        - entities:
-          - entity: $adguard_dns_queries$
-            name: DNS Queries
-          type: custom:mini-graph-card
-        - entities:
-          - entity: $adguard_dns_queries_blocked$
-            name: DNS Queries blocked
-          type: custom:mini-graph-card
-    - type: vertical-stack
-      cards:
-        - entity: $adguard_protection$
-          show_icon: true
-          show_label: false
-          show_last_changed: false
-          show_name: true
-          show_state: true
-          state:
-          - icon: fas:toggle-on
-            value: 'on'
-          - icon: fas:toggle-off
-            styles:
-              icon:
-              - color: '#6c6c75'
-            value: 'off'
-          styles:
-            card:
-            - border-radius: 12px
-            - margin-bottom: 0px
-            - padding-top: 14px
-            - padding-bottom: 14px
-            grid:
-            - grid-template-areas: '"i n""i s"'
-            - grid-template-columns: 30% 70%
-            - grid-template-rows: min-content
-            icon:
-            - width: 55%
-            - color: var(--primary-color)
-            img_cell:
-            - width: 45px
-            - height: 45px
-            - border-radius: 100%
-            - background: var(--secondary-background-color)
-            label:
-            - justify-self: start
-            - align-self: left
-            - font-size: 12px
-            - color: var(--disabled-text-color)
-            name:
-            - color: var(--primary-text-color)
-            - justify-self: start
-            - font-size: 15px
-            - align-self: center
-            state:
-            - justify-self: start
-            - align-self: left
-            - font-size: 13px
-            - color: var(--disabled-text-color)
-          tap_action:
-            action: toggle
-            haptic: light
-          type: custom:button-card
-        - entity: $adguard_filtering$
-          show_icon: true
-          show_label: false
-          show_last_changed: false
-          show_name: true
-          show_state: true
-          state:
-          - icon: fas:toggle-on
-            value: 'on'
-          - icon: fas:toggle-off
-            styles:
-              icon:
-              - color: '#6c6c75'
-            value: 'off'
-          styles:
-            card:
-            - border-radius: 12px
-            - margin-bottom: 0px
-            - padding-top: 14px
-            - padding-bottom: 14px
-            grid:
-            - grid-template-areas: '"i n""i s"'
-            - grid-template-columns: 30% 70%
-            - grid-template-rows: min-content
-            icon:
-            - width: 55%
-            - color: var(--primary-color)
-            img_cell:
-            - width: 45px
-            - height: 45px
-            - border-radius: 100%
-            - background: var(--secondary-background-color)
-            label:
-            - justify-self: start
-            - align-self: left
-            - font-size: 12px
-            - color: var(--disabled-text-color)
-            name:
-            - color: var(--primary-text-color)
-            - justify-self: start
-            - font-size: 15px
-            - align-self: center
-            state:
-            - justify-self: start
-            - align-self: left
-            - font-size: 13px
-            - color: var(--disabled-text-color)
-          tap_action:
-            action: toggle
-            haptic: light
-          type: custom:button-card
-        - type: custom:button-card
-          entity: $adguard_dns_queries_blocked_ratio$
-          name: Queries Blocked Ratio
-          show_name: true
-          show_icon: true
-          show_state: true
-          show_label: false
-          show_last_changed: false
-          styles:
-            grid:
-              - grid-template-areas: '"i n""i s"'
-              - grid-template-columns: 30% 70%
-              - grid-template-rows: min-content
-            card:
-              - border-radius: 12px
-              - margin-bottom: 0px
-              - padding-top: 14px
-              - padding-bottom: 14px
-            icon:
-              - color: var(--primary-color)
-              - width: 55%
-            img_cell:
-              - width: 45px
-              - height: 45px
-              - background: var(--secondary-background-color)
-              - border-radius: 100%
-            name:
-              - color: var(--primary-text-color)
-              - justify-self: start
-              - font-size: 15px
-              - align-self: center
-            state:
-              - justify-self: start
-              - align-self: left
-              - font-size: 13px
-              - color: var(--disabled-text-color)
-            label:
-              - justify-self: start
-              - align-self: left
-              - font-size: 12px
-              - color: var(--disabled-text-color)
-        - type: custom:button-card
-          entity: $adguard_average_processing_speed$
-          name: Average Processing Speed
-          show_name: true
-          show_icon: true
-          show_state: true
-          show_label: false
-          show_last_changed: false
-          styles:
-            grid:
-              - grid-template-areas: '"i n""i s"'
-              - grid-template-columns: 30% 70%
-              - grid-template-rows: min-content
-            card:
-              - border-radius: 12px
-              - margin-bottom: 0px
-              - padding-top: 14px
-              - padding-bottom: 14px
-            icon:
-              - color: var(--primary-color)
-              - width: 55%
-            img_cell:
-              - width: 45px
-              - height: 45px
-              - background: var(--secondary-background-color)
-              - border-radius: 100%
-            name:
-              - color: var(--primary-text-color)
-              - justify-self: start
-              - font-size: 15px
-              - align-self: center
-            state:
-              - justify-self: start
-              - align-self: left
-              - font-size: 13px
-              - color: var(--disabled-text-color)
-            label:
-              - justify-self: start
-              - align-self: left
-              - font-size: 12px
-              - color: var(--disabled-text-color)
+"blueprint":
+  "icon": "mdi:shield-check-outline"
+  "name": "AdGuard"
+  "name_de": "AdGuard"
+  "description": "AdGuard Home monitoring and DNS filtering controls."
+  "description_de": "AdGuard-Home-Überwachung und Steuerung des DNS-Filters."
+  "version": "1.1"
+  "type": "page"
+  "author": "makeflori"
+  "custom_cards":
+    - "button-card"
+    - "layout-card"
+    - "vertical-stack-in-card"
+  "input":
+    "adguard_dns_queries_blocked_ratio":
+      "name": "Blocked queries ratio (optional)"
+      "name_de": "Anteil blockierter Anfragen (optional)"
+      "type": "entity-picker"
+      "suggest_entity": "sensor.adguard_dns_queries_blocked_ratio"
+      "default": ""
+    "adguard_average_processing_speed":
+      "name": "Average processing speed (optional)"
+      "name_de": "Durchschnittliche Verarbeitungszeit (optional)"
+      "type": "entity-picker"
+      "suggest_entity": "sensor.adguard_average_processing_speed"
+      "default": ""
+    "adguard_protection":
+      "name": "Adguard Protection"
+      "name_de": "Schutz aktivieren"
+      "description": "Select the entity used for switch.adguard_protection."
+      "type": "entity-picker"
+    "adguard_filtering":
+      "name": "Adguard Filtering"
+      "name_de": "Filter aktivieren"
+      "description": "Select the entity used for switch.adguard_filtering."
+      "type": "entity-picker"
+    "adguard_dns_queries":
+      "name": "Adguard Dns Queries"
+      "name_de": "DNS-Anfragen"
+      "description": "Select the entity used for sensor.adguard_dns_queries."
+      "type": "entity-picker"
+    "adguard_dns_queries_blocked":
+      "name": "Adguard Dns Queries Blocked"
+      "name_de": "Blockierte DNS-Anfragen"
+      "description": "Select the entity used for sensor.adguard_dns_queries_blocked."
+      "type": "entity-picker"
+      "suggest_entity": "sensor.adguard_dns_queries_blocked"
+"card":
+  "type": "custom:layout-card"
+  "layout_type": "custom:grid-layout"
+  "layout":
+    "grid-template-columns": "minmax(0,15fr) minmax(0,70fr) minmax(0,15fr)"
+    "grid-template-areas": "\". main .\""
+    "grid-gap": "0"
+    "margin": "0"
+    "padding": "0"
+    "mediaquery":
+      "(max-width: 900px)":
+        "grid-template-columns": "1fr"
+        "grid-template-areas": "\"main\""
+  "cards":
+    -
+      "type": "custom:layout-card"
+      "layout_type": "custom:grid-layout"
+      "layout":
+        "grid-template-columns": "1fr 1fr"
+        "grid-template-areas": "\"protection filter\" \"dnsgraph blockedgraph\""
+        "grid-gap": "12px"
+        "align-items": "start"
+        "margin": "0"
+        "padding": "0"
+        "mediaquery":
+          "(max-width: 520px)":
+            "grid-template-columns": "1fr 1fr"
+            "grid-template-areas": "\"protection filter\" \"dnsgraph dnsgraph\" \"blockedgraph blockedgraph\""
+            "grid-gap": "8px"
+      "cards":
+        -
+          "type": "custom:button-card"
+          "entity": "$adguard_protection$"
+          "show_icon": false
+          "show_name": false
+          "show_state": false
+          "tap_action":
+            "action": "toggle"
+          "hold_action":
+            "action": "more-info"
+          "custom_fields":
+            "content": "[[[\n      const on=entity.state==='on';\n      const mobile=window.innerWidth<=520;\n      const pad=mobile?'0 8px':'0 18px';\n      const gap=mobile?'7px':'14px';\n      const iconBox=mobile?34:48;\n      const iconSize=mobile?20:28;\n      const titleSize=mobile?13:16;\n      const stateSize=mobile?11:13;\n      const toggleW=mobile?46:74;\n      const toggleH=mobile?26:38;\n      const knob=mobile?20:30;\n      return '<div style=\"height:100%;display:flex;align-items:center;justify-content:space-between;padding:'+pad+';box-sizing:border-box;gap:6px\">'+\n      '<div style=\"display:flex;align-items:center;gap:'+gap+';min-width:0;flex:1\">'+\n      '<div style=\"width:'+iconBox+'px;height:'+iconBox+'px;flex:0 0 '+iconBox+'px;border-radius:50%;background:'+(on?'rgba(255,193,7,.16)':'rgba(120,120,120,.08)')+';display:flex;align-items:center;justify-content:center;color:'+(on?'#f5b400':'var(--secondary-text-color)')+'\"><ha-icon icon=\"'+variables.icon+'\" style=\"--mdc-icon-size:'+iconSize+'px\"></ha-icon></div>'+\n      '<div style=\"text-align:left;min-width:0\"><div style=\"font-size:'+titleSize+'px;font-weight:700;white-space:nowrap\">'+variables.title+'</div><div style=\"font-size:'+stateSize+'px;color:var(--secondary-text-color);margin-top:1px\">'+(on?'Ein':'Aus')+'</div></div>'+\n      '</div>'+\n      '<div style=\"width:'+toggleW+'px;height:'+toggleH+'px;flex:0 0 '+toggleW+'px;border-radius:999px;background:'+(on?'#ffc107':'rgba(120,120,120,.14)')+';display:flex;align-items:center;justify-content:'+(on?'flex-end':'flex-start')+';padding:3px;box-sizing:border-box\"><div style=\"width:'+knob+'px;height:'+knob+'px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.18)\"></div></div>'+\n      '</div>';\n    ]]]"
+          "variables":
+            "title":
+              "i18n":
+                "de": "Schutz"
+                "en": "Protection"
+            "icon": "mdi:shield-check"
+          "styles":
+            "card":
+              -
+                "height": "[[[ return window.innerWidth <= 520 ? '76px' : '100px'; ]]]"
+              -
+                "padding": "0"
+              -
+                "border": "1px solid var(--divider-color)"
+              -
+                "border-radius": "16px"
+              -
+                "box-shadow": "none"
+              -
+                "overflow": "hidden"
+            "grid":
+              -
+                "grid-template-areas": "\"content\""
+              -
+                "grid-template-columns": "1fr"
+              -
+                "grid-template-rows": "1fr"
+              -
+                "height": "100%"
+            "custom_fields":
+              "content":
+                -
+                  "height": "100%"
+                -
+                  "width": "100%"
+          "view_layout":
+            "grid-area": "protection"
+        -
+          "type": "custom:button-card"
+          "entity": "$adguard_filtering$"
+          "show_icon": false
+          "show_name": false
+          "show_state": false
+          "tap_action":
+            "action": "toggle"
+          "hold_action":
+            "action": "more-info"
+          "custom_fields":
+            "content": "[[[\n      const on=entity.state==='on';\n      const mobile=window.innerWidth<=520;\n      const pad=mobile?'0 8px':'0 18px';\n      const gap=mobile?'7px':'14px';\n      const iconBox=mobile?34:48;\n      const iconSize=mobile?20:28;\n      const titleSize=mobile?13:16;\n      const stateSize=mobile?11:13;\n      const toggleW=mobile?46:74;\n      const toggleH=mobile?26:38;\n      const knob=mobile?20:30;\n      return '<div style=\"height:100%;display:flex;align-items:center;justify-content:space-between;padding:'+pad+';box-sizing:border-box;gap:6px\">'+\n      '<div style=\"display:flex;align-items:center;gap:'+gap+';min-width:0;flex:1\">'+\n      '<div style=\"width:'+iconBox+'px;height:'+iconBox+'px;flex:0 0 '+iconBox+'px;border-radius:50%;background:'+(on?'rgba(255,193,7,.16)':'rgba(120,120,120,.08)')+';display:flex;align-items:center;justify-content:center;color:'+(on?'#f5b400':'var(--secondary-text-color)')+'\"><ha-icon icon=\"'+variables.icon+'\" style=\"--mdc-icon-size:'+iconSize+'px\"></ha-icon></div>'+\n      '<div style=\"text-align:left;min-width:0\"><div style=\"font-size:'+titleSize+'px;font-weight:700;white-space:nowrap\">'+variables.title+'</div><div style=\"font-size:'+stateSize+'px;color:var(--secondary-text-color);margin-top:1px\">'+(on?'Ein':'Aus')+'</div></div>'+\n      '</div>'+\n      '<div style=\"width:'+toggleW+'px;height:'+toggleH+'px;flex:0 0 '+toggleW+'px;border-radius:999px;background:'+(on?'#ffc107':'rgba(120,120,120,.14)')+';display:flex;align-items:center;justify-content:'+(on?'flex-end':'flex-start')+';padding:3px;box-sizing:border-box\"><div style=\"width:'+knob+'px;height:'+knob+'px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.18)\"></div></div>'+\n      '</div>';\n    ]]]"
+          "variables":
+            "title":
+              "i18n":
+                "de": "Filter"
+                "en": "Filtering"
+            "icon": "mdi:filter"
+          "styles":
+            "card":
+              -
+                "height": "[[[ return window.innerWidth <= 520 ? '76px' : '100px'; ]]]"
+              -
+                "padding": "0"
+              -
+                "border": "1px solid var(--divider-color)"
+              -
+                "border-radius": "16px"
+              -
+                "box-shadow": "none"
+              -
+                "overflow": "hidden"
+            "grid":
+              -
+                "grid-template-areas": "\"content\""
+              -
+                "grid-template-columns": "1fr"
+              -
+                "grid-template-rows": "1fr"
+              -
+                "height": "100%"
+            "custom_fields":
+              "content":
+                -
+                  "height": "100%"
+                -
+                  "width": "100%"
+          "view_layout":
+            "grid-area": "filter"
+        -
+          "type": "custom:vertical-stack-in-card"
+          "cards":
+            -
+              "type": "custom:button-card"
+              "entity": "$adguard_dns_queries$"
+              "show_icon": true
+              "show_name": true
+              "show_state": true
+              "name":
+                "i18n":
+                  "de": "DNS-Anfragen"
+                  "en": "DNS queries"
+              "icon": "mdi:dns"
+              "tap_action":
+                "action": "more-info"
+              "state_display": "[[[ return Number(entity.state||0).toLocaleString('de-DE'); ]]]"
+              "styles":
+                "card":
+                  -
+                    "height": "74px"
+                  -
+                    "padding": "0 18px"
+                  -
+                    "border": "0"
+                  -
+                    "border-radius": "0"
+                  -
+                    "box-shadow": "none"
+                  -
+                    "background": "transparent"
+                "grid":
+                  -
+                    "grid-template-areas": "\"i n s\""
+                  -
+                    "grid-template-columns": "48px minmax(0,1fr) auto"
+                  -
+                    "grid-template-rows": "1fr"
+                  -
+                    "column-gap": "14px"
+                  -
+                    "align-items": "center"
+                "img_cell":
+                  -
+                    "width": "48px"
+                  -
+                    "height": "48px"
+                  -
+                    "border-radius": "50%"
+                  -
+                    "background": "rgba(33,150,243,.08)"
+                  -
+                    "justify-self": "center"
+                  -
+                    "align-self": "center"
+                "icon":
+                  -
+                    "width": "27px"
+                  -
+                    "color": "var(--primary-color)"
+                "name":
+                  -
+                    "justify-self": "start"
+                  -
+                    "font-size": "16px"
+                  -
+                    "font-weight": "700"
+                  -
+                    "white-space": "nowrap"
+                  -
+                    "overflow": "hidden"
+                  -
+                    "text-overflow": "ellipsis"
+                "state":
+                  -
+                    "justify-self": "end"
+                  -
+                    "font-size": "31px"
+                  -
+                    "font-weight": "500"
+                  -
+                    "white-space": "nowrap"
+            -
+              "type": "history-graph"
+              "hours_to_show": 24
+              "show_names": false
+              "fit_y_data": true
+              "entities":
+                -
+                  "entity": "$adguard_dns_queries$"
+                  "name":
+                    "i18n":
+                      "de": "DNS-Anfragen"
+                      "en": "DNS queries"
+                  "color": "#ff9800"
+              "card_mod":
+                "style": "\n    ha-card {\n      border:0;\n      box-shadow:none;\n      background:transparent;\n      padding:0 10px 10px;\n      overflow:visible !important;\n    }\n  "
+          "card_mod":
+            "style": "\n    ha-card {\n      border:1px solid var(--divider-color);\n      border-radius:16px !important;\n      box-shadow:none;\n      overflow:visible !important;\n    }\n  "
+          "view_layout":
+            "grid-area": "dnsgraph"
+        -
+          "type": "custom:vertical-stack-in-card"
+          "cards":
+            -
+              "type": "custom:button-card"
+              "entity": "$adguard_dns_queries_blocked$"
+              "show_icon": true
+              "show_name": true
+              "show_state": true
+              "name":
+                "i18n":
+                  "de": "Geblockte Anfragen"
+                  "en": "Blocked queries"
+              "icon": "mdi:shield-off-outline"
+              "tap_action":
+                "action": "more-info"
+              "state_display": "[[[ return Number(entity.state||0).toLocaleString('de-DE'); ]]]"
+              "styles":
+                "card":
+                  -
+                    "height": "74px"
+                  -
+                    "padding": "0 18px"
+                  -
+                    "border": "0"
+                  -
+                    "border-radius": "0"
+                  -
+                    "box-shadow": "none"
+                  -
+                    "background": "transparent"
+                "grid":
+                  -
+                    "grid-template-areas": "\"i n s\""
+                  -
+                    "grid-template-columns": "48px minmax(0,1fr) auto"
+                  -
+                    "grid-template-rows": "1fr"
+                  -
+                    "column-gap": "14px"
+                  -
+                    "align-items": "center"
+                "img_cell":
+                  -
+                    "width": "48px"
+                  -
+                    "height": "48px"
+                  -
+                    "border-radius": "50%"
+                  -
+                    "background": "rgba(33,150,243,.08)"
+                  -
+                    "justify-self": "center"
+                  -
+                    "align-self": "center"
+                "icon":
+                  -
+                    "width": "27px"
+                  -
+                    "color": "var(--primary-color)"
+                "name":
+                  -
+                    "justify-self": "start"
+                  -
+                    "font-size": "16px"
+                  -
+                    "font-weight": "700"
+                  -
+                    "white-space": "nowrap"
+                  -
+                    "overflow": "hidden"
+                  -
+                    "text-overflow": "ellipsis"
+                "state":
+                  -
+                    "justify-self": "end"
+                  -
+                    "font-size": "31px"
+                  -
+                    "font-weight": "500"
+                  -
+                    "white-space": "nowrap"
+            -
+              "type": "history-graph"
+              "hours_to_show": 24
+              "show_names": false
+              "fit_y_data": true
+              "entities":
+                -
+                  "entity": "$adguard_dns_queries_blocked$"
+                  "name":
+                    "i18n":
+                      "de": "Geblockte Anfragen"
+                      "en": "Blocked queries"
+                  "color": "#ff9800"
+              "card_mod":
+                "style": "\n    ha-card {\n      border:0;\n      box-shadow:none;\n      background:transparent;\n      padding:0 10px 10px;\n      overflow:visible !important;\n    }\n  "
+          "card_mod":
+            "style": "\n    ha-card {\n      border:1px solid var(--divider-color);\n      border-radius:16px !important;\n      box-shadow:none;\n      overflow:visible !important;\n    }\n  "
+          "view_layout":
+            "grid-area": "blockedgraph"
+      "view_layout":
+        "grid-area": "main"
+      "card_mod":
+        "style": ":host { margin:0 !important; padding:0 !important; } #root { margin:0 !important; padding:0 !important; }"
+  "card_mod":
+    "style": ":host { margin:0 !important; padding:0 !important; } #root { margin:0 !important; padding:0 !important; }"
