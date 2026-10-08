@@ -95,7 +95,7 @@
             "show_name": true
             "show_state": true
             "show_label": true
-            "label": "[[[const price=states['$item.price_entity
+            "label": "[[[\n const price = states['$item.price_entity$'];\n const amount = states['$item.amount_entity$'];\n const p = price?.state && !['unknown','unavailable'].includes(price.state) ? price.state + ' ' + (price.attributes?.unit_of_measurement || '') : '';\n const a = amount?.state && !['unknown','unavailable'].includes(amount.state) ? amount.state + ' ' + (amount.attributes?.unit_of_measurement || '') : '';\n return [p,a].filter(Boolean).join(' · ') || '—';\n]]]"
             "styles":
               "card":
                 -
