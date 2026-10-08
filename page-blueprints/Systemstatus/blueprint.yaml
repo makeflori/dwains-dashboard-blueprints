@@ -2,7 +2,8 @@
   "icon": "mdi:monitor-dashboard"
   "name": "System Monitor"
   "name_de": "Systemstatus"
-  "description": "Home Assistant system metrics, add-on memory and update status."
+  "name_de": "Systemstatus"
+  "description": "Home Assistant system metrics, application memory and update status."
   "description_de": "Systemkennzahlen, App-Arbeitsspeicher und Update-Status für Home Assistant."
   "version": "1.0.0"
   "type": "page"
@@ -15,66 +16,82 @@
   "input":
     "sensor_processor_use":
       "name": "Processor Use"
+      "name_de": "CPU-Auslastung"
       "description": "Select the entity used for sensor.processor_use."
       "type": "entity-picker"
     "sensor_memory_use_percent":
       "name": "Memory Use Percent"
+      "name_de": "RAM-Auslastung"
       "description": "Select the entity used for sensor.memory_use_percent."
       "type": "entity-picker"
     "sensor_disk_use_percent":
       "name": "Disk Use Percent"
+      "name_de": "Datenträgerauslastung"
       "description": "Select the entity used for sensor.disk_use_percent."
       "type": "entity-picker"
     "sensor_system_monitor_disk_use":
       "name": "System Monitor Disk Use"
+      "name_de": "Datenträgerauslastung (alternativ)"
       "description": "Select the entity used for sensor.system_monitor_disk_use."
       "type": "entity-picker"
     "sensor_processor_temperature":
       "name": "Processor Temperature"
+      "name_de": "CPU-Temperatur"
       "description": "Select the entity used for sensor.processor_temperature."
       "type": "entity-picker"
     "sensor_memory_ha_core":
       "name": "Memory Ha Core"
+      "name_de": "RAM Home Assistant Core"
       "description": "Select the entity used for sensor.memory_ha_core."
       "type": "entity-picker"
     "sensor_memory_ha_mcp":
       "name": "Memory Ha Mcp"
+      "name_de": "RAM MCP"
       "description": "Select the entity used for sensor.memory_ha_mcp."
       "type": "entity-picker"
     "sensor_memory_ha_mcp_webhook_proxy":
       "name": "Memory Ha Mcp Webhook Proxy"
+      "name_de": "RAM MCP-Webhook-Proxy"
       "description": "Select the entity used for sensor.memory_ha_mcp_webhook_proxy."
       "type": "entity-picker"
     "sensor_memory_adguard":
       "name": "Memory Adguard"
+      "name_de": "RAM AdGuard"
       "description": "Select the entity used for sensor.memory_adguard."
       "type": "entity-picker"
     "sensor_memory_appdaemon":
       "name": "Memory Appdaemon"
+      "name_de": "RAM AppDaemon"
       "description": "Select the entity used for sensor.memory_appdaemon."
       "type": "entity-picker"
     "sensor_last_boot":
       "name": "Last Boot"
+      "name_de": "Letzter Systemstart"
       "description": "Select the entity used for sensor.last_boot."
       "type": "entity-picker"
     "sensor_backup_letztes_erfolgreiches_automatisches_backup":
       "name": "Backup Letztes Erfolgreiches Automatisches Backup"
+      "name_de": "Letztes erfolgreiches Backup"
       "description": "Select the entity used for sensor.backup_letztes_erfolgreiches_automatisches_backup."
       "type": "entity-picker"
     "sensor_backup_nachstes_geplantes_automatisches_backup":
       "name": "Backup Nachstes Geplantes Automatisches Backup"
+      "name_de": "Nächstes geplantes Backup"
       "description": "Select the entity used for sensor.backup_nachstes_geplantes_automatisches_backup."
       "type": "entity-picker"
     "update_home_assistant_core_update":
       "name": "Home Assistant Core Update"
+      "name_de": "Home Assistant Core Update"
       "description": "Select the entity used for update.home_assistant_core_update."
       "type": "entity-picker"
     "update_home_assistant_operating_system_update":
       "name": "Home Assistant Operating System Update"
+      "name_de": "Home Assistant OS Update"
       "description": "Select the entity used for update.home_assistant_operating_system_update."
       "type": "entity-picker"
     "update_home_assistant_supervisor_update":
       "name": "Home Assistant Supervisor Update"
+      "name_de": "Supervisor Update"
       "description": "Select the entity used for update.home_assistant_supervisor_update."
       "type": "entity-picker"
 "card":
