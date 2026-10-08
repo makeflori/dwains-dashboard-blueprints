@@ -1,0 +1,280 @@
+"blueprint":
+  "name": "Abfuhrkalender"
+  "description": "Configurable Dwains Dashboard Next page preserving the existing layout."
+  "version": "3.7.0"
+  "type": "page"
+  "author": "makeflori"
+  "custom_cards":
+    - "button-card"
+    - "layout-card"
+  "input":
+    "sensor_restmull":
+      "name": "Restmull"
+      "description": "Select the entity used for sensor.restmull."
+      "type": "entity-picker"
+    "sensor_biomull":
+      "name": "Biomull"
+      "description": "Select the entity used for sensor.biomull."
+      "type": "entity-picker"
+    "sensor_gelber_sack":
+      "name": "Gelber Sack"
+      "description": "Select the entity used for sensor.gelber_sack."
+      "type": "entity-picker"
+    "sensor_altpapier":
+      "name": "Altpapier"
+      "description": "Select the entity used for sensor.altpapier."
+      "type": "entity-picker"
+"card":
+  "type": "vertical-stack"
+  "cards":
+    -
+      "type": "custom:button-card"
+      "show_icon": false
+      "show_name": false
+      "show_state": false
+      "show_label": false
+      "tap_action":
+        "action": "none"
+      "custom_fields":
+        "title": "[[[\n  const mobile = window.innerWidth <= 520;\n  return '<div style=\"font-size:'+(mobile?'22px':'30px')+';font-weight:500;line-height:1.2;text-align:left\">Nächste Abholungen</div>';\n]]]"
+      "styles":
+        "card":
+          -
+            "padding": "[[[ return window.innerWidth <= 520 ? '6px 4px 4px 4px' : '18px 4px 18px 4px'; ]]]"
+          -
+            "border": "0"
+          -
+            "border-radius": "0"
+          -
+            "box-shadow": "none"
+          -
+            "background": "transparent"
+        "grid":
+          -
+            "grid-template-areas": "\"title\""
+          -
+            "grid-template-columns": "1fr"
+        "custom_fields":
+          "title":
+            -
+              "width": "100%"
+    -
+      "type": "custom:layout-card"
+      "layout_type": "custom:grid-layout"
+      "layout":
+        "grid-template-columns": "repeat(4,minmax(0,1fr))"
+        "grid-template-areas": "\"next second third fourth\""
+        "grid-gap": "2px"
+        "align-items": "start"
+        "mediaquery":
+          "(min-width: 521px)":
+            "grid-template-columns": "repeat(4,minmax(0,1fr))"
+            "grid-template-areas": "\"next second third fourth\""
+            "grid-gap": "16px"
+            "gap": "16px"
+          "(max-width: 900px)":
+            "grid-template-columns": "1fr 1fr"
+            "grid-template-areas": "\"next second\" \"third fourth\""
+          "(max-width: 520px)":
+            "grid-template-columns": "1fr 1fr"
+            "grid-template-areas": "\"next second\" \"third fourth\""
+            "grid-gap": "8px"
+            "gap": "8px"
+            "margin": "0"
+            "padding": "0"
+        "gap": "2px"
+      "cards":
+        -
+          "type": "custom:button-card"
+          "variables":
+            "slot": 0
+          "entity": "[[[ const bins=[{entity:'$sensor_restmull$'},{entity:'$sensor_biomull$'},{entity:'$sensor_gelber_sack$'},{entity:'$sensor_altpapier$'}]; const now=new Date(); const today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0'); const re=/^\\d{4}-\\d{2}-\\d{2}$/; const items=bins.map(b=>{const s=states[b.entity]; const dates=[]; if(s) for(const [k,v] of Object.entries(s.attributes||{})){if(re.test(k)&&k>=today)dates.push(k);if(typeof v==='string'&&re.test(v)&&v>=today)dates.push(v);} dates.sort(); return {...b,date:dates[0]||'9999-12-31'};}).sort((a,b)=>a.date.localeCompare(b.date)); return items[variables.slot].entity; ]]]"
+          "show_icon": false
+          "show_name": false
+          "show_state": false
+          "show_label": false
+          "tap_action":
+            "action": "more-info"
+          "custom_fields":
+            "content": "[[[\n  const pics={'$sensor_restmull$':'/local/muell/schwarz.png','$sensor_biomull$':'/local/muell/braun.png','$sensor_gelber_sack$':'/local/muell/gelb.png','$sensor_altpapier$':'/local/muell/blau.png'};\n  const names={'$sensor_restmull$':'Restmüll','$sensor_biomull$':'Biomüll','$sensor_gelber_sack$':'Gelber Sack','$sensor_altpapier$':'Altpapier'};\n  const now=new Date();\n  const today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');\n  const re=/^\\d{4}-\\d{2}-\\d{2}$/; const dates=[];\n  for(const [k,v] of Object.entries(entity.attributes||{})){\n    if(re.test(k)&&k>=today) dates.push(k);\n    if(typeof v==='string'&&re.test(v)&&v>=today) dates.push(v);\n  }\n  dates.sort();\n  const d=dates[0];\n  let rel='Kein Termin',dt='',days=999;\n  if(d){\n    days=Math.round((new Date(d+'T12:00:00')-new Date(today+'T12:00:00'))/86400000);\n    rel=days===0?'Heute':(days===1?'Morgen':'in '+days+' Tagen');\n    dt=new Date(d+'T12:00:00').toLocaleDateString('de-DE',{weekday:'short',day:'numeric',month:'short',year:'numeric'});\n  }\n  const urgent=days===0||days===1;\n  const mobile=window.innerWidth<=520;\n  const circle=urgent?'rgba(255,193,7,.11)':'rgba(33,150,243,.055)';\n  const pill=urgent?'rgba(255,193,7,.18)':'rgba(33,150,243,.09)';\n  const pillColor=urgent?'#c46a00':'var(--primary-color)';\n  const border=urgent?'rgba(255,193,7,.42)':'var(--divider-color)';\n  const bg=urgent?'linear-gradient(180deg, rgba(255,193,7,.075), var(--card-background-color))':'var(--card-background-color)';\n  const circleSize=mobile?108:190;\n  const imgW=mobile?76:128;\n  const imgH=mobile?96:158;\n  const pad=mobile?'8px 6px 8px':'22px 20px 26px';\n  const mbCircle=mobile?'5px':'15px';\n  const nameSize=mobile?'17px':'21px';\n  const nameMb=mobile?'5px':'15px';\n  const pillPad=mobile?'6px 10px':'11px 24px';\n  const pillSize=mobile?'16px':'23px';\n  const iconSize=mobile?'19px':'25px';\n  const gap=mobile?'5px':'10px';\n  const dateSize=mobile?'12.5px':'17px';\n  const dateMt=mobile?'6px':'15px';\n  const radius=mobile?'14px':'16px';\n\n  return '<div style=\"height:100%;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box;padding:'+pad+';border:1px solid '+border+';border-radius:'+radius+';background:'+bg+';overflow:hidden\">'+\n    '<div style=\"width:'+circleSize+'px;height:'+circleSize+'px;border-radius:50%;background:'+circle+';display:flex;align-items:center;justify-content:center;margin-bottom:'+mbCircle+'\"><img src=\"'+pics[entity.entity_id]+'\" style=\"width:'+imgW+'px;height:'+imgH+'px;object-fit:contain\"></div>'+\n    '<div style=\"font-size:'+nameSize+';font-weight:700;color:var(--secondary-text-color);line-height:1.1;margin-bottom:'+nameMb+';text-align:center\">'+(names[entity.entity_id]||'')+'</div>'+\n    '<div style=\"display:flex;align-items:center;justify-content:center;gap:'+gap+';background:'+pill+';color:'+pillColor+';border-radius:999px;padding:'+pillPad+';font-size:'+pillSize+';font-weight:700;line-height:1;white-space:nowrap\"><ha-icon icon=\"mdi:calendar-month\" style=\"--mdc-icon-size:'+iconSize+'\"></ha-icon><span>'+rel+'</span></div>'+\n    '<div style=\"font-size:'+dateSize+';color:var(--secondary-text-color);margin-top:'+dateMt+';line-height:1.15;text-align:center;white-space:nowrap\">'+dt+'</div>'+\n  '</div>';\n]]]"
+          "styles":
+            "card":
+              -
+                "height": "[[[ return window.innerWidth <= 520 ? '232px' : '430px'; ]]]"
+              -
+                "padding": "0"
+              -
+                "border": "0"
+              -
+                "border-radius": "0"
+              -
+                "background": "transparent"
+              -
+                "box-shadow": "none"
+              -
+                "overflow": "visible"
+            "grid":
+              -
+                "grid-template-areas": "\"content\""
+              -
+                "grid-template-columns": "1fr"
+              -
+                "grid-template-rows": "1fr"
+              -
+                "height": "100%"
+            "custom_fields":
+              "content":
+                -
+                  "height": "100%"
+                -
+                  "width": "100%"
+          "view_layout":
+            "grid-area": "next"
+            "justify-self": "stretch"
+            "align-self": "start"
+        -
+          "type": "custom:button-card"
+          "variables":
+            "slot": 1
+          "entity": "[[[ const bins=[{entity:'$sensor_restmull$'},{entity:'$sensor_biomull$'},{entity:'$sensor_gelber_sack$'},{entity:'$sensor_altpapier$'}]; const now=new Date(); const today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0'); const re=/^\\d{4}-\\d{2}-\\d{2}$/; const items=bins.map(b=>{const s=states[b.entity]; const dates=[]; if(s) for(const [k,v] of Object.entries(s.attributes||{})){if(re.test(k)&&k>=today)dates.push(k);if(typeof v==='string'&&re.test(v)&&v>=today)dates.push(v);} dates.sort(); return {...b,date:dates[0]||'9999-12-31'};}).sort((a,b)=>a.date.localeCompare(b.date)); return items[variables.slot].entity; ]]]"
+          "show_icon": false
+          "show_name": false
+          "show_state": false
+          "show_label": false
+          "tap_action":
+            "action": "more-info"
+          "custom_fields":
+            "content": "[[[\n  const pics={'$sensor_restmull$':'/local/muell/schwarz.png','$sensor_biomull$':'/local/muell/braun.png','$sensor_gelber_sack$':'/local/muell/gelb.png','$sensor_altpapier$':'/local/muell/blau.png'};\n  const names={'$sensor_restmull$':'Restmüll','$sensor_biomull$':'Biomüll','$sensor_gelber_sack$':'Gelber Sack','$sensor_altpapier$':'Altpapier'};\n  const now=new Date();\n  const today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');\n  const re=/^\\d{4}-\\d{2}-\\d{2}$/; const dates=[];\n  for(const [k,v] of Object.entries(entity.attributes||{})){\n    if(re.test(k)&&k>=today) dates.push(k);\n    if(typeof v==='string'&&re.test(v)&&v>=today) dates.push(v);\n  }\n  dates.sort();\n  const d=dates[0];\n  let rel='Kein Termin',dt='',days=999;\n  if(d){\n    days=Math.round((new Date(d+'T12:00:00')-new Date(today+'T12:00:00'))/86400000);\n    rel=days===0?'Heute':(days===1?'Morgen':'in '+days+' Tagen');\n    dt=new Date(d+'T12:00:00').toLocaleDateString('de-DE',{weekday:'short',day:'numeric',month:'short',year:'numeric'});\n  }\n  const urgent=days===0||days===1;\n  const mobile=window.innerWidth<=520;\n  const circle=urgent?'rgba(255,193,7,.11)':'rgba(33,150,243,.055)';\n  const pill=urgent?'rgba(255,193,7,.18)':'rgba(33,150,243,.09)';\n  const pillColor=urgent?'#c46a00':'var(--primary-color)';\n  const border=urgent?'rgba(255,193,7,.42)':'var(--divider-color)';\n  const bg=urgent?'linear-gradient(180deg, rgba(255,193,7,.075), var(--card-background-color))':'var(--card-background-color)';\n  const circleSize=mobile?108:190;\n  const imgW=mobile?76:128;\n  const imgH=mobile?96:158;\n  const pad=mobile?'8px 6px 8px':'22px 20px 26px';\n  const mbCircle=mobile?'5px':'15px';\n  const nameSize=mobile?'17px':'21px';\n  const nameMb=mobile?'5px':'15px';\n  const pillPad=mobile?'6px 10px':'11px 24px';\n  const pillSize=mobile?'16px':'23px';\n  const iconSize=mobile?'19px':'25px';\n  const gap=mobile?'5px':'10px';\n  const dateSize=mobile?'12.5px':'17px';\n  const dateMt=mobile?'6px':'15px';\n  const radius=mobile?'14px':'16px';\n\n  return '<div style=\"height:100%;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box;padding:'+pad+';border:1px solid '+border+';border-radius:'+radius+';background:'+bg+';overflow:hidden\">'+\n    '<div style=\"width:'+circleSize+'px;height:'+circleSize+'px;border-radius:50%;background:'+circle+';display:flex;align-items:center;justify-content:center;margin-bottom:'+mbCircle+'\"><img src=\"'+pics[entity.entity_id]+'\" style=\"width:'+imgW+'px;height:'+imgH+'px;object-fit:contain\"></div>'+\n    '<div style=\"font-size:'+nameSize+';font-weight:700;color:var(--secondary-text-color);line-height:1.1;margin-bottom:'+nameMb+';text-align:center\">'+(names[entity.entity_id]||'')+'</div>'+\n    '<div style=\"display:flex;align-items:center;justify-content:center;gap:'+gap+';background:'+pill+';color:'+pillColor+';border-radius:999px;padding:'+pillPad+';font-size:'+pillSize+';font-weight:700;line-height:1;white-space:nowrap\"><ha-icon icon=\"mdi:calendar-month\" style=\"--mdc-icon-size:'+iconSize+'\"></ha-icon><span>'+rel+'</span></div>'+\n    '<div style=\"font-size:'+dateSize+';color:var(--secondary-text-color);margin-top:'+dateMt+';line-height:1.15;text-align:center;white-space:nowrap\">'+dt+'</div>'+\n  '</div>';\n]]]"
+          "styles":
+            "card":
+              -
+                "height": "[[[ return window.innerWidth <= 520 ? '232px' : '430px'; ]]]"
+              -
+                "padding": "0"
+              -
+                "border": "0"
+              -
+                "border-radius": "0"
+              -
+                "background": "transparent"
+              -
+                "box-shadow": "none"
+              -
+                "overflow": "visible"
+            "grid":
+              -
+                "grid-template-areas": "\"content\""
+              -
+                "grid-template-columns": "1fr"
+              -
+                "grid-template-rows": "1fr"
+              -
+                "height": "100%"
+            "custom_fields":
+              "content":
+                -
+                  "height": "100%"
+                -
+                  "width": "100%"
+          "view_layout":
+            "grid-area": "second"
+            "justify-self": "stretch"
+            "align-self": "start"
+        -
+          "type": "custom:button-card"
+          "variables":
+            "slot": 2
+          "entity": "[[[ const bins=[{entity:'$sensor_restmull$'},{entity:'$sensor_biomull$'},{entity:'$sensor_gelber_sack$'},{entity:'$sensor_altpapier$'}]; const now=new Date(); const today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0'); const re=/^\\d{4}-\\d{2}-\\d{2}$/; const items=bins.map(b=>{const s=states[b.entity]; const dates=[]; if(s) for(const [k,v] of Object.entries(s.attributes||{})){if(re.test(k)&&k>=today)dates.push(k);if(typeof v==='string'&&re.test(v)&&v>=today)dates.push(v);} dates.sort(); return {...b,date:dates[0]||'9999-12-31'};}).sort((a,b)=>a.date.localeCompare(b.date)); return items[variables.slot].entity; ]]]"
+          "show_icon": false
+          "show_name": false
+          "show_state": false
+          "show_label": false
+          "tap_action":
+            "action": "more-info"
+          "custom_fields":
+            "content": "[[[\n  const pics={'$sensor_restmull$':'/local/muell/schwarz.png','$sensor_biomull$':'/local/muell/braun.png','$sensor_gelber_sack$':'/local/muell/gelb.png','$sensor_altpapier$':'/local/muell/blau.png'};\n  const names={'$sensor_restmull$':'Restmüll','$sensor_biomull$':'Biomüll','$sensor_gelber_sack$':'Gelber Sack','$sensor_altpapier$':'Altpapier'};\n  const now=new Date();\n  const today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');\n  const re=/^\\d{4}-\\d{2}-\\d{2}$/; const dates=[];\n  for(const [k,v] of Object.entries(entity.attributes||{})){\n    if(re.test(k)&&k>=today) dates.push(k);\n    if(typeof v==='string'&&re.test(v)&&v>=today) dates.push(v);\n  }\n  dates.sort();\n  const d=dates[0];\n  let rel='Kein Termin',dt='',days=999;\n  if(d){\n    days=Math.round((new Date(d+'T12:00:00')-new Date(today+'T12:00:00'))/86400000);\n    rel=days===0?'Heute':(days===1?'Morgen':'in '+days+' Tagen');\n    dt=new Date(d+'T12:00:00').toLocaleDateString('de-DE',{weekday:'short',day:'numeric',month:'short',year:'numeric'});\n  }\n  const urgent=days===0||days===1;\n  const mobile=window.innerWidth<=520;\n  const circle=urgent?'rgba(255,193,7,.11)':'rgba(33,150,243,.055)';\n  const pill=urgent?'rgba(255,193,7,.18)':'rgba(33,150,243,.09)';\n  const pillColor=urgent?'#c46a00':'var(--primary-color)';\n  const border=urgent?'rgba(255,193,7,.42)':'var(--divider-color)';\n  const bg=urgent?'linear-gradient(180deg, rgba(255,193,7,.075), var(--card-background-color))':'var(--card-background-color)';\n  const circleSize=mobile?108:190;\n  const imgW=mobile?76:128;\n  const imgH=mobile?96:158;\n  const pad=mobile?'8px 6px 8px':'22px 20px 26px';\n  const mbCircle=mobile?'5px':'15px';\n  const nameSize=mobile?'17px':'21px';\n  const nameMb=mobile?'5px':'15px';\n  const pillPad=mobile?'6px 10px':'11px 24px';\n  const pillSize=mobile?'16px':'23px';\n  const iconSize=mobile?'19px':'25px';\n  const gap=mobile?'5px':'10px';\n  const dateSize=mobile?'12.5px':'17px';\n  const dateMt=mobile?'6px':'15px';\n  const radius=mobile?'14px':'16px';\n\n  return '<div style=\"height:100%;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box;padding:'+pad+';border:1px solid '+border+';border-radius:'+radius+';background:'+bg+';overflow:hidden\">'+\n    '<div style=\"width:'+circleSize+'px;height:'+circleSize+'px;border-radius:50%;background:'+circle+';display:flex;align-items:center;justify-content:center;margin-bottom:'+mbCircle+'\"><img src=\"'+pics[entity.entity_id]+'\" style=\"width:'+imgW+'px;height:'+imgH+'px;object-fit:contain\"></div>'+\n    '<div style=\"font-size:'+nameSize+';font-weight:700;color:var(--secondary-text-color);line-height:1.1;margin-bottom:'+nameMb+';text-align:center\">'+(names[entity.entity_id]||'')+'</div>'+\n    '<div style=\"display:flex;align-items:center;justify-content:center;gap:'+gap+';background:'+pill+';color:'+pillColor+';border-radius:999px;padding:'+pillPad+';font-size:'+pillSize+';font-weight:700;line-height:1;white-space:nowrap\"><ha-icon icon=\"mdi:calendar-month\" style=\"--mdc-icon-size:'+iconSize+'\"></ha-icon><span>'+rel+'</span></div>'+\n    '<div style=\"font-size:'+dateSize+';color:var(--secondary-text-color);margin-top:'+dateMt+';line-height:1.15;text-align:center;white-space:nowrap\">'+dt+'</div>'+\n  '</div>';\n]]]"
+          "styles":
+            "card":
+              -
+                "height": "[[[ return window.innerWidth <= 520 ? '232px' : '430px'; ]]]"
+              -
+                "padding": "0"
+              -
+                "border": "0"
+              -
+                "border-radius": "0"
+              -
+                "background": "transparent"
+              -
+                "box-shadow": "none"
+              -
+                "overflow": "visible"
+            "grid":
+              -
+                "grid-template-areas": "\"content\""
+              -
+                "grid-template-columns": "1fr"
+              -
+                "grid-template-rows": "1fr"
+              -
+                "height": "100%"
+            "custom_fields":
+              "content":
+                -
+                  "height": "100%"
+                -
+                  "width": "100%"
+          "view_layout":
+            "grid-area": "third"
+            "justify-self": "stretch"
+            "align-self": "start"
+        -
+          "type": "custom:button-card"
+          "variables":
+            "slot": 3
+          "entity": "[[[ const bins=[{entity:'$sensor_restmull$'},{entity:'$sensor_biomull$'},{entity:'$sensor_gelber_sack$'},{entity:'$sensor_altpapier$'}]; const now=new Date(); const today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0'); const re=/^\\d{4}-\\d{2}-\\d{2}$/; const items=bins.map(b=>{const s=states[b.entity]; const dates=[]; if(s) for(const [k,v] of Object.entries(s.attributes||{})){if(re.test(k)&&k>=today)dates.push(k);if(typeof v==='string'&&re.test(v)&&v>=today)dates.push(v);} dates.sort(); return {...b,date:dates[0]||'9999-12-31'};}).sort((a,b)=>a.date.localeCompare(b.date)); return items[variables.slot].entity; ]]]"
+          "show_icon": false
+          "show_name": false
+          "show_state": false
+          "show_label": false
+          "tap_action":
+            "action": "more-info"
+          "custom_fields":
+            "content": "[[[\n  const pics={'$sensor_restmull$':'/local/muell/schwarz.png','$sensor_biomull$':'/local/muell/braun.png','$sensor_gelber_sack$':'/local/muell/gelb.png','$sensor_altpapier$':'/local/muell/blau.png'};\n  const names={'$sensor_restmull$':'Restmüll','$sensor_biomull$':'Biomüll','$sensor_gelber_sack$':'Gelber Sack','$sensor_altpapier$':'Altpapier'};\n  const now=new Date();\n  const today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');\n  const re=/^\\d{4}-\\d{2}-\\d{2}$/; const dates=[];\n  for(const [k,v] of Object.entries(entity.attributes||{})){\n    if(re.test(k)&&k>=today) dates.push(k);\n    if(typeof v==='string'&&re.test(v)&&v>=today) dates.push(v);\n  }\n  dates.sort();\n  const d=dates[0];\n  let rel='Kein Termin',dt='',days=999;\n  if(d){\n    days=Math.round((new Date(d+'T12:00:00')-new Date(today+'T12:00:00'))/86400000);\n    rel=days===0?'Heute':(days===1?'Morgen':'in '+days+' Tagen');\n    dt=new Date(d+'T12:00:00').toLocaleDateString('de-DE',{weekday:'short',day:'numeric',month:'short',year:'numeric'});\n  }\n  const urgent=days===0||days===1;\n  const mobile=window.innerWidth<=520;\n  const circle=urgent?'rgba(255,193,7,.11)':'rgba(33,150,243,.055)';\n  const pill=urgent?'rgba(255,193,7,.18)':'rgba(33,150,243,.09)';\n  const pillColor=urgent?'#c46a00':'var(--primary-color)';\n  const border=urgent?'rgba(255,193,7,.42)':'var(--divider-color)';\n  const bg=urgent?'linear-gradient(180deg, rgba(255,193,7,.075), var(--card-background-color))':'var(--card-background-color)';\n  const circleSize=mobile?108:190;\n  const imgW=mobile?76:128;\n  const imgH=mobile?96:158;\n  const pad=mobile?'8px 6px 8px':'22px 20px 26px';\n  const mbCircle=mobile?'5px':'15px';\n  const nameSize=mobile?'17px':'21px';\n  const nameMb=mobile?'5px':'15px';\n  const pillPad=mobile?'6px 10px':'11px 24px';\n  const pillSize=mobile?'16px':'23px';\n  const iconSize=mobile?'19px':'25px';\n  const gap=mobile?'5px':'10px';\n  const dateSize=mobile?'12.5px':'17px';\n  const dateMt=mobile?'6px':'15px';\n  const radius=mobile?'14px':'16px';\n\n  return '<div style=\"height:100%;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box;padding:'+pad+';border:1px solid '+border+';border-radius:'+radius+';background:'+bg+';overflow:hidden\">'+\n    '<div style=\"width:'+circleSize+'px;height:'+circleSize+'px;border-radius:50%;background:'+circle+';display:flex;align-items:center;justify-content:center;margin-bottom:'+mbCircle+'\"><img src=\"'+pics[entity.entity_id]+'\" style=\"width:'+imgW+'px;height:'+imgH+'px;object-fit:contain\"></div>'+\n    '<div style=\"font-size:'+nameSize+';font-weight:700;color:var(--secondary-text-color);line-height:1.1;margin-bottom:'+nameMb+';text-align:center\">'+(names[entity.entity_id]||'')+'</div>'+\n    '<div style=\"display:flex;align-items:center;justify-content:center;gap:'+gap+';background:'+pill+';color:'+pillColor+';border-radius:999px;padding:'+pillPad+';font-size:'+pillSize+';font-weight:700;line-height:1;white-space:nowrap\"><ha-icon icon=\"mdi:calendar-month\" style=\"--mdc-icon-size:'+iconSize+'\"></ha-icon><span>'+rel+'</span></div>'+\n    '<div style=\"font-size:'+dateSize+';color:var(--secondary-text-color);margin-top:'+dateMt+';line-height:1.15;text-align:center;white-space:nowrap\">'+dt+'</div>'+\n  '</div>';\n]]]"
+          "styles":
+            "card":
+              -
+                "height": "[[[ return window.innerWidth <= 520 ? '232px' : '430px'; ]]]"
+              -
+                "padding": "0"
+              -
+                "border": "0"
+              -
+                "border-radius": "0"
+              -
+                "background": "transparent"
+              -
+                "box-shadow": "none"
+              -
+                "overflow": "visible"
+            "grid":
+              -
+                "grid-template-areas": "\"content\""
+              -
+                "grid-template-columns": "1fr"
+              -
+                "grid-template-rows": "1fr"
+              -
+                "height": "100%"
+            "custom_fields":
+              "content":
+                -
+                  "height": "100%"
+                -
+                  "width": "100%"
+          "view_layout":
+            "grid-area": "fourth"
+            "justify-self": "stretch"
+            "align-self": "start"
+      "card_mod":
+        "style": "\n    :host {\n      margin: 0 !important;\n      padding: 0 !important;\n      --grid-layout-gap: 2px;\n    }\n    #root {\n      margin: 0 !important;\n      padding: 0 !important;\n      gap: 2px !important;\n      grid-gap: 2px !important;\n    }\n    @media (min-width: 521px) {\n      :host { --grid-layout-gap: 16px; }\n      #root {\n        gap: 16px !important;\n        grid-gap: 16px !important;\n      }\n    }\n  "
