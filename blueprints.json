@@ -5,7 +5,7 @@
       "name": "AdGuard",
       "description": "AdGuard protection, filtering and DNS monitoring.",
       "type": "page",
-      "version": "1.2",
+      "version": "1.1",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/AdGuard/blueprint.yaml",
       "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/AdGuard/preview.jpg",
       "custom_cards": [
@@ -938,7 +938,7 @@
       "name": "Waste Collection",
       "description": "Configurable waste collection dates, any number of bins.",
       "type": "page",
-      "version": "1.0.1",
+      "version": "1.0.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/WasteCollection/blueprint.yaml",
       "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/WasteCollection/preview.jpg",
       "custom_cards": [
@@ -950,7 +950,7 @@
       "name": "Crypto Wallet",
       "description": "Coin-based portfolio with calculated total, asset positions and optional history graph.",
       "type": "page",
-      "version": "1.0.1",
+      "version": "1.0.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/CryptoWallet/blueprint.yaml",
       "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/CryptoWallet/preview.jpg",
       "custom_cards": [
