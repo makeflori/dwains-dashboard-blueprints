@@ -1,7 +1,8 @@
 "blueprint":
-  "name": "Krypto-Wallet"
+  "icon": "mdi:wallet-outline"
+  "name": "Crypto Wallet"
   "description": "Configurable Dwains Dashboard Next page preserving the existing layout."
-  "version": "3.2.0"
+  "version": "1.0.0"
   "type": "page"
   "author": "makeflori"
   "custom_cards":
