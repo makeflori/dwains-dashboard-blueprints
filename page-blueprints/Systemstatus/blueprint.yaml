@@ -1,7 +1,9 @@
 "blueprint":
   "icon": "mdi:monitor-dashboard"
   "name": "System Monitor"
-  "description": "Configurable Dwains Dashboard Next page preserving the existing layout."
+  "name_de": "Systemstatus"
+  "description": "Home Assistant system metrics, add-on memory and update status."
+  "description_de": "Systemkennzahlen, App-Arbeitsspeicher und Update-Status für Home Assistant."
   "version": "1.0.0"
   "type": "page"
   "author": "makeflori"
