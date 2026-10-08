@@ -1,15 +1,13 @@
-# Systemstatus
+# System Monitor · v1.0.0
 
-CPU, memory, disk, temperature, application memory, boot/backup and Home Assistant update entities. Optional platform-specific phone exclusion patterns remain as they were in the original page.
+Select system metric, backup, memory and update entities. Inputs are suggested only when a single known matching entity exists; otherwise choose manually. Some installation-specific filters still need review.
 
-## Import
-
-In **Dwains Dashboard Next**, open the Pages section, add a **Blueprint page**, choose **URL**, and paste:
+Import in Dwains Dashboard Next → Pages → Add Blueprint → URL:
 
 https://github.com/makeflori/dwains-dashboard-blueprints/blob/main/page-blueprints/Systemstatus/blueprint.yaml
 
-Select the corresponding local Home Assistant entities in the configuration form. No personal entity IDs are preselected. Ensure the required custom cards reported by the import dialog are installed.
+The configuration dialog requires a Dwains Dashboard Next version containing the **repeatable blueprint input** updates in [PR #136](https://github.com/makeflori/dwains-dashboard-next/pull/136). The published blueprint does not require modifying your existing pages.
 
-The file is a **Dwains Dashboard page blueprint** (\`blueprint.type: page\`), not an automation blueprint for Home Assistant's automation import dialog.
+Home Assistant language `de` uses German text; all other languages use English fallback. Suggested entity names remain editable. Any detected entity should be verified before saving.
 
-The original dashboard page was not changed by this publication. These blueprints have been structurally parameterized; installation and runtime rendering should be verified on a second Home Assistant setup before treating them as fully portable.
+**Note:** Source entities and their units/date attributes must be compatible with the page's presentation. Runtime installation tests on a second HA environment are still required.
