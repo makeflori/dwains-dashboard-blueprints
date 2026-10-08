@@ -27,3 +27,9 @@ This is a simple AdGuard Page.
 #### 1.0.2
 - changed flexbox-card
 ---
+
+## Configuration notes
+
+Protection and filtering switches are optional: if your AdGuard Home integration does not expose a matching switch, the corresponding control is hidden and the DNS statistics remain available.
+
+Gallery preview: [preview.jpg](preview.jpg) (illustrative sample values, not live system data).

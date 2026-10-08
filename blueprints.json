@@ -3,14 +3,15 @@
   "blueprints": [
     {
       "name": "AdGuard",
-      "description": "AdGuard Page by mase",
+      "description": "AdGuard protection, filtering and DNS monitoring.",
       "type": "page",
-      "version": "1.0",
+      "version": "1.2",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/AdGuard/blueprint.yaml",
-      "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/AdGuard/screenshot_light1.0.1.png",
+      "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/AdGuard/preview.jpg",
       "custom_cards": [
         "button-card",
-        "mini-graph-card"
+        "layout-card",
+        "vertical-stack-in-card"
       ]
     },
     {
@@ -931,6 +932,45 @@
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/card-blueprints/replace-cards/slider-button-cards/slider-button-switch/replace_slider_button_switch_card",
       "custom_cards": [
         "slider-button-card"
+      ]
+    },
+    {
+      "name": "Waste Collection",
+      "description": "Configurable waste collection dates, any number of bins.",
+      "type": "page",
+      "version": "1.0.1",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/WasteCollection/blueprint.yaml",
+      "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/WasteCollection/preview.jpg",
+      "custom_cards": [
+        "button-card",
+        "layout-card"
+      ]
+    },
+    {
+      "name": "Crypto Wallet",
+      "description": "Coin-based portfolio with calculated total, asset positions and optional history graph.",
+      "type": "page",
+      "version": "1.0.1",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/CryptoWallet/blueprint.yaml",
+      "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/CryptoWallet/preview.jpg",
+      "custom_cards": [
+        "button-card",
+        "layout-card",
+        "vertical-stack-in-card"
+      ]
+    },
+    {
+      "name": "System Monitor",
+      "description": "Home Assistant CPU, memory, disk, temperature, backups and updates.",
+      "type": "page",
+      "version": "1.0.0",
+      "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/SystemMonitor/blueprint.yaml",
+      "image": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/SystemMonitor/preview.jpg",
+      "custom_cards": [
+        "auto-entities",
+        "button-card",
+        "layout-card",
+        "vertical-stack-in-card"
       ]
     }
   ]

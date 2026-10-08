@@ -1,6 +1,6 @@
-# Crypto Wallet · v1.0.0
+# Crypto Wallet · v1.0.1
 
-Add or remove any number of cryptocurrencies. Each item has a required value sensor, optional price and holdings sensors, editable friendly name and optional icon (defaults to mdi:currency-btc). The portfolio total uses its own sensor.
+Add or remove any number of cryptocurrencies. Each item has a required value sensor, optional price and holdings sensors, editable friendly name and optional icon (defaults to mdi:currency-btc). The total sensor is optional; current values can be summed from coin value sensors.
 
 Import in Dwains Dashboard Next → Pages → Add Blueprint → URL:
 
@@ -11,3 +11,9 @@ The configuration dialog requires a Dwains Dashboard Next version containing the
 Home Assistant language `de` uses German text; all other languages use English fallback. Suggested entity names remain editable. Any detected entity should be verified before saving.
 
 **Note:** Source entities and their units/date attributes must be compatible with the page's presentation. Runtime installation tests on a second HA environment are still required.
+
+## Configuration notes
+
+The total portfolio sensor is optional. Without it, the current portfolio value is calculated as the sum of the configured coin value sensors; historical total charts require a separate aggregate sensor. Each coin requires a value, price and holdings sensor.
+
+Gallery preview: [preview.jpg](preview.jpg) (illustrative sample values, not live system data).
