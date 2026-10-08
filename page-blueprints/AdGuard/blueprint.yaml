@@ -1,7 +1,9 @@
 "blueprint":
   "icon": "mdi:shield-check-outline"
   "name": "AdGuard"
-  "description": "Configurable Dwains Dashboard Next page preserving the existing layout."
+  "name_de": "AdGuard"
+  "description": "AdGuard Home monitoring and DNS filtering controls."
+  "description_de": "AdGuard-Home-Überwachung und Steuerung des DNS-Filters."
   "version": "1.1"
   "type": "page"
   "author": "makeflori"
@@ -12,26 +14,32 @@
   "input":
     "adguard_dns_queries_blocked_ratio":
       "name": "Blocked queries ratio (optional)"
+      "name_de": "Anteil blockierter Anfragen (optional)"
       "type": "entity-picker"
       "default": ""
     "adguard_average_processing_speed":
       "name": "Average processing speed (optional)"
+      "name_de": "Durchschnittliche Verarbeitungszeit (optional)"
       "type": "entity-picker"
       "default": ""
     "adguard_protection":
       "name": "Adguard Protection"
+      "name_de": "Schutz aktivieren"
       "description": "Select the entity used for switch.adguard_protection."
       "type": "entity-picker"
     "adguard_filtering":
       "name": "Adguard Filtering"
+      "name_de": "Filter aktivieren"
       "description": "Select the entity used for switch.adguard_filtering."
       "type": "entity-picker"
     "adguard_dns_queries":
       "name": "Adguard Dns Queries"
+      "name_de": "DNS-Anfragen"
       "description": "Select the entity used for sensor.adguard_dns_queries."
       "type": "entity-picker"
     "adguard_dns_queries_blocked":
       "name": "Adguard Dns Queries Blocked"
+      "name_de": "Blockierte DNS-Anfragen"
       "description": "Select the entity used for sensor.adguard_dns_queries_blocked."
       "type": "entity-picker"
 "card":
