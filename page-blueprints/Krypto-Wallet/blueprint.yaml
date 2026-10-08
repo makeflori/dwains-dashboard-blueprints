@@ -20,7 +20,7 @@
     "coins":
       "name": "Coins"
       "name_de": "Coins"
-      "description": "Each coin uses one selected value sensor; optional icon and editable label."
+      "description": "Each coin has a value sensor, optional price and holdings sensors, editable name and icon."
       "description_de": "Jeder Coin verwendet einen auswählbaren Wertsensor; Name und Icon sind bearbeitbar."
       "type": "entity-list"
       "suggest": "coin"
@@ -96,7 +96,83 @@
             "show_name": true
             "show_state": true
             "show_label": true
-            "label": "[[[const s=entity; if(!s) return '—';const unit=s.attributes?.unit_of_measurement||'';return (s.attributes?.friendly_name||'')+(unit?' · '+unit:'');]]]"
+            "label": "[[[const price=states['$item.price_entity
+            "styles":
+              "card":
+                -
+                  "border-radius": "14px"
+                -
+                  "padding": "14px"
+              "grid":
+                -
+                  "grid-template-areas": "\"i n\" \"i s\" \"i l\""
+                -
+                  "grid-template-columns": "46px 1fr"
+              "icon":
+                -
+                  "width": "28px"
+                -
+                  "color": "var(--primary-color)"
+              "name":
+                -
+                  "justify-self": "start"
+                -
+                  "font-size": "15px"
+                -
+                  "font-weight": "600"
+              "state":
+                -
+                  "justify-self": "start"
+                -
+                  "font-size": "18px"
+                -
+                  "font-weight": "600"
+              "label":
+                -
+                  "justify-self": "start"
+                -
+                  "font-size": "11px"
+            "tap_action":
+              "action": "more-info"
+];const amount=states['$item.amount_entity
+            "styles":
+              "card":
+                -
+                  "border-radius": "14px"
+                -
+                  "padding": "14px"
+              "grid":
+                -
+                  "grid-template-areas": "\"i n\" \"i s\" \"i l\""
+                -
+                  "grid-template-columns": "46px 1fr"
+              "icon":
+                -
+                  "width": "28px"
+                -
+                  "color": "var(--primary-color)"
+              "name":
+                -
+                  "justify-self": "start"
+                -
+                  "font-size": "15px"
+                -
+                  "font-weight": "600"
+              "state":
+                -
+                  "justify-self": "start"
+                -
+                  "font-size": "18px"
+                -
+                  "font-weight": "600"
+              "label":
+                -
+                  "justify-self": "start"
+                -
+                  "font-size": "11px"
+            "tap_action":
+              "action": "more-info"
+];const p=price?.state && !['unknown','unavailable'].includes(price.state) ? price.state+' '+(price.attributes?.unit_of_measurement||'') : '';const a=amount?.state && !['unknown','unavailable'].includes(amount.state) ? amount.state+' '+(amount.attributes?.unit_of_measurement||'') : '';return [p,a].filter(Boolean).join(' · ') || '—';]]]"
             "styles":
               "card":
                 -
