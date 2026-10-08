@@ -20,8 +20,7 @@
       "suggest": "waste"
       "entity_domain": "sensor"
       "default_icon": "mdi:trash-can-outline"
-      "default":
-        []
+      "default": []
 "card":
   "type": "vertical-stack"
   "cards":
