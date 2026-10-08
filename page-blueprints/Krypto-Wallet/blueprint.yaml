@@ -25,7 +25,7 @@
       "type": "entity-list"
       "suggest": "coin"
       "entity_domain": "sensor"
-      "default_icon": "mdi:currency-btc"
+      "default_icon": "mdi:circle-multiple"
       "default":
         []
 "card":
