@@ -1,4 +1,4 @@
-# Crypto Wallet · v1.0.1
+# Crypto Wallet · v1.0.0
 
 Add or remove any number of cryptocurrencies. Each item has a required value sensor, optional price and holdings sensors, editable friendly name and optional icon (defaults to mdi:currency-btc). The total sensor is optional; current values can be summed from coin value sensors.
 

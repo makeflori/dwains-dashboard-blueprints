@@ -1,4 +1,4 @@
-# Waste Collection · v1.0.1
+# Waste Collection · v1.0.0
 
 Add or remove any number of waste types. Each item has a sensor, an editable display name populated from Home Assistant, and an optional icon (defaults to mdi:trash-can-outline). The configured entity must provide a meaningful collection date in its state or a `date` / `next_date` attribute.
 
