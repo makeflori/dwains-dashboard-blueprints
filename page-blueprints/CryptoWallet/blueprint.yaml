@@ -13,10 +13,11 @@
     - "vertical-stack-in-card"
   "input":
     "portfolio_total":
-      "name": "Total portfolio value"
-      "name_de": "Gesamtwert des Portfolios"
+      "name": "Total portfolio sensor (optional)"
+      "name_de": "Gesamtwert-Sensor (optional)"
       "type": "entity-picker"
       "suggest_entity": "sensor.wallet_value_total"
+      "default": ""
     "coins":
       "name": "Coins"
       "name_de": "Coins"
@@ -45,8 +46,7 @@
     -
       "type": "custom:button-card"
       "entity": "$portfolio_total$"
-      "triggers_update":
-        - "$portfolio_total$"
+      "triggers_update": "$entities.coins$"
       "show_icon": false
       "show_name": false
       "show_state": false
@@ -54,9 +54,10 @@
       "tap_action":
         "action": "more-info"
       "custom_fields":
-        "header": "[[[\n  const shown=Number(entity.state||0);\n  const mobile=window.innerWidth<=520;\n  const eur=n=>Number(n||0).toLocaleString('de-DE',{maximumFractionDigits:0})+' €';\n  return '<div style=\"text-align:left\">'+\n    '<div style=\"font-size:'+(mobile?'16px':'18px')+';font-weight:700;line-height:1.2;margin-bottom:'+(mobile?'4px':'6px')+'\">Gesamtwert</div>'+\n    '<div style=\"font-size:'+(mobile?'32px':'39px')+';font-weight:700;line-height:1.08;letter-spacing:-.5px\">'+eur(shown)+'</div>'+\n  '</div>';\n]]]"
+        "header": "[[[\n  const fromSensor=Number(entity?.state); const sum=$json.coins$.reduce((total,coin)=>total+(Number(states[coin.entity]?.state)||0),0); const shown=Number.isFinite(fromSensor)?fromSensor:sum;\n  const mobile=window.innerWidth<=520;\n  const eur=n=>Number(n||0).toLocaleString('de-DE',{maximumFractionDigits:0})+' €';\n  return '<div style=\"text-align:left\">'+\n    '<div style=\"font-size:'+(mobile?'16px':'18px')+';font-weight:700;line-height:1.2;margin-bottom:'+(mobile?'4px':'6px')+'\">Gesamtwert</div>'+\n    '<div style=\"font-size:'+(mobile?'32px':'39px')+';font-weight:700;line-height:1.08;letter-spacing:-.5px\">'+eur(shown)+'</div>'+\n  '</div>';\n]]]"
         "ranges": "[[[\n  const mobile=window.innerWidth<=520;\n  const hLabel='24 h';\n  const dLabel='7 d';\n\n  const stop=e=>{ e.stopPropagation(); };\n  const activate=(range,e)=>{\n    e.preventDefault();\n    e.stopPropagation();\n\n    if(mobile){\n      const root=this.shadowRoot;\n      const show=(id,on)=>{\n        const el=root?.querySelector('#'+id);\n        if(el) el.style.display=on?'block':'none';\n      };\n      show('graph24',range==='24h');\n      show('footer24',range==='24h');\n      show('graph7',range==='7d');\n      show('footer7',range==='7d');\n\n      const wrap=e.currentTarget.closest('.wallet-range-switch');\n      wrap?.querySelectorAll('button').forEach(btn=>{\n        const active=btn.dataset.range===range;\n        btn.style.background=active?'rgba(33,150,243,.14)':'var(--secondary-background-color)';\n        btn.style.fontWeight=active?'700':'500';\n      });\n      return;\n    }\n\n    const wrap=e.currentTarget.closest('.wallet-range-switch');\n    const input=wrap?.querySelector('#wallet-range-'+range);\n    if(input){\n      input.checked=true;\n      input.dispatchEvent(new Event('change',{bubbles:true}));\n    }\n  };\n\n  return html`\n    <div class=\"wallet-range-switch\"\n      @pointerdown=${stop}\n      @mousedown=${stop}\n      @touchstart=${stop}\n      @click=${stop}\n      style=\"display:flex;justify-content:${mobile?'stretch':'flex-end'};gap:7px;position:relative;z-index:100;pointer-events:auto;touch-action:manipulation;width:100%\">\n      <input id=\"wallet-range-24h\" type=\"radio\" name=\"wallet-range\" checked>\n      <button type=\"button\" data-range=\"24h\"\n        @pointerdown=${e=>mobile?activate('24h',e):stop(e)}\n        @pointerup=${e=>mobile?stop(e):activate('24h',e)}\n        @click=${stop}\n        style=\"${mobile?'flex:1;background:rgba(33,150,243,.14);font-weight:700;':''}\">${hLabel}</button>\n      <input id=\"wallet-range-7d\" type=\"radio\" name=\"wallet-range\">\n      <button type=\"button\" data-range=\"7d\"\n        @pointerdown=${e=>mobile?activate('7d',e):stop(e)}\n        @pointerup=${e=>mobile?stop(e):activate('7d',e)}\n        @click=${stop}\n        style=\"${mobile?'flex:1;':''}\">${dLabel}</button>\n    </div>\n  `;\n]]]"
         "graph24":
+          "requires_input": "portfolio_total"
           "card":
             "type": "history-graph"
             "hours_to_show": 24
@@ -71,6 +72,7 @@
             "grid_options":
               "rows": 4
         "graph7":
+          "requires_input": "portfolio_total"
           "card":
             "type": "history-graph"
             "hours_to_show": 168
