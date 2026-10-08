@@ -1,8 +1,8 @@
 "blueprint":
   "name": "Waste Collection"
   "name_de": "Abfuhrkalender"
-  "description": "Configure any number of waste types with names, entity IDs and optional icons."
-  "description_de": "Beliebig viele Müllarten mit Name, Entität und optionalem Icon anlegen."
+  "description": "Flexible waste collection schedule with an arbitrary number of types."
+  "description_de": "Flexible Abfuhrübersicht mit beliebig vielen Müllarten."
   "type": "page"
   "version": "1.0.0"
   "icon": "mdi:trash-can-outline"
@@ -14,8 +14,8 @@
     "waste_types":
       "name": "Waste types"
       "name_de": "Müllarten"
-      "description": "Add one entry for each waste type. Entity date formats must be supported by your sensor."
-      "description_de": "Für jede Müllart einen Eintrag anlegen. Das Datumsformat muss vom Sensor unterstützt werden."
+      "description": "Pick a calendar sensor, friendly name and optional icon for each waste type. Requires ISO date attributes."
+      "description_de": "Pro Müllart einen Kalendersensor, Namen und optionales Icon wählen. Benötigt ISO-Datumsattribute."
       "type": "entity-list"
       "suggest": "waste"
       "entity_domain": "sensor"
@@ -27,79 +27,101 @@
     -
       "type": "custom:button-card"
       "show_icon": false
-      "show_name": true
-      "name":
-        "i18n":
-          "de": "Nächste Abholungen"
-          "en": "Upcoming collections"
+      "show_name": false
+      "show_state": false
+      "show_label": false
+      "tap_action":
+        "action": "none"
+      "custom_fields":
+        "title": "[[[\n  const mobile = window.innerWidth <= 520;\n  return '<div style=\"font-size:'+(mobile?'22px':'30px')+';font-weight:500;line-height:1.2;text-align:left\">'+('$__language</div>';\n]]]==='de'?'Nächste Abholungen':'Upcoming collections')+'</div>';\n]]]"
       "styles":
         "card":
           -
-            "background": "transparent"
+            "padding": "[[[ return window.innerWidth <= 520 ? '6px 4px 4px 4px' : '18px 4px 18px 4px'; ]]]"
           -
             "border": "0"
           -
-            "box_shadow": "none"
+            "border-radius": "0"
           -
-            "padding": "8px 4px"
-        "name":
+            "box-shadow": "none"
           -
-            "justify-self": "start"
+            "background": "transparent"
+        "grid":
           -
-            "font-size": "24px"
+            "grid-template-areas": "\"title\""
           -
-            "font-weight": "500"
+            "grid-template-columns": "1fr"
+        "custom_fields":
+          "title":
+            -
+              "width": "100%"
     -
       "type": "custom:layout-card"
       "layout_type": "custom:grid-layout"
       "layout":
-        "grid-template-columns": "repeat(4,minmax(0,1fr))"
-        "grid-gap": "12px"
+        "grid-template-columns": "repeat(auto-fit,minmax(210px,1fr))"
+        "grid-gap": "2px"
+        "align-items": "start"
         "mediaquery":
-          "(max-width: 850px)":
-            "grid-template-columns": "repeat(2,minmax(0,1fr))"
+          "(min-width: 521px)":
+            "grid-template-columns": "repeat(auto-fit,minmax(210px,1fr))"
+            "grid-gap": "16px"
+            "gap": "16px"
+          "(max-width: 900px)":
+            "grid-template-columns": "1fr 1fr"
+          "(max-width: 520px)":
+            "grid-template-columns": "1fr 1fr"
             "grid-gap": "8px"
+            "gap": "8px"
+            "margin": "0"
+            "padding": "0"
+        "gap": "2px"
       "cards":
         -
           "repeat": "waste_types"
           "template":
             "type": "custom:button-card"
-            "entity": "$item.entity$"
-            "name": "$item.name$"
-            "icon": "$item.icon$"
-            "show_icon": true
-            "show_name": true
-            "show_state": true
-            "show_label": true
-            "label": "[[[ const s=states[entity.entity_id];if(!s)return '—';const d=s.attributes?.next_date||s.attributes?.date||s.state; return String(d??'—'); ]]]"
+            "variables":
+              "slot": "$item.index$"
+            "entity": "[[[ const bins=$json.waste_types$; const now=new Date(); const today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0'); const re=/^\\d{4}-\\d{2}-\\d{2}$/; const items=bins.map(b=>{const s=states[b.entity]; const dates=[]; if(s) for(const [k,v] of Object.entries(s.attributes||{})){if(re.test(k)&&k>=today)dates.push(k);if(typeof v==='string'&&re.test(v)&&v>=today)dates.push(v);} dates.sort(); return {...b,date:dates[0]||'9999-12-31'};}).sort((a,b)=>a.date.localeCompare(b.date)); return items[variables.slot].entity; ]]]"
+            "show_icon": false
+            "show_name": false
+            "show_state": false
+            "show_label": false
+            "tap_action":
+              "action": "more-info"
+            "custom_fields":
+              "content": "[[[\n  const rows=$json.waste_types$; const chosen=rows.find(b=>b.entity===entity.entity_id)||{}; const itemIcon=chosen.icon||'mdi:trash-can-outline'; const itemName=chosen.name||entity.attributes?.friendly_name||entity.entity_id;\n  const now=new Date();\n  const today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');\n  const re=/^\\d{4}-\\d{2}-\\d{2}$/; const dates=[];\n  for(const [k,v] of Object.entries(entity.attributes||{})){\n    if(re.test(k)&&k>=today) dates.push(k);\n    if(typeof v==='string'&&re.test(v)&&v>=today) dates.push(v);\n  }\n  dates.sort();\n  const d=dates[0];\n  const de='$__language\n  if(d){\n    days=Math.round((new Date(d+'T12:00:00')-new Date(today+'T12:00:00'))/86400000);\n    rel=days===0?(de?'Heute':'Today'):(days===1?(de?'Morgen':'Tomorrow'):(de?'in '+days+' Tagen':'in '+days+' days'));\n    dt=new Date(d+'T12:00:00').toLocaleDateString(de?'de-DE':'en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});\n  }\n  const urgent=days===0||days===1;\n  const mobile=window.innerWidth<=520;\n  const circle=urgent?'rgba(255,193,7,.11)':'rgba(33,150,243,.055)';\n  const pill=urgent?'rgba(255,193,7,.18)':'rgba(33,150,243,.09)';\n  const pillColor=urgent?'#c46a00':'var(--primary-color)';\n  const border=urgent?'rgba(255,193,7,.42)':'var(--divider-color)';\n  const bg=urgent?'linear-gradient(180deg, rgba(255,193,7,.075), var(--card-background-color))':'var(--card-background-color)';\n  const circleSize=mobile?108:190;\n  const imgW=mobile?76:128;\n  const imgH=mobile?96:158;\n  const pad=mobile?'8px 6px 8px':'22px 20px 26px';\n  const mbCircle=mobile?'5px':'15px';\n  const nameSize=mobile?'17px':'21px';\n  const nameMb=mobile?'5px':'15px';\n  const pillPad=mobile?'6px 10px':'11px 24px';\n  const pillSize=mobile?'16px':'23px';\n  const iconSize=mobile?'19px':'25px';\n  const gap=mobile?'5px':'10px';\n  const dateSize=mobile?'12.5px':'17px';\n  const dateMt=mobile?'6px':'15px';\n  const radius=mobile?'14px':'16px';\n\n  return '<div style=\"height:100%;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box;padding:'+pad+';border:1px solid '+border+';border-radius:'+radius+';background:'+bg+';overflow:hidden\">'+\n    '<div style=\"width:'+circleSize+'px;height:'+circleSize+'px;border-radius:50%;background:'+circle+';display:flex;align-items:center;justify-content:center;margin-bottom:'+mbCircle+'\"><ha-icon icon=\\\"'+itemIcon+'\\\" style=\\\"--mdc-icon-size:'+(mobile?54:88)+'px;color:var(--primary-color)\\\"></ha-icon></div>'+\n    '<div style=\"font-size:'+nameSize+';font-weight:700;color:var(--secondary-text-color);line-height:1.1;margin-bottom:'+nameMb+';text-align:center\">'+(itemName||'')+'</div>'+\n    '<div style=\"display:flex;align-items:center;justify-content:center;gap:'+gap+';background:'+pill+';color:'+pillColor+';border-radius:999px;padding:'+pillPad+';font-size:'+pillSize+';font-weight:700;line-height:1;white-space:nowrap\"><ha-icon icon=\"mdi:calendar-month\" style=\"--mdc-icon-size:'+iconSize+'\"></ha-icon><span>'+rel+'</span></div>'+\n    '<div style=\"font-size:'+dateSize+';color:var(--secondary-text-color);margin-top:'+dateMt+';line-height:1.15;text-align:center;white-space:nowrap\">'+dt+'</div>'+\n  '</div>';\n]]]==='de';\n  let rel=de?'Kein Termin':'No date',dt='',days=999;\n  if(d){\n    days=Math.round((new Date(d+'T12:00:00')-new Date(today+'T12:00:00'))/86400000);\n    rel=days===0?'Heute':(days===1?'Morgen':'in '+days+' Tagen');\n    dt=new Date(d+'T12:00:00').toLocaleDateString('de-DE',{weekday:'short',day:'numeric',month:'short',year:'numeric'});\n  }\n  const urgent=days===0||days===1;\n  const mobile=window.innerWidth<=520;\n  const circle=urgent?'rgba(255,193,7,.11)':'rgba(33,150,243,.055)';\n  const pill=urgent?'rgba(255,193,7,.18)':'rgba(33,150,243,.09)';\n  const pillColor=urgent?'#c46a00':'var(--primary-color)';\n  const border=urgent?'rgba(255,193,7,.42)':'var(--divider-color)';\n  const bg=urgent?'linear-gradient(180deg, rgba(255,193,7,.075), var(--card-background-color))':'var(--card-background-color)';\n  const circleSize=mobile?108:190;\n  const imgW=mobile?76:128;\n  const imgH=mobile?96:158;\n  const pad=mobile?'8px 6px 8px':'22px 20px 26px';\n  const mbCircle=mobile?'5px':'15px';\n  const nameSize=mobile?'17px':'21px';\n  const nameMb=mobile?'5px':'15px';\n  const pillPad=mobile?'6px 10px':'11px 24px';\n  const pillSize=mobile?'16px':'23px';\n  const iconSize=mobile?'19px':'25px';\n  const gap=mobile?'5px':'10px';\n  const dateSize=mobile?'12.5px':'17px';\n  const dateMt=mobile?'6px':'15px';\n  const radius=mobile?'14px':'16px';\n\n  return '<div style=\"height:100%;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box;padding:'+pad+';border:1px solid '+border+';border-radius:'+radius+';background:'+bg+';overflow:hidden\">'+\n    '<div style=\"width:'+circleSize+'px;height:'+circleSize+'px;border-radius:50%;background:'+circle+';display:flex;align-items:center;justify-content:center;margin-bottom:'+mbCircle+'\"><ha-icon icon=\\\"'+itemIcon+'\\\" style=\\\"--mdc-icon-size:'+(mobile?54:88)+'px;color:var(--primary-color)\\\"></ha-icon></div>'+\n    '<div style=\"font-size:'+nameSize+';font-weight:700;color:var(--secondary-text-color);line-height:1.1;margin-bottom:'+nameMb+';text-align:center\">'+(itemName||'')+'</div>'+\n    '<div style=\"display:flex;align-items:center;justify-content:center;gap:'+gap+';background:'+pill+';color:'+pillColor+';border-radius:999px;padding:'+pillPad+';font-size:'+pillSize+';font-weight:700;line-height:1;white-space:nowrap\"><ha-icon icon=\"mdi:calendar-month\" style=\"--mdc-icon-size:'+iconSize+'\"></ha-icon><span>'+rel+'</span></div>'+\n    '<div style=\"font-size:'+dateSize+';color:var(--secondary-text-color);margin-top:'+dateMt+';line-height:1.15;text-align:center;white-space:nowrap\">'+dt+'</div>'+\n  '</div>';\n]]]"
             "styles":
               "card":
                 -
-                  "border-radius": "14px"
+                  "height": "[[[ return window.innerWidth <= 520 ? '232px' : '430px'; ]]]"
                 -
-                  "padding": "12px"
+                  "padding": "0"
                 -
-                  "min-height": "110px"
+                  "border": "0"
+                -
+                  "border-radius": "0"
+                -
+                  "background": "transparent"
+                -
+                  "box-shadow": "none"
+                -
+                  "overflow": "visible"
               "grid":
                 -
-                  "grid-template-areas": "\"i\" \"n\" \"s\" \"l\""
+                  "grid-template-areas": "\"content\""
                 -
                   "grid-template-columns": "1fr"
-              "icon":
                 -
-                  "width": "26px"
+                  "grid-template-rows": "1fr"
                 -
-                  "color": "var(--primary-color)"
-              "name":
-                -
-                  "font-size": "14px"
-                -
-                  "font-weight": "600"
-              "state":
-                -
-                  "font-size": "13px"
-              "label":
-                -
-                  "font-size": "12px"
-            "tap_action":
-              "action": "more-info"
+                  "height": "100%"
+              "custom_fields":
+                "content":
+                  -
+                    "height": "100%"
+                  -
+                    "width": "100%"
+      "card_mod":
+        "style": "\n    :host {\n      margin: 0 !important;\n      padding: 0 !important;\n      --grid-layout-gap: 2px;\n    }\n    #root {\n      margin: 0 !important;\n      padding: 0 !important;\n      gap: 2px !important;\n      grid-gap: 2px !important;\n    }\n    @media (min-width: 521px) {\n      :host { --grid-layout-gap: 16px; }\n      #root {\n        gap: 16px !important;\n        grid-gap: 16px !important;\n      }\n    }\n  "
