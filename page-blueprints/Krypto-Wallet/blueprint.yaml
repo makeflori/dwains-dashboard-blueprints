@@ -1,631 +1,136 @@
 "blueprint":
-  "icon": "mdi:wallet-outline"
   "name": "Crypto Wallet"
-  "description": "Configurable Dwains Dashboard Next page preserving the existing layout."
-  "version": "1.0.0"
+  "name_de": "Krypto-Wallet"
+  "description": "Configure any number of cryptocurrencies. Select a sensor for the displayed value of each coin."
+  "description_de": "Beliebig viele Kryptowährungen mit einem Sensor für den angezeigten Coin-Wert konfigurieren."
   "type": "page"
+  "version": "1.0.0"
+  "icon": "mdi:wallet-outline"
   "author": "makeflori"
   "custom_cards":
     - "button-card"
     - "layout-card"
-    - "vertical-stack-in-card"
   "input":
-    "sensor_wallet_value_total":
-      "name": "Wallet Value Total"
-      "description": "Select the entity used for sensor.wallet_value_total."
+    "portfolio_total":
+      "name": "Portfolio total"
+      "name_de": "Gesamtwert"
+      "description": "Entity containing the overall portfolio value."
+      "description_de": "Entität mit dem gesamten Portfoliowert."
       "type": "entity-picker"
-    "sensor_wallet_value_bitcoin":
-      "name": "Wallet Value Bitcoin"
-      "description": "Select the entity used for sensor.wallet_value_bitcoin."
-      "type": "entity-picker"
-    "sensor_wallet_value_ethereum":
-      "name": "Wallet Value Ethereum"
-      "description": "Select the entity used for sensor.wallet_value_ethereum."
-      "type": "entity-picker"
-    "sensor_wallet_value_bitcoin_cash":
-      "name": "Wallet Value Bitcoin Cash"
-      "description": "Select the entity used for sensor.wallet_value_bitcoin_cash."
-      "type": "entity-picker"
-    "sensor_wallet_value_ethereum_classic":
-      "name": "Wallet Value Ethereum Classic"
-      "description": "Select the entity used for sensor.wallet_value_ethereum_classic."
-      "type": "entity-picker"
-    "sensor_wallet_value_cardano":
-      "name": "Wallet Value Cardano"
-      "description": "Select the entity used for sensor.wallet_value_cardano."
-      "type": "entity-picker"
-    "sensor_wallet_value_bitcoin_cash_sv":
-      "name": "Wallet Value Bitcoin Cash Sv"
-      "description": "Select the entity used for sensor.wallet_value_bitcoin_cash_sv."
-      "type": "entity-picker"
-    "sensor_wallet_value_bitcoin_gold":
-      "name": "Wallet Value Bitcoin Gold"
-      "description": "Select the entity used for sensor.wallet_value_bitcoin_gold."
-      "type": "entity-picker"
-    "sensor_cryptoinfo_bitcoin_eur":
-      "name": "Cryptoinfo Bitcoin Eur"
-      "description": "Select the entity used for sensor.cryptoinfo_bitcoin_eur."
-      "type": "entity-picker"
-    "sensor_cryptoinfo_ethereum_eur":
-      "name": "Cryptoinfo Ethereum Eur"
-      "description": "Select the entity used for sensor.cryptoinfo_ethereum_eur."
-      "type": "entity-picker"
-    "sensor_cryptoinfo_bitcoin_cash_eur":
-      "name": "Cryptoinfo Bitcoin Cash Eur"
-      "description": "Select the entity used for sensor.cryptoinfo_bitcoin_cash_eur."
-      "type": "entity-picker"
-    "sensor_cryptoinfo_ethereum_classic_eur":
-      "name": "Cryptoinfo Ethereum Classic Eur"
-      "description": "Select the entity used for sensor.cryptoinfo_ethereum_classic_eur."
-      "type": "entity-picker"
-    "sensor_cryptoinfo_cardano_eur":
-      "name": "Cryptoinfo Cardano Eur"
-      "description": "Select the entity used for sensor.cryptoinfo_cardano_eur."
-      "type": "entity-picker"
-    "sensor_cryptoinfo_bitcoin_cash_sv_eur":
-      "name": "Cryptoinfo Bitcoin Cash Sv Eur"
-      "description": "Select the entity used for sensor.cryptoinfo_bitcoin_cash_sv_eur."
-      "type": "entity-picker"
-    "sensor_cryptoinfo_bitcoin_gold_eur":
-      "name": "Cryptoinfo Bitcoin Gold Eur"
-      "description": "Select the entity used for sensor.cryptoinfo_bitcoin_gold_eur."
-      "type": "entity-picker"
-    "sensor_wallet_volume_bitcoin":
-      "name": "Wallet Volume Bitcoin"
-      "description": "Select the entity used for sensor.wallet_volume_bitcoin."
-      "type": "entity-picker"
-    "sensor_wallet_volume_ethereum":
-      "name": "Wallet Volume Ethereum"
-      "description": "Select the entity used for sensor.wallet_volume_ethereum."
-      "type": "entity-picker"
-    "sensor_wallet_volume_bitcoin_cash":
-      "name": "Wallet Volume Bitcoin Cash"
-      "description": "Select the entity used for sensor.wallet_volume_bitcoin_cash."
-      "type": "entity-picker"
-    "sensor_wallet_volume_ethereum_classic":
-      "name": "Wallet Volume Ethereum Classic"
-      "description": "Select the entity used for sensor.wallet_volume_ethereum_classic."
-      "type": "entity-picker"
-    "sensor_wallet_volume_cardano":
-      "name": "Wallet Volume Cardano"
-      "description": "Select the entity used for sensor.wallet_volume_cardano."
-      "type": "entity-picker"
-    "sensor_wallet_volume_bitcoin_cash_sv":
-      "name": "Wallet Volume Bitcoin Cash Sv"
-      "description": "Select the entity used for sensor.wallet_volume_bitcoin_cash_sv."
-      "type": "entity-picker"
-    "sensor_wallet_volume_bitcoin_gold":
-      "name": "Wallet Volume Bitcoin Gold"
-      "description": "Select the entity used for sensor.wallet_volume_bitcoin_gold."
-      "type": "entity-picker"
+    "coins":
+      "name": "Coins"
+      "name_de": "Coins"
+      "description": "Each coin uses one selected value sensor; optional icon and editable label."
+      "description_de": "Jeder Coin verwendet einen auswählbaren Wertsensor; Name und Icon sind bearbeitbar."
+      "type": "entity-list"
+      "suggest": "coin"
+      "entity_domain": "sensor"
+      "default_icon": "mdi:currency-btc"
+      "default":
+        []
 "card":
-  "type": "custom:layout-card"
-  "layout_type": "custom:grid-layout"
-  "layout":
-    "grid-template-columns": "1.25fr 1fr"
-    "grid-template-areas": "\"portfolio assets\""
-    "grid-gap": "12px"
-    "align-items": "start"
-    "mediaquery":
-      "(max-width: 900px)":
-        "grid-template-columns": "1fr"
-        "grid-template-areas": "\"portfolio\" \"assets\""
-      "(max-width: 520px)":
-        "grid-template-columns": "1fr"
-        "grid-template-areas": "\"portfolio\" \"assets\""
-        "grid-gap": "10px"
+  "type": "vertical-stack"
   "cards":
     -
       "type": "custom:button-card"
-      "entity": "$sensor_wallet_value_total$"
-      "triggers_update":
-        - "$sensor_wallet_value_total$"
-        - "$sensor_wallet_value_bitcoin$"
-        - "$sensor_wallet_value_ethereum$"
-        - "$sensor_wallet_value_bitcoin_cash$"
-        - "$sensor_wallet_value_ethereum_classic$"
-        - "$sensor_wallet_value_cardano$"
-        - "$sensor_wallet_value_bitcoin_cash_sv$"
-        - "$sensor_wallet_value_bitcoin_gold$"
-        - "$sensor_cryptoinfo_bitcoin_eur$"
-        - "$sensor_cryptoinfo_ethereum_eur$"
-        - "$sensor_cryptoinfo_bitcoin_cash_eur$"
-        - "$sensor_cryptoinfo_ethereum_classic_eur$"
-        - "$sensor_cryptoinfo_cardano_eur$"
-        - "$sensor_cryptoinfo_bitcoin_cash_sv_eur$"
-        - "$sensor_cryptoinfo_bitcoin_gold_eur$"
+      "name":
+        "i18n":
+          "de": "Krypto-Wallet"
+          "en": "Crypto Wallet"
       "show_icon": false
-      "show_name": false
-      "show_state": false
-      "show_label": false
-      "tap_action":
-        "action": "more-info"
-      "custom_fields":
-        "header": "[[[\n  const shown=Number(entity.state||0);\n  const mobile=window.innerWidth<=520;\n  const eur=n=>Number(n||0).toLocaleString('de-DE',{maximumFractionDigits:0})+' €';\n  return '<div style=\"text-align:left\">'+\n    '<div style=\"font-size:'+(mobile?'16px':'18px')+';font-weight:700;line-height:1.2;margin-bottom:'+(mobile?'4px':'6px')+'\">Gesamtwert</div>'+\n    '<div style=\"font-size:'+(mobile?'32px':'39px')+';font-weight:700;line-height:1.08;letter-spacing:-.5px\">'+eur(shown)+'</div>'+\n  '</div>';\n]]]"
-        "ranges": "[[[\n  const mobile=window.innerWidth<=520;\n  const hLabel='24 h';\n  const dLabel='7 d';\n\n  const stop=e=>{ e.stopPropagation(); };\n  const activate=(range,e)=>{\n    e.preventDefault();\n    e.stopPropagation();\n\n    if(mobile){\n      const root=this.shadowRoot;\n      const show=(id,on)=>{\n        const el=root?.querySelector('#'+id);\n        if(el) el.style.display=on?'block':'none';\n      };\n      show('graph24',range==='24h');\n      show('footer24',range==='24h');\n      show('graph7',range==='7d');\n      show('footer7',range==='7d');\n\n      const wrap=e.currentTarget.closest('.wallet-range-switch');\n      wrap?.querySelectorAll('button').forEach(btn=>{\n        const active=btn.dataset.range===range;\n        btn.style.background=active?'rgba(33,150,243,.14)':'var(--secondary-background-color)';\n        btn.style.fontWeight=active?'700':'500';\n      });\n      return;\n    }\n\n    const wrap=e.currentTarget.closest('.wallet-range-switch');\n    const input=wrap?.querySelector('#wallet-range-'+range);\n    if(input){\n      input.checked=true;\n      input.dispatchEvent(new Event('change',{bubbles:true}));\n    }\n  };\n\n  return html`\n    <div class=\"wallet-range-switch\"\n      @pointerdown=${stop}\n      @mousedown=${stop}\n      @touchstart=${stop}\n      @click=${stop}\n      style=\"display:flex;justify-content:${mobile?'stretch':'flex-end'};gap:7px;position:relative;z-index:100;pointer-events:auto;touch-action:manipulation;width:100%\">\n      <input id=\"wallet-range-24h\" type=\"radio\" name=\"wallet-range\" checked>\n      <button type=\"button\" data-range=\"24h\"\n        @pointerdown=${e=>mobile?activate('24h',e):stop(e)}\n        @pointerup=${e=>mobile?stop(e):activate('24h',e)}\n        @click=${stop}\n        style=\"${mobile?'flex:1;background:rgba(33,150,243,.14);font-weight:700;':''}\">${hLabel}</button>\n      <input id=\"wallet-range-7d\" type=\"radio\" name=\"wallet-range\">\n      <button type=\"button\" data-range=\"7d\"\n        @pointerdown=${e=>mobile?activate('7d',e):stop(e)}\n        @pointerup=${e=>mobile?stop(e):activate('7d',e)}\n        @click=${stop}\n        style=\"${mobile?'flex:1;':''}\">${dLabel}</button>\n    </div>\n  `;\n]]]"
-        "graph24":
-          "card":
-            "type": "history-graph"
-            "hours_to_show": 24
-            "show_names": false
-            "entities":
-              -
-                "entity": "$sensor_wallet_value_total$"
-                "name": "Gesamtwert"
-                "color": "#ff9800"
-            "card_mod":
-              "style": "\n    ha-card {\n      height:210px !important;\n      min-height:210px !important;\n      max-height:210px !important;\n      border:0;\n      box-shadow:none;\n      background:transparent;\n      padding:0;\n      overflow:hidden !important;\n    }\n    @media (max-width:520px){\n      ha-card {\n        height:164px !important;\n        min-height:164px !important;\n        max-height:164px !important;\n      }\n    }\n  "
-            "grid_options":
-              "rows": 4
-        "graph7":
-          "card":
-            "type": "history-graph"
-            "hours_to_show": 168
-            "show_names": false
-            "entities":
-              -
-                "entity": "$sensor_wallet_value_total$"
-                "name": "Gesamtwert"
-                "color": "#ff9800"
-            "card_mod":
-              "style": "\n    ha-card {\n      height:210px !important;\n      min-height:210px !important;\n      max-height:210px !important;\n      border:0;\n      box-shadow:none;\n      background:transparent;\n      padding:0;\n      overflow:hidden !important;\n    }\n    @media (max-width:520px){\n      ha-card {\n        height:164px !important;\n        min-height:164px !important;\n        max-height:164px !important;\n      }\n    }\n  "
-            "grid_options":
-              "rows": 4
-        "footer24": "[[[\n    const coins=[\n      ['Bitcoin','$sensor_wallet_value_bitcoin$','$sensor_cryptoinfo_bitcoin_eur$'],\n      ['Ethereum','$sensor_wallet_value_ethereum$','$sensor_cryptoinfo_ethereum_eur$'],\n      ['Bitcoin Cash','$sensor_wallet_value_bitcoin_cash$','$sensor_cryptoinfo_bitcoin_cash_eur$'],\n      ['Ethereum Classic','$sensor_wallet_value_ethereum_classic$','$sensor_cryptoinfo_ethereum_classic_eur$'],\n      ['Cardano','$sensor_wallet_value_cardano$','$sensor_cryptoinfo_cardano_eur$'],\n      ['Bitcoin SV','$sensor_wallet_value_bitcoin_cash_sv$','$sensor_cryptoinfo_bitcoin_cash_sv_eur$'],\n      ['Bitcoin Gold','$sensor_wallet_value_bitcoin_gold$','$sensor_cryptoinfo_bitcoin_gold_eur$']\n    ];\n    let current=0,previous=0,maxVal=-1,maxName='–';\n    coins.forEach(([name,v,p])=>{\n      const value=Number(states[v]?.state||0);\n      const ch=Number(states[p]?.attributes?.['24h_change']);\n      current+=value;\n      previous+=Number.isFinite(ch)&&ch>-99?value/(1+ch/100):value;\n      if(value>maxVal){maxVal=value;maxName=name;}\n    });\n    const diff=current-previous,pct=previous?diff/previous*100:0,pos=diff>=0,sign=pos?'+':'';\n    const share=current>0?maxVal/current*100:0;\n    const mobile=window.innerWidth<=520;\n    const eur=n=>Number(n||0).toLocaleString('de-DE',{maximumFractionDigits:0})+' €';\n    const icon=(mdi,bg,fg,size=50)=>'<div style=\"width:'+size+'px;height:'+size+'px;min-width:'+size+'px;max-width:'+size+'px;min-height:'+size+'px;max-height:'+size+'px;aspect-ratio:1/1;flex:0 0 '+size+'px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:'+bg+';color:'+fg+';box-sizing:border-box\"><ha-icon icon=\"'+mdi+'\" style=\"--mdc-icon-size:'+(mobile?'19':'25')+'px;color:'+fg+'\"></ha-icon></div>';\n    if(mobile){\n      const stat=(ic,title,val,sub,color,border)=>'<div style=\"min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding:0 5px;'+(border?'border-right:1px solid var(--divider-color);':'')+'\">'+\n        ic+\n        '<div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:6px;line-height:1.1;white-space:nowrap\">'+title+'</div>'+\n        '<div style=\"font-size:13px;font-weight:700;margin-top:3px;line-height:1.1;color:'+(color||'var(--primary-text-color)')+';white-space:nowrap\">'+val+'</div>'+\n        '<div style=\"font-size:9px;color:'+(color||'var(--secondary-text-color)')+';margin-top:2px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%\">'+sub+'</div>'+\n      '</div>';\n      return '<div style=\"display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;align-items:start\">'+\n        stat(icon(pos?'mdi:trending-up':'mdi:trending-down',pos?'rgba(34,197,94,.10)':'rgba(239,68,68,.10)',pos?'#16a34a':'#dc2626',38),'24 h',sign+eur(diff),sign+pct.toLocaleString('de-DE',{maximumFractionDigits:1})+' %',pos?'#16a34a':'#dc2626',true)+\n        stat(icon('mdi:chart-pie','rgba(59,130,246,.10)','#3b82f6',38),'Assets','7','Coins','',true)+\n        stat(icon('mdi:percent-outline','rgba(139,92,246,.10)','#7c3aed',38),'Größte Position',share.toLocaleString('de-DE',{maximumFractionDigits:1})+' %',maxName,'',false)+\n      '</div>';\n    }\n    return '<div style=\"display:grid;grid-template-columns:1fr 1fr 1fr;width:100%;align-items:center\">'+\n      '<div style=\"display:flex;align-items:center;gap:13px;padding:0 18px 0 2px;border-right:1px solid var(--divider-color)\">'+icon(pos?'mdi:trending-up':'mdi:trending-down',pos?'rgba(34,197,94,.10)':'rgba(239,68,68,.10)',pos?'#16a34a':'#dc2626')+'<div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-bottom:3px\">24 h Veränderung</div><div style=\"font-size:18px;font-weight:700;color:'+(pos?'#16a34a':'#dc2626')+'\">'+sign+eur(diff)+' <span style=\"font-size:14px\">('+sign+pct.toLocaleString('de-DE',{maximumFractionDigits:1})+' %)</span></div></div></div>'+\n      '<div style=\"display:flex;align-items:center;gap:13px;padding:0 20px;border-right:1px solid var(--divider-color)\">'+icon('mdi:chart-pie','rgba(59,130,246,.10)','#3b82f6')+'<div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-bottom:3px\">Assets</div><div style=\"font-size:18px;font-weight:700\">7</div><div style=\"font-size:12px;color:var(--secondary-text-color)\">verschiedene Coins</div></div></div>'+\n      '<div style=\"display:flex;align-items:center;gap:13px;padding:0 2px 0 20px\">'+icon('mdi:percent-outline','rgba(139,92,246,.10)','#7c3aed')+'<div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-bottom:3px\">Größte Position</div><div style=\"font-size:18px;font-weight:700\">'+share.toLocaleString('de-DE',{maximumFractionDigits:1})+' %</div><div style=\"font-size:12px;color:var(--secondary-text-color)\">'+maxName+'</div></div></div>'+\n    '</div>';\n  ]]]"
-        "footer7": "[[[\n    const coins=[\n      ['Bitcoin','$sensor_wallet_value_bitcoin$','$sensor_cryptoinfo_bitcoin_eur$'],\n      ['Ethereum','$sensor_wallet_value_ethereum$','$sensor_cryptoinfo_ethereum_eur$'],\n      ['Bitcoin Cash','$sensor_wallet_value_bitcoin_cash$','$sensor_cryptoinfo_bitcoin_cash_eur$'],\n      ['Ethereum Classic','$sensor_wallet_value_ethereum_classic$','$sensor_cryptoinfo_ethereum_classic_eur$'],\n      ['Cardano','$sensor_wallet_value_cardano$','$sensor_cryptoinfo_cardano_eur$'],\n      ['Bitcoin SV','$sensor_wallet_value_bitcoin_cash_sv$','$sensor_cryptoinfo_bitcoin_cash_sv_eur$'],\n      ['Bitcoin Gold','$sensor_wallet_value_bitcoin_gold$','$sensor_cryptoinfo_bitcoin_gold_eur$']\n    ];\n    let current=0,previous=0,maxVal=-1,maxName='–';\n    coins.forEach(([name,v,p])=>{\n      const value=Number(states[v]?.state||0);\n      const ch=Number(states[p]?.attributes?.['7d_change']);\n      current+=value;\n      previous+=Number.isFinite(ch)&&ch>-99?value/(1+ch/100):value;\n      if(value>maxVal){maxVal=value;maxName=name;}\n    });\n    const diff=current-previous,pct=previous?diff/previous*100:0,pos=diff>=0,sign=pos?'+':'';\n    const share=current>0?maxVal/current*100:0;\n    const mobile=window.innerWidth<=520;\n    const eur=n=>Number(n||0).toLocaleString('de-DE',{maximumFractionDigits:0})+' €';\n    const icon=(mdi,bg,fg,size=50)=>'<div style=\"width:'+size+'px;height:'+size+'px;min-width:'+size+'px;max-width:'+size+'px;min-height:'+size+'px;max-height:'+size+'px;aspect-ratio:1/1;flex:0 0 '+size+'px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:'+bg+';color:'+fg+';box-sizing:border-box\"><ha-icon icon=\"'+mdi+'\" style=\"--mdc-icon-size:'+(mobile?'19':'25')+'px;color:'+fg+'\"></ha-icon></div>';\n    if(mobile){\n      const stat=(ic,title,val,sub,color,border)=>'<div style=\"min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding:0 5px;'+(border?'border-right:1px solid var(--divider-color);':'')+'\">'+\n        ic+\n        '<div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:6px;line-height:1.1;white-space:nowrap\">'+title+'</div>'+\n        '<div style=\"font-size:13px;font-weight:700;margin-top:3px;line-height:1.1;color:'+(color||'var(--primary-text-color)')+';white-space:nowrap\">'+val+'</div>'+\n        '<div style=\"font-size:9px;color:'+(color||'var(--secondary-text-color)')+';margin-top:2px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%\">'+sub+'</div>'+\n      '</div>';\n      return '<div style=\"display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;align-items:start\">'+\n        stat(icon(pos?'mdi:trending-up':'mdi:trending-down',pos?'rgba(34,197,94,.10)':'rgba(239,68,68,.10)',pos?'#16a34a':'#dc2626',38),'7 d',sign+eur(diff),sign+pct.toLocaleString('de-DE',{maximumFractionDigits:1})+' %',pos?'#16a34a':'#dc2626',true)+\n        stat(icon('mdi:chart-pie','rgba(59,130,246,.10)','#3b82f6',38),'Assets','7','Coins','',true)+\n        stat(icon('mdi:percent-outline','rgba(139,92,246,.10)','#7c3aed',38),'Größte Position',share.toLocaleString('de-DE',{maximumFractionDigits:1})+' %',maxName,'',false)+\n      '</div>';\n    }\n    return '<div style=\"display:grid;grid-template-columns:1fr 1fr 1fr;width:100%;align-items:center\">'+\n      '<div style=\"display:flex;align-items:center;gap:13px;padding:0 18px 0 2px;border-right:1px solid var(--divider-color)\">'+icon(pos?'mdi:trending-up':'mdi:trending-down',pos?'rgba(34,197,94,.10)':'rgba(239,68,68,.10)',pos?'#16a34a':'#dc2626')+'<div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-bottom:3px\">7 d Veränderung</div><div style=\"font-size:18px;font-weight:700;color:'+(pos?'#16a34a':'#dc2626')+'\">'+sign+eur(diff)+' <span style=\"font-size:14px\">('+sign+pct.toLocaleString('de-DE',{maximumFractionDigits:1})+' %)</span></div></div></div>'+\n      '<div style=\"display:flex;align-items:center;gap:13px;padding:0 20px;border-right:1px solid var(--divider-color)\">'+icon('mdi:chart-pie','rgba(59,130,246,.10)','#3b82f6')+'<div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-bottom:3px\">Assets</div><div style=\"font-size:18px;font-weight:700\">7</div><div style=\"font-size:12px;color:var(--secondary-text-color)\">verschiedene Coins</div></div></div>'+\n      '<div style=\"display:flex;align-items:center;gap:13px;padding:0 2px 0 20px\">'+icon('mdi:percent-outline','rgba(139,92,246,.10)','#7c3aed')+'<div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-bottom:3px\">Größte Position</div><div style=\"font-size:18px;font-weight:700\">'+share.toLocaleString('de-DE',{maximumFractionDigits:1})+' %</div><div style=\"font-size:12px;color:var(--secondary-text-color)\">'+maxName+'</div></div></div>'+\n    '</div>';\n  ]]]"
       "styles":
         "card":
           -
-            "padding": "[[[ return window.innerWidth <= 520 ? '14px 12px 12px' : '18px 18px 14px'; ]]]"
-          -
-            "border": "1px solid var(--divider-color)"
-          -
-            "border-radius": "[[[ return window.innerWidth <= 520 ? '14px' : '16px'; ]]]"
+            "background": "transparent"
           -
             "box-shadow": "none"
           -
-            "overflow": "hidden"
+            "border": "0"
+        "name":
           -
-            "cursor": "default"
-        "grid":
+            "font-size": "25px"
           -
-            "grid-template-areas": "[[[ return window.innerWidth <= 520 ? '\"header header\" \"ranges ranges\" \"graph24 graph24\" \"graph7 graph7\" \"footer24 footer24\" \"footer7 footer7\"' : '\"header ranges\" \"graph24 graph24\" \"graph7 graph7\" \"footer24 footer24\" \"footer7 footer7\"'; ]]]"
-          -
-            "grid-template-columns": "[[[ return window.innerWidth <= 520 ? '1fr 1fr' : 'minmax(0,1fr) auto'; ]]]"
-          -
-            "grid-template-rows": "auto auto auto auto auto auto"
-          -
-            "column-gap": "16px"
-          -
-            "row-gap": "0"
-          -
-            "align-items": "start"
-        "custom_fields":
-          "header":
-            -
-              "grid-area": "header"
-            -
-              "align-self": "start"
-          "ranges":
-            -
-              "grid-area": "ranges"
-            -
-              "align-self": "start"
-            -
-              "padding-top": "2px"
-            -
-              "position": "relative"
-            -
-              "z-index": "100"
-            -
-              "pointer-events": "auto"
-            -
-              "overflow": "visible"
-          "graph24":
-            -
-              "grid-area": "graph24"
-            -
-              "width": "100%"
-            -
-              "min-width": "0"
-            -
-              "margin-top": "10px"
-            -
-              "cursor": "default"
-            -
-              "z-index": "1"
-            -
-              "overflow": "hidden"
-          "graph7":
-            -
-              "grid-area": "graph7"
-            -
-              "width": "100%"
-            -
-              "min-width": "0"
-            -
-              "margin-top": "10px"
-            -
-              "cursor": "default"
-            -
-              "z-index": "1"
-            -
-              "overflow": "hidden"
-          "footer24":
-            -
-              "grid-area": "footer24"
-            -
-              "width": "100%"
-            -
-              "margin-top": "10px"
-            -
-              "padding-top": "14px"
-            -
-              "border-top": "1px solid var(--divider-color)"
-          "footer7":
-            -
-              "grid-area": "footer7"
-            -
-              "width": "100%"
-            -
-              "margin-top": "10px"
-            -
-              "padding-top": "14px"
-            -
-              "border-top": "1px solid var(--divider-color)"
-      "view_layout":
-        "grid-area": "portfolio"
-      "extra_styles": "\n  #ranges {\n    position: relative !important;\n    z-index: 100 !important;\n    pointer-events: auto !important;\n    overflow: visible !important;\n  }\n  #ranges .wallet-range-switch,\n  #ranges .wallet-range-switch * {\n    pointer-events: auto !important;\n  }\n  #ranges .wallet-range-switch input {\n    position: absolute;\n    opacity: 0;\n    width: 1px;\n    height: 1px;\n    pointer-events: none !important;\n  }\n  #ranges .wallet-range-switch button {\n    position: relative;\n    z-index: 101;\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    min-width: 52px;\n    min-height: 34px;\n    box-sizing: border-box;\n    border: 0;\n    border-radius: 999px;\n    padding: 9px 18px;\n    font: inherit;\n    font-size: 13px;\n    line-height: 1;\n    cursor: pointer;\n    background: var(--secondary-background-color);\n    color: var(--primary-text-color);\n    font-weight: 500;\n    white-space: nowrap;\n    user-select: none;\n    -webkit-user-select: none;\n    touch-action: manipulation;\n  }\n  #ranges .wallet-range-switch input:checked + button {\n    background: rgba(33,150,243,.14);\n    font-weight: 700;\n  }\n  #graph7, #footer7 { display: none; }\n  #ranges:has(#wallet-range-7d:checked) ~ #graph24,\n  #ranges:has(#wallet-range-7d:checked) ~ #footer24 { display: none; }\n  #ranges:has(#wallet-range-7d:checked) ~ #graph7,\n  #ranges:has(#wallet-range-7d:checked) ~ #footer7 { display: block; }\n"
-      "hold_action":
-        "action": "none"
-      "double_tap_action":
-        "action": "none"
+            "justify-self": "start"
     -
-      "type": "custom:vertical-stack-in-card"
+      "type": "custom:button-card"
+      "entity": "$portfolio_total$"
+      "name":
+        "i18n":
+          "de": "Gesamtwert"
+          "en": "Total portfolio value"
+      "show_icon": true
+      "icon": "mdi:wallet-outline"
+      "show_state": true
+      "styles":
+        "card":
+          -
+            "padding": "16px"
+          -
+            "border-radius": "15px"
+        "state":
+          -
+            "font-size": "26px"
+          -
+            "font-weight": "600"
+    -
+      "type": "custom:layout-card"
+      "layout_type": "custom:grid-layout"
+      "layout":
+        "grid-template-columns": "repeat(3,minmax(0,1fr))"
+        "grid-gap": "12px"
+        "mediaquery":
+          "(max-width: 850px)":
+            "grid-template-columns": "repeat(2,minmax(0,1fr))"
+            "grid-gap": "8px"
+          "(max-width: 520px)":
+            "grid-template-columns": "1fr"
       "cards":
         -
-          "type": "custom:button-card"
-          "show_icon": false
-          "show_name": false
-          "show_state": false
-          "show_label": false
-          "tap_action":
-            "action": "none"
-          "custom_fields":
-            "row": "<div style=\"font-size:18px;font-weight:700;line-height:1.2;width:100%;text-align:left\">Meine Assets</div>"
-          "styles":
-            "card":
-              -
-                "height": "[[[ return window.innerWidth <= 520 ? '48px' : '54px'; ]]]"
-              -
-                "padding": "[[[ return window.innerWidth <= 520 ? '0 14px' : '0 18px'; ]]]"
-              -
-                "border": "0"
-              -
-                "border-radius": "0"
-              -
-                "box-shadow": "none"
-            "grid":
-              -
-                "grid-template-areas": "\"row\""
-              -
-                "grid-template-columns": "1fr"
-            "custom_fields":
-              "row":
+          "repeat": "coins"
+          "template":
+            "type": "custom:button-card"
+            "entity": "$item.entity$"
+            "name": "$item.name$"
+            "icon": "$item.icon$"
+            "show_icon": true
+            "show_name": true
+            "show_state": true
+            "show_label": true
+            "label": "[[[const s=entity; if(!s) return '—';const unit=s.attributes?.unit_of_measurement||'';return (s.attributes?.friendly_name||'')+(unit?' · '+unit:'');]]]"
+            "styles":
+              "card":
                 -
-                  "width": "100%"
-        -
-          "type": "custom:button-card"
-          "show_icon": false
-          "show_name": false
-          "show_state": false
-          "show_label": false
-          "tap_action":
-            "action": "none"
-          "custom_fields":
-            "row": "[[[\n  const mobile=window.innerWidth<=520;\n  if(mobile) return '<div style=\"display:grid;grid-template-columns:minmax(0,1.35fr) .72fr 1.08fr;gap:7px;width:calc(100% + 20px);margin-left:-10px;padding:0 10px 10px;box-sizing:border-box;border-bottom:1px solid var(--divider-color);font-size:10px;color:var(--secondary-text-color);font-weight:600;align-items:center\"><div style=\"text-align:left\">Coin</div><div style=\"text-align:right\">Kurs</div><div style=\"text-align:right\">Wert / Anteil</div></div>';\n  return '<div style=\"display:grid;grid-template-columns:minmax(180px,1.45fr) 1fr 1.08fr .88fr;gap:24px;width:calc(100% + 36px);margin-left:-18px;padding:0 18px 11px;box-sizing:border-box;border-bottom:1px solid var(--divider-color);font-size:12px;color:var(--secondary-text-color);font-weight:600;align-items:center\"><div style=\"text-align:left\">Coin</div><div style=\"text-align:right\">Kurs (1 Einheit)</div><div style=\"text-align:right\">Wert</div><div style=\"text-align:right\">Anteil</div></div>';\n]]]"
-          "styles":
-            "card":
-              -
-                "height": "[[[ return window.innerWidth <= 520 ? '34px' : '38px'; ]]]"
-              -
-                "padding": "[[[ return window.innerWidth <= 520 ? '0 14px' : '0 18px'; ]]]"
-              -
-                "border": "0"
-              -
-                "border-radius": "0"
-              -
-                "box-shadow": "none"
-            "grid":
-              -
-                "grid-template-areas": "\"row\""
-              -
-                "grid-template-columns": "1fr"
-            "custom_fields":
-              "row":
+                  "border-radius": "14px"
                 -
-                  "width": "100%"
-        -
-          "type": "custom:button-card"
-          "entity": "$sensor_wallet_value_bitcoin$"
-          "variables":
-            "title": "Bitcoin"
-            "ticker": "BTC"
-            "price_entity": "$sensor_cryptoinfo_bitcoin_eur$"
-            "volume_entity": "$sensor_wallet_volume_bitcoin$"
-            "bar_color": "#ff9800"
-          "show_icon": false
-          "show_name": false
-          "show_state": false
-          "show_label": false
-          "tap_action":
-            "action": "more-info"
-          "custom_fields":
-            "row": "[[[\n    const p=states[variables.price_entity], vol=states[variables.volume_entity];\n    const price=Number(p?.state||0), value=Number(entity.state||0), total=Number(states['$sensor_wallet_value_total$']?.state||0);\n    const share=total>0?value/total*100:0;\n    const change=Number(p?.attributes?.['24h_change']);\n    const img=p?.attributes?.image||'';\n    const amount=Number(vol?.state||0);\n    const eur=n=>Number(n||0).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';\n    const ch=Number.isFinite(change)?change:0, pos=ch>=0;\n    const mobile=window.innerWidth<=520;\n\n    if(mobile){\n      const hex=(variables.bar_color||'#888888').replace('#','');\n      const rgb=hex.length===6\n        ? [parseInt(hex.slice(0,2),16),parseInt(hex.slice(2,4),16),parseInt(hex.slice(4,6),16)]\n        : [136,136,136];\n      const fill=Math.max(0,Math.min(100,share));\n      const tint='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',.14)';\n      const fillBg='linear-gradient(90deg,'+tint+' 0%,'+tint+' '+fill+'%,transparent '+fill+'%,transparent 100%)';\n\n      return '<div style=\"display:grid;grid-template-columns:minmax(0,1.35fr) .72fr 1.08fr;gap:7px;align-items:center;width:calc(100% + 20px);margin-left:-10px;padding:8px 10px;box-sizing:border-box;border-bottom:1px solid var(--divider-color)\">'+\n        '<div style=\"display:flex;align-items:center;gap:7px;min-width:0;text-align:left\">'+\n          (img?'<img src=\"'+img+'\" style=\"width:28px;height:28px;object-fit:contain;flex:0 0 28px\">':'<ha-icon icon=\"mdi:currency-btc\" style=\"--mdc-icon-size:24px;color:'+variables.bar_color+'\"></ha-icon>')+\n          '<div style=\"min-width:0;text-align:left\"><div style=\"font-size:12px;font-weight:700;line-height:1.05;white-space:normal;overflow-wrap:anywhere\">'+variables.title+'</div><div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:2px\">'+variables.ticker+'</div></div>'+\n        '</div>'+\n        '<div style=\"text-align:right;min-width:0\"><div style=\"font-size:11px;white-space:nowrap\">'+eur(price)+'</div><div style=\"font-size:9px;margin-top:2px;color:'+(pos?'#16a34a':'#dc2626')+';white-space:nowrap\">'+(pos?'▲ +':'▼ ')+ch.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div></div>'+\n        '<div style=\"text-align:right;min-width:0;background:'+fillBg+';border-radius:9px;padding:6px 7px;box-sizing:border-box\">'+\n          '<div style=\"font-size:11px;font-weight:700;white-space:nowrap\">'+eur(value)+'</div>'+\n          '<div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:3px;white-space:nowrap\">'+amount.toLocaleString('de-DE',{minimumFractionDigits:4,maximumFractionDigits:4})+' '+variables.ticker+'</div>'+\n        '</div>'+\n      '</div>';\n    }\n\n    return '<div style=\"display:grid;grid-template-columns:minmax(180px,1.45fr) 1fr 1.08fr .88fr;gap:24px;align-items:center;width:calc(100% + 36px);margin-left:-18px;padding:10px 18px;box-sizing:border-box;border-bottom:1px solid var(--divider-color)\">'+\n      '<div style=\"display:flex;align-items:center;gap:11px;min-width:0;text-align:left\">'+\n        (img?'<img src=\"'+img+'\" style=\"width:38px;height:38px;object-fit:contain;flex:0 0 38px\">':'<ha-icon icon=\"mdi:currency-btc\" style=\"--mdc-icon-size:30px;color:'+variables.bar_color+'\"></ha-icon>')+\n        '<div style=\"min-width:0;text-align:left\"><div style=\"font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left\">'+variables.title+'</div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:2px;text-align:left\">'+variables.ticker+'</div></div>'+\n      '</div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px\">'+eur(price)+'</div><div style=\"font-size:12px;margin-top:3px;color:'+(pos?'#16a34a':'#dc2626')+'\">'+(pos?'▲ +':'▼ ')+ch.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div></div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px;font-weight:700\">'+eur(value)+'</div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:3px\">'+amount.toLocaleString('de-DE',{minimumFractionDigits:4,maximumFractionDigits:4})+' '+variables.ticker+'</div></div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px;font-weight:700;margin-bottom:6px\">'+share.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div><div style=\"height:8px;background:rgba(120,120,120,.12);border-radius:999px;overflow:hidden\"><div style=\"height:100%;width:'+Math.min(100,share)+'%;background:'+variables.bar_color+';border-radius:999px\"></div></div></div>'+\n    '</div>';\n  ]]]"
-          "styles":
-            "card":
-              -
-                "height": "[[[ return window.innerWidth <= 520 ? '66px' : '66px'; ]]]"
-              -
-                "padding": "[[[ return window.innerWidth <= 520 ? '0 10px' : '0 18px'; ]]]"
-              -
-                "border": "0"
-              -
-                "border-radius": "0"
-              -
-                "box-shadow": "none"
-              -
-                "cursor": "pointer"
-            "grid":
-              -
-                "grid-template-areas": "\"row\""
-              -
-                "grid-template-columns": "1fr"
-            "custom_fields":
-              "row":
+                  "padding": "14px"
+              "grid":
                 -
-                  "width": "100%"
-        -
-          "type": "custom:button-card"
-          "entity": "$sensor_wallet_value_ethereum$"
-          "variables":
-            "title": "Ethereum"
-            "ticker": "ETH"
-            "price_entity": "$sensor_cryptoinfo_ethereum_eur$"
-            "volume_entity": "$sensor_wallet_volume_ethereum$"
-            "bar_color": "#5b8def"
-          "show_icon": false
-          "show_name": false
-          "show_state": false
-          "show_label": false
-          "tap_action":
-            "action": "more-info"
-          "custom_fields":
-            "row": "[[[\n    const p=states[variables.price_entity], vol=states[variables.volume_entity];\n    const price=Number(p?.state||0), value=Number(entity.state||0), total=Number(states['$sensor_wallet_value_total$']?.state||0);\n    const share=total>0?value/total*100:0;\n    const change=Number(p?.attributes?.['24h_change']);\n    const img=p?.attributes?.image||'';\n    const amount=Number(vol?.state||0);\n    const eur=n=>Number(n||0).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';\n    const ch=Number.isFinite(change)?change:0, pos=ch>=0;\n    const mobile=window.innerWidth<=520;\n\n    if(mobile){\n      const hex=(variables.bar_color||'#888888').replace('#','');\n      const rgb=hex.length===6\n        ? [parseInt(hex.slice(0,2),16),parseInt(hex.slice(2,4),16),parseInt(hex.slice(4,6),16)]\n        : [136,136,136];\n      const fill=Math.max(0,Math.min(100,share));\n      const tint='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',.14)';\n      const fillBg='linear-gradient(90deg,'+tint+' 0%,'+tint+' '+fill+'%,transparent '+fill+'%,transparent 100%)';\n\n      return '<div style=\"display:grid;grid-template-columns:minmax(0,1.35fr) .72fr 1.08fr;gap:7px;align-items:center;width:calc(100% + 20px);margin-left:-10px;padding:8px 10px;box-sizing:border-box;border-bottom:1px solid var(--divider-color)\">'+\n        '<div style=\"display:flex;align-items:center;gap:7px;min-width:0;text-align:left\">'+\n          (img?'<img src=\"'+img+'\" style=\"width:28px;height:28px;object-fit:contain;flex:0 0 28px\">':'<ha-icon icon=\"mdi:currency-btc\" style=\"--mdc-icon-size:24px;color:'+variables.bar_color+'\"></ha-icon>')+\n          '<div style=\"min-width:0;text-align:left\"><div style=\"font-size:12px;font-weight:700;line-height:1.05;white-space:normal;overflow-wrap:anywhere\">'+variables.title+'</div><div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:2px\">'+variables.ticker+'</div></div>'+\n        '</div>'+\n        '<div style=\"text-align:right;min-width:0\"><div style=\"font-size:11px;white-space:nowrap\">'+eur(price)+'</div><div style=\"font-size:9px;margin-top:2px;color:'+(pos?'#16a34a':'#dc2626')+';white-space:nowrap\">'+(pos?'▲ +':'▼ ')+ch.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div></div>'+\n        '<div style=\"text-align:right;min-width:0;background:'+fillBg+';border-radius:9px;padding:6px 7px;box-sizing:border-box\">'+\n          '<div style=\"font-size:11px;font-weight:700;white-space:nowrap\">'+eur(value)+'</div>'+\n          '<div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:3px;white-space:nowrap\">'+amount.toLocaleString('de-DE',{minimumFractionDigits:4,maximumFractionDigits:4})+' '+variables.ticker+'</div>'+\n        '</div>'+\n      '</div>';\n    }\n\n    return '<div style=\"display:grid;grid-template-columns:minmax(180px,1.45fr) 1fr 1.08fr .88fr;gap:24px;align-items:center;width:calc(100% + 36px);margin-left:-18px;padding:10px 18px;box-sizing:border-box;border-bottom:1px solid var(--divider-color)\">'+\n      '<div style=\"display:flex;align-items:center;gap:11px;min-width:0;text-align:left\">'+\n        (img?'<img src=\"'+img+'\" style=\"width:38px;height:38px;object-fit:contain;flex:0 0 38px\">':'<ha-icon icon=\"mdi:currency-btc\" style=\"--mdc-icon-size:30px;color:'+variables.bar_color+'\"></ha-icon>')+\n        '<div style=\"min-width:0;text-align:left\"><div style=\"font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left\">'+variables.title+'</div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:2px;text-align:left\">'+variables.ticker+'</div></div>'+\n      '</div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px\">'+eur(price)+'</div><div style=\"font-size:12px;margin-top:3px;color:'+(pos?'#16a34a':'#dc2626')+'\">'+(pos?'▲ +':'▼ ')+ch.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div></div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px;font-weight:700\">'+eur(value)+'</div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:3px\">'+amount.toLocaleString('de-DE',{minimumFractionDigits:4,maximumFractionDigits:4})+' '+variables.ticker+'</div></div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px;font-weight:700;margin-bottom:6px\">'+share.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div><div style=\"height:8px;background:rgba(120,120,120,.12);border-radius:999px;overflow:hidden\"><div style=\"height:100%;width:'+Math.min(100,share)+'%;background:'+variables.bar_color+';border-radius:999px\"></div></div></div>'+\n    '</div>';\n  ]]]"
-          "styles":
-            "card":
-              -
-                "height": "[[[ return window.innerWidth <= 520 ? '66px' : '66px'; ]]]"
-              -
-                "padding": "[[[ return window.innerWidth <= 520 ? '0 10px' : '0 18px'; ]]]"
-              -
-                "border": "0"
-              -
-                "border-radius": "0"
-              -
-                "box-shadow": "none"
-              -
-                "cursor": "pointer"
-            "grid":
-              -
-                "grid-template-areas": "\"row\""
-              -
-                "grid-template-columns": "1fr"
-            "custom_fields":
-              "row":
+                  "grid-template-areas": "\"i n\" \"i s\" \"i l\""
                 -
-                  "width": "100%"
-        -
-          "type": "custom:button-card"
-          "entity": "$sensor_wallet_value_bitcoin_cash$"
-          "variables":
-            "title": "Bitcoin Cash"
-            "ticker": "BCH"
-            "price_entity": "$sensor_cryptoinfo_bitcoin_cash_eur$"
-            "volume_entity": "$sensor_wallet_volume_bitcoin_cash$"
-            "bar_color": "#1dbf73"
-          "show_icon": false
-          "show_name": false
-          "show_state": false
-          "show_label": false
-          "tap_action":
-            "action": "more-info"
-          "custom_fields":
-            "row": "[[[\n    const p=states[variables.price_entity], vol=states[variables.volume_entity];\n    const price=Number(p?.state||0), value=Number(entity.state||0), total=Number(states['$sensor_wallet_value_total$']?.state||0);\n    const share=total>0?value/total*100:0;\n    const change=Number(p?.attributes?.['24h_change']);\n    const img=p?.attributes?.image||'';\n    const amount=Number(vol?.state||0);\n    const eur=n=>Number(n||0).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';\n    const ch=Number.isFinite(change)?change:0, pos=ch>=0;\n    const mobile=window.innerWidth<=520;\n\n    if(mobile){\n      const hex=(variables.bar_color||'#888888').replace('#','');\n      const rgb=hex.length===6\n        ? [parseInt(hex.slice(0,2),16),parseInt(hex.slice(2,4),16),parseInt(hex.slice(4,6),16)]\n        : [136,136,136];\n      const fill=Math.max(0,Math.min(100,share));\n      const tint='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',.14)';\n      const fillBg='linear-gradient(90deg,'+tint+' 0%,'+tint+' '+fill+'%,transparent '+fill+'%,transparent 100%)';\n\n      return '<div style=\"display:grid;grid-template-columns:minmax(0,1.35fr) .72fr 1.08fr;gap:7px;align-items:center;width:calc(100% + 20px);margin-left:-10px;padding:8px 10px;box-sizing:border-box;border-bottom:1px solid var(--divider-color)\">'+\n        '<div style=\"display:flex;align-items:center;gap:7px;min-width:0;text-align:left\">'+\n          (img?'<img src=\"'+img+'\" style=\"width:28px;height:28px;object-fit:contain;flex:0 0 28px\">':'<ha-icon icon=\"mdi:currency-btc\" style=\"--mdc-icon-size:24px;color:'+variables.bar_color+'\"></ha-icon>')+\n          '<div style=\"min-width:0;text-align:left\"><div style=\"font-size:12px;font-weight:700;line-height:1.05;white-space:normal;overflow-wrap:anywhere\">'+variables.title+'</div><div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:2px\">'+variables.ticker+'</div></div>'+\n        '</div>'+\n        '<div style=\"text-align:right;min-width:0\"><div style=\"font-size:11px;white-space:nowrap\">'+eur(price)+'</div><div style=\"font-size:9px;margin-top:2px;color:'+(pos?'#16a34a':'#dc2626')+';white-space:nowrap\">'+(pos?'▲ +':'▼ ')+ch.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div></div>'+\n        '<div style=\"text-align:right;min-width:0;background:'+fillBg+';border-radius:9px;padding:6px 7px;box-sizing:border-box\">'+\n          '<div style=\"font-size:11px;font-weight:700;white-space:nowrap\">'+eur(value)+'</div>'+\n          '<div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:3px;white-space:nowrap\">'+amount.toLocaleString('de-DE',{minimumFractionDigits:4,maximumFractionDigits:4})+' '+variables.ticker+'</div>'+\n        '</div>'+\n      '</div>';\n    }\n\n    return '<div style=\"display:grid;grid-template-columns:minmax(180px,1.45fr) 1fr 1.08fr .88fr;gap:24px;align-items:center;width:calc(100% + 36px);margin-left:-18px;padding:10px 18px;box-sizing:border-box;border-bottom:1px solid var(--divider-color)\">'+\n      '<div style=\"display:flex;align-items:center;gap:11px;min-width:0;text-align:left\">'+\n        (img?'<img src=\"'+img+'\" style=\"width:38px;height:38px;object-fit:contain;flex:0 0 38px\">':'<ha-icon icon=\"mdi:currency-btc\" style=\"--mdc-icon-size:30px;color:'+variables.bar_color+'\"></ha-icon>')+\n        '<div style=\"min-width:0;text-align:left\"><div style=\"font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left\">'+variables.title+'</div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:2px;text-align:left\">'+variables.ticker+'</div></div>'+\n      '</div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px\">'+eur(price)+'</div><div style=\"font-size:12px;margin-top:3px;color:'+(pos?'#16a34a':'#dc2626')+'\">'+(pos?'▲ +':'▼ ')+ch.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div></div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px;font-weight:700\">'+eur(value)+'</div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:3px\">'+amount.toLocaleString('de-DE',{minimumFractionDigits:4,maximumFractionDigits:4})+' '+variables.ticker+'</div></div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px;font-weight:700;margin-bottom:6px\">'+share.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div><div style=\"height:8px;background:rgba(120,120,120,.12);border-radius:999px;overflow:hidden\"><div style=\"height:100%;width:'+Math.min(100,share)+'%;background:'+variables.bar_color+';border-radius:999px\"></div></div></div>'+\n    '</div>';\n  ]]]"
-          "styles":
-            "card":
-              -
-                "height": "[[[ return window.innerWidth <= 520 ? '66px' : '66px'; ]]]"
-              -
-                "padding": "[[[ return window.innerWidth <= 520 ? '0 10px' : '0 18px'; ]]]"
-              -
-                "border": "0"
-              -
-                "border-radius": "0"
-              -
-                "box-shadow": "none"
-              -
-                "cursor": "pointer"
-            "grid":
-              -
-                "grid-template-areas": "\"row\""
-              -
-                "grid-template-columns": "1fr"
-            "custom_fields":
-              "row":
+                  "grid-template-columns": "46px 1fr"
+              "icon":
                 -
-                  "width": "100%"
-        -
-          "type": "custom:button-card"
-          "entity": "$sensor_wallet_value_ethereum_classic$"
-          "variables":
-            "title": "Ethereum Classic"
-            "ticker": "ETC"
-            "price_entity": "$sensor_cryptoinfo_ethereum_classic_eur$"
-            "volume_entity": "$sensor_wallet_volume_ethereum_classic$"
-            "bar_color": "#18a739"
-          "show_icon": false
-          "show_name": false
-          "show_state": false
-          "show_label": false
-          "tap_action":
-            "action": "more-info"
-          "custom_fields":
-            "row": "[[[\n    const p=states[variables.price_entity], vol=states[variables.volume_entity];\n    const price=Number(p?.state||0), value=Number(entity.state||0), total=Number(states['$sensor_wallet_value_total$']?.state||0);\n    const share=total>0?value/total*100:0;\n    const change=Number(p?.attributes?.['24h_change']);\n    const img=p?.attributes?.image||'';\n    const amount=Number(vol?.state||0);\n    const eur=n=>Number(n||0).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';\n    const ch=Number.isFinite(change)?change:0, pos=ch>=0;\n    const mobile=window.innerWidth<=520;\n\n    if(mobile){\n      const hex=(variables.bar_color||'#888888').replace('#','');\n      const rgb=hex.length===6\n        ? [parseInt(hex.slice(0,2),16),parseInt(hex.slice(2,4),16),parseInt(hex.slice(4,6),16)]\n        : [136,136,136];\n      const fill=Math.max(0,Math.min(100,share));\n      const tint='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',.14)';\n      const fillBg='linear-gradient(90deg,'+tint+' 0%,'+tint+' '+fill+'%,transparent '+fill+'%,transparent 100%)';\n\n      return '<div style=\"display:grid;grid-template-columns:minmax(0,1.35fr) .72fr 1.08fr;gap:7px;align-items:center;width:calc(100% + 20px);margin-left:-10px;padding:8px 10px;box-sizing:border-box;border-bottom:1px solid var(--divider-color)\">'+\n        '<div style=\"display:flex;align-items:center;gap:7px;min-width:0;text-align:left\">'+\n          (img?'<img src=\"'+img+'\" style=\"width:28px;height:28px;object-fit:contain;flex:0 0 28px\">':'<ha-icon icon=\"mdi:currency-btc\" style=\"--mdc-icon-size:24px;color:'+variables.bar_color+'\"></ha-icon>')+\n          '<div style=\"min-width:0;text-align:left\"><div style=\"font-size:12px;font-weight:700;line-height:1.05;white-space:normal;overflow-wrap:anywhere\">'+variables.title+'</div><div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:2px\">'+variables.ticker+'</div></div>'+\n        '</div>'+\n        '<div style=\"text-align:right;min-width:0\"><div style=\"font-size:11px;white-space:nowrap\">'+eur(price)+'</div><div style=\"font-size:9px;margin-top:2px;color:'+(pos?'#16a34a':'#dc2626')+';white-space:nowrap\">'+(pos?'▲ +':'▼ ')+ch.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div></div>'+\n        '<div style=\"text-align:right;min-width:0;background:'+fillBg+';border-radius:9px;padding:6px 7px;box-sizing:border-box\">'+\n          '<div style=\"font-size:11px;font-weight:700;white-space:nowrap\">'+eur(value)+'</div>'+\n          '<div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:3px;white-space:nowrap\">'+amount.toLocaleString('de-DE',{minimumFractionDigits:4,maximumFractionDigits:4})+' '+variables.ticker+'</div>'+\n        '</div>'+\n      '</div>';\n    }\n\n    return '<div style=\"display:grid;grid-template-columns:minmax(180px,1.45fr) 1fr 1.08fr .88fr;gap:24px;align-items:center;width:calc(100% + 36px);margin-left:-18px;padding:10px 18px;box-sizing:border-box;border-bottom:1px solid var(--divider-color)\">'+\n      '<div style=\"display:flex;align-items:center;gap:11px;min-width:0;text-align:left\">'+\n        (img?'<img src=\"'+img+'\" style=\"width:38px;height:38px;object-fit:contain;flex:0 0 38px\">':'<ha-icon icon=\"mdi:currency-btc\" style=\"--mdc-icon-size:30px;color:'+variables.bar_color+'\"></ha-icon>')+\n        '<div style=\"min-width:0;text-align:left\"><div style=\"font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left\">'+variables.title+'</div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:2px;text-align:left\">'+variables.ticker+'</div></div>'+\n      '</div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px\">'+eur(price)+'</div><div style=\"font-size:12px;margin-top:3px;color:'+(pos?'#16a34a':'#dc2626')+'\">'+(pos?'▲ +':'▼ ')+ch.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div></div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px;font-weight:700\">'+eur(value)+'</div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:3px\">'+amount.toLocaleString('de-DE',{minimumFractionDigits:4,maximumFractionDigits:4})+' '+variables.ticker+'</div></div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px;font-weight:700;margin-bottom:6px\">'+share.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div><div style=\"height:8px;background:rgba(120,120,120,.12);border-radius:999px;overflow:hidden\"><div style=\"height:100%;width:'+Math.min(100,share)+'%;background:'+variables.bar_color+';border-radius:999px\"></div></div></div>'+\n    '</div>';\n  ]]]"
-          "styles":
-            "card":
-              -
-                "height": "[[[ return window.innerWidth <= 520 ? '66px' : '66px'; ]]]"
-              -
-                "padding": "[[[ return window.innerWidth <= 520 ? '0 10px' : '0 18px'; ]]]"
-              -
-                "border": "0"
-              -
-                "border-radius": "0"
-              -
-                "box-shadow": "none"
-              -
-                "cursor": "pointer"
-            "grid":
-              -
-                "grid-template-areas": "\"row\""
-              -
-                "grid-template-columns": "1fr"
-            "custom_fields":
-              "row":
+                  "width": "28px"
                 -
-                  "width": "100%"
-        -
-          "type": "custom:button-card"
-          "entity": "$sensor_wallet_value_cardano$"
-          "variables":
-            "title": "Cardano"
-            "ticker": "ADA"
-            "price_entity": "$sensor_cryptoinfo_cardano_eur$"
-            "volume_entity": "$sensor_wallet_volume_cardano$"
-            "bar_color": "#2a72e5"
-          "show_icon": false
-          "show_name": false
-          "show_state": false
-          "show_label": false
-          "tap_action":
-            "action": "more-info"
-          "custom_fields":
-            "row": "[[[\n    const p=states[variables.price_entity], vol=states[variables.volume_entity];\n    const price=Number(p?.state||0), value=Number(entity.state||0), total=Number(states['$sensor_wallet_value_total$']?.state||0);\n    const share=total>0?value/total*100:0;\n    const change=Number(p?.attributes?.['24h_change']);\n    const img=p?.attributes?.image||'';\n    const amount=Number(vol?.state||0);\n    const eur=n=>Number(n||0).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';\n    const ch=Number.isFinite(change)?change:0, pos=ch>=0;\n    const mobile=window.innerWidth<=520;\n\n    if(mobile){\n      const hex=(variables.bar_color||'#888888').replace('#','');\n      const rgb=hex.length===6\n        ? [parseInt(hex.slice(0,2),16),parseInt(hex.slice(2,4),16),parseInt(hex.slice(4,6),16)]\n        : [136,136,136];\n      const fill=Math.max(0,Math.min(100,share));\n      const tint='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',.14)';\n      const fillBg='linear-gradient(90deg,'+tint+' 0%,'+tint+' '+fill+'%,transparent '+fill+'%,transparent 100%)';\n\n      return '<div style=\"display:grid;grid-template-columns:minmax(0,1.35fr) .72fr 1.08fr;gap:7px;align-items:center;width:calc(100% + 20px);margin-left:-10px;padding:8px 10px;box-sizing:border-box;border-bottom:1px solid var(--divider-color)\">'+\n        '<div style=\"display:flex;align-items:center;gap:7px;min-width:0;text-align:left\">'+\n          (img?'<img src=\"'+img+'\" style=\"width:28px;height:28px;object-fit:contain;flex:0 0 28px\">':'<ha-icon icon=\"mdi:currency-btc\" style=\"--mdc-icon-size:24px;color:'+variables.bar_color+'\"></ha-icon>')+\n          '<div style=\"min-width:0;text-align:left\"><div style=\"font-size:12px;font-weight:700;line-height:1.05;white-space:normal;overflow-wrap:anywhere\">'+variables.title+'</div><div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:2px\">'+variables.ticker+'</div></div>'+\n        '</div>'+\n        '<div style=\"text-align:right;min-width:0\"><div style=\"font-size:11px;white-space:nowrap\">'+eur(price)+'</div><div style=\"font-size:9px;margin-top:2px;color:'+(pos?'#16a34a':'#dc2626')+';white-space:nowrap\">'+(pos?'▲ +':'▼ ')+ch.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div></div>'+\n        '<div style=\"text-align:right;min-width:0;background:'+fillBg+';border-radius:9px;padding:6px 7px;box-sizing:border-box\">'+\n          '<div style=\"font-size:11px;font-weight:700;white-space:nowrap\">'+eur(value)+'</div>'+\n          '<div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:3px;white-space:nowrap\">'+amount.toLocaleString('de-DE',{minimumFractionDigits:4,maximumFractionDigits:4})+' '+variables.ticker+'</div>'+\n        '</div>'+\n      '</div>';\n    }\n\n    return '<div style=\"display:grid;grid-template-columns:minmax(180px,1.45fr) 1fr 1.08fr .88fr;gap:24px;align-items:center;width:calc(100% + 36px);margin-left:-18px;padding:10px 18px;box-sizing:border-box;border-bottom:1px solid var(--divider-color)\">'+\n      '<div style=\"display:flex;align-items:center;gap:11px;min-width:0;text-align:left\">'+\n        (img?'<img src=\"'+img+'\" style=\"width:38px;height:38px;object-fit:contain;flex:0 0 38px\">':'<ha-icon icon=\"mdi:currency-btc\" style=\"--mdc-icon-size:30px;color:'+variables.bar_color+'\"></ha-icon>')+\n        '<div style=\"min-width:0;text-align:left\"><div style=\"font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left\">'+variables.title+'</div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:2px;text-align:left\">'+variables.ticker+'</div></div>'+\n      '</div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px\">'+eur(price)+'</div><div style=\"font-size:12px;margin-top:3px;color:'+(pos?'#16a34a':'#dc2626')+'\">'+(pos?'▲ +':'▼ ')+ch.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div></div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px;font-weight:700\">'+eur(value)+'</div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:3px\">'+amount.toLocaleString('de-DE',{minimumFractionDigits:4,maximumFractionDigits:4})+' '+variables.ticker+'</div></div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px;font-weight:700;margin-bottom:6px\">'+share.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div><div style=\"height:8px;background:rgba(120,120,120,.12);border-radius:999px;overflow:hidden\"><div style=\"height:100%;width:'+Math.min(100,share)+'%;background:'+variables.bar_color+';border-radius:999px\"></div></div></div>'+\n    '</div>';\n  ]]]"
-          "styles":
-            "card":
-              -
-                "height": "[[[ return window.innerWidth <= 520 ? '66px' : '66px'; ]]]"
-              -
-                "padding": "[[[ return window.innerWidth <= 520 ? '0 10px' : '0 18px'; ]]]"
-              -
-                "border": "0"
-              -
-                "border-radius": "0"
-              -
-                "box-shadow": "none"
-              -
-                "cursor": "pointer"
-            "grid":
-              -
-                "grid-template-areas": "\"row\""
-              -
-                "grid-template-columns": "1fr"
-            "custom_fields":
-              "row":
+                  "color": "var(--primary-color)"
+              "name":
                 -
-                  "width": "100%"
-        -
-          "type": "custom:button-card"
-          "entity": "$sensor_wallet_value_bitcoin_cash_sv$"
-          "variables":
-            "title": "Bitcoin SV"
-            "ticker": "BSV"
-            "price_entity": "$sensor_cryptoinfo_bitcoin_cash_sv_eur$"
-            "volume_entity": "$sensor_wallet_volume_bitcoin_cash_sv$"
-            "bar_color": "#eab308"
-          "show_icon": false
-          "show_name": false
-          "show_state": false
-          "show_label": false
-          "tap_action":
-            "action": "more-info"
-          "custom_fields":
-            "row": "[[[\n    const p=states[variables.price_entity], vol=states[variables.volume_entity];\n    const price=Number(p?.state||0), value=Number(entity.state||0), total=Number(states['$sensor_wallet_value_total$']?.state||0);\n    const share=total>0?value/total*100:0;\n    const change=Number(p?.attributes?.['24h_change']);\n    const img=p?.attributes?.image||'';\n    const amount=Number(vol?.state||0);\n    const eur=n=>Number(n||0).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';\n    const ch=Number.isFinite(change)?change:0, pos=ch>=0;\n    const mobile=window.innerWidth<=520;\n\n    if(mobile){\n      const hex=(variables.bar_color||'#888888').replace('#','');\n      const rgb=hex.length===6\n        ? [parseInt(hex.slice(0,2),16),parseInt(hex.slice(2,4),16),parseInt(hex.slice(4,6),16)]\n        : [136,136,136];\n      const fill=Math.max(0,Math.min(100,share));\n      const tint='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',.14)';\n      const fillBg='linear-gradient(90deg,'+tint+' 0%,'+tint+' '+fill+'%,transparent '+fill+'%,transparent 100%)';\n\n      return '<div style=\"display:grid;grid-template-columns:minmax(0,1.35fr) .72fr 1.08fr;gap:7px;align-items:center;width:calc(100% + 20px);margin-left:-10px;padding:8px 10px;box-sizing:border-box;border-bottom:1px solid var(--divider-color)\">'+\n        '<div style=\"display:flex;align-items:center;gap:7px;min-width:0;text-align:left\">'+\n          (img?'<img src=\"'+img+'\" style=\"width:28px;height:28px;object-fit:contain;flex:0 0 28px\">':'<ha-icon icon=\"mdi:currency-btc\" style=\"--mdc-icon-size:24px;color:'+variables.bar_color+'\"></ha-icon>')+\n          '<div style=\"min-width:0;text-align:left\"><div style=\"font-size:12px;font-weight:700;line-height:1.05;white-space:normal;overflow-wrap:anywhere\">'+variables.title+'</div><div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:2px\">'+variables.ticker+'</div></div>'+\n        '</div>'+\n        '<div style=\"text-align:right;min-width:0\"><div style=\"font-size:11px;white-space:nowrap\">'+eur(price)+'</div><div style=\"font-size:9px;margin-top:2px;color:'+(pos?'#16a34a':'#dc2626')+';white-space:nowrap\">'+(pos?'▲ +':'▼ ')+ch.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div></div>'+\n        '<div style=\"text-align:right;min-width:0;background:'+fillBg+';border-radius:9px;padding:6px 7px;box-sizing:border-box\">'+\n          '<div style=\"font-size:11px;font-weight:700;white-space:nowrap\">'+eur(value)+'</div>'+\n          '<div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:3px;white-space:nowrap\">'+amount.toLocaleString('de-DE',{minimumFractionDigits:4,maximumFractionDigits:4})+' '+variables.ticker+'</div>'+\n        '</div>'+\n      '</div>';\n    }\n\n    return '<div style=\"display:grid;grid-template-columns:minmax(180px,1.45fr) 1fr 1.08fr .88fr;gap:24px;align-items:center;width:calc(100% + 36px);margin-left:-18px;padding:10px 18px;box-sizing:border-box;border-bottom:1px solid var(--divider-color)\">'+\n      '<div style=\"display:flex;align-items:center;gap:11px;min-width:0;text-align:left\">'+\n        (img?'<img src=\"'+img+'\" style=\"width:38px;height:38px;object-fit:contain;flex:0 0 38px\">':'<ha-icon icon=\"mdi:currency-btc\" style=\"--mdc-icon-size:30px;color:'+variables.bar_color+'\"></ha-icon>')+\n        '<div style=\"min-width:0;text-align:left\"><div style=\"font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left\">'+variables.title+'</div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:2px;text-align:left\">'+variables.ticker+'</div></div>'+\n      '</div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px\">'+eur(price)+'</div><div style=\"font-size:12px;margin-top:3px;color:'+(pos?'#16a34a':'#dc2626')+'\">'+(pos?'▲ +':'▼ ')+ch.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div></div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px;font-weight:700\">'+eur(value)+'</div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:3px\">'+amount.toLocaleString('de-DE',{minimumFractionDigits:4,maximumFractionDigits:4})+' '+variables.ticker+'</div></div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px;font-weight:700;margin-bottom:6px\">'+share.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div><div style=\"height:8px;background:rgba(120,120,120,.12);border-radius:999px;overflow:hidden\"><div style=\"height:100%;width:'+Math.min(100,share)+'%;background:'+variables.bar_color+';border-radius:999px\"></div></div></div>'+\n    '</div>';\n  ]]]"
-          "styles":
-            "card":
-              -
-                "height": "[[[ return window.innerWidth <= 520 ? '66px' : '66px'; ]]]"
-              -
-                "padding": "[[[ return window.innerWidth <= 520 ? '0 10px' : '0 18px'; ]]]"
-              -
-                "border": "0"
-              -
-                "border-radius": "0"
-              -
-                "box-shadow": "none"
-              -
-                "cursor": "pointer"
-            "grid":
-              -
-                "grid-template-areas": "\"row\""
-              -
-                "grid-template-columns": "1fr"
-            "custom_fields":
-              "row":
+                  "justify-self": "start"
                 -
-                  "width": "100%"
-        -
-          "type": "custom:button-card"
-          "entity": "$sensor_wallet_value_bitcoin_gold$"
-          "variables":
-            "title": "Bitcoin Gold"
-            "ticker": "BTG"
-            "price_entity": "$sensor_cryptoinfo_bitcoin_gold_eur$"
-            "volume_entity": "$sensor_wallet_volume_bitcoin_gold$"
-            "bar_color": "#d39b00"
-          "show_icon": false
-          "show_name": false
-          "show_state": false
-          "show_label": false
-          "tap_action":
-            "action": "more-info"
-          "custom_fields":
-            "row": "[[[\n    const p=states[variables.price_entity], vol=states[variables.volume_entity];\n    const price=Number(p?.state||0), value=Number(entity.state||0), total=Number(states['$sensor_wallet_value_total$']?.state||0);\n    const share=total>0?value/total*100:0;\n    const change=Number(p?.attributes?.['24h_change']);\n    const img=p?.attributes?.image||'';\n    const amount=Number(vol?.state||0);\n    const eur=n=>Number(n||0).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';\n    const ch=Number.isFinite(change)?change:0, pos=ch>=0;\n    const mobile=window.innerWidth<=520;\n\n    if(mobile){\n      const hex=(variables.bar_color||'#888888').replace('#','');\n      const rgb=hex.length===6\n        ? [parseInt(hex.slice(0,2),16),parseInt(hex.slice(2,4),16),parseInt(hex.slice(4,6),16)]\n        : [136,136,136];\n      const fill=Math.max(0,Math.min(100,share));\n      const tint='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',.14)';\n      const fillBg='linear-gradient(90deg,'+tint+' 0%,'+tint+' '+fill+'%,transparent '+fill+'%,transparent 100%)';\n\n      return '<div style=\"display:grid;grid-template-columns:minmax(0,1.35fr) .72fr 1.08fr;gap:7px;align-items:center;width:calc(100% + 20px);margin-left:-10px;padding:8px 10px;box-sizing:border-box;border-bottom:0\">'+\n        '<div style=\"display:flex;align-items:center;gap:7px;min-width:0;text-align:left\">'+\n          (img?'<img src=\"'+img+'\" style=\"width:28px;height:28px;object-fit:contain;flex:0 0 28px\">':'<ha-icon icon=\"mdi:currency-btc\" style=\"--mdc-icon-size:24px;color:'+variables.bar_color+'\"></ha-icon>')+\n          '<div style=\"min-width:0;text-align:left\"><div style=\"font-size:12px;font-weight:700;line-height:1.05;white-space:normal;overflow-wrap:anywhere\">'+variables.title+'</div><div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:2px\">'+variables.ticker+'</div></div>'+\n        '</div>'+\n        '<div style=\"text-align:right;min-width:0\"><div style=\"font-size:11px;white-space:nowrap\">'+eur(price)+'</div><div style=\"font-size:9px;margin-top:2px;color:'+(pos?'#16a34a':'#dc2626')+';white-space:nowrap\">'+(pos?'▲ +':'▼ ')+ch.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div></div>'+\n        '<div style=\"text-align:right;min-width:0;background:'+fillBg+';border-radius:9px;padding:6px 7px;box-sizing:border-box\">'+\n          '<div style=\"font-size:11px;font-weight:700;white-space:nowrap\">'+eur(value)+'</div>'+\n          '<div style=\"font-size:9px;color:var(--secondary-text-color);margin-top:3px;white-space:nowrap\">'+amount.toLocaleString('de-DE',{minimumFractionDigits:4,maximumFractionDigits:4})+' '+variables.ticker+'</div>'+\n        '</div>'+\n      '</div>';\n    }\n\n    return '<div style=\"display:grid;grid-template-columns:minmax(180px,1.45fr) 1fr 1.08fr .88fr;gap:24px;align-items:center;width:calc(100% + 36px);margin-left:-18px;padding:10px 18px;box-sizing:border-box;border-bottom:0\">'+\n      '<div style=\"display:flex;align-items:center;gap:11px;min-width:0;text-align:left\">'+\n        (img?'<img src=\"'+img+'\" style=\"width:38px;height:38px;object-fit:contain;flex:0 0 38px\">':'<ha-icon icon=\"mdi:currency-btc\" style=\"--mdc-icon-size:30px;color:'+variables.bar_color+'\"></ha-icon>')+\n        '<div style=\"min-width:0;text-align:left\"><div style=\"font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left\">'+variables.title+'</div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:2px;text-align:left\">'+variables.ticker+'</div></div>'+\n      '</div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px\">'+eur(price)+'</div><div style=\"font-size:12px;margin-top:3px;color:'+(pos?'#16a34a':'#dc2626')+'\">'+(pos?'▲ +':'▼ ')+ch.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div></div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px;font-weight:700\">'+eur(value)+'</div><div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:3px\">'+amount.toLocaleString('de-DE',{minimumFractionDigits:4,maximumFractionDigits:4})+' '+variables.ticker+'</div></div>'+\n      '<div style=\"text-align:right\"><div style=\"font-size:14px;font-weight:700;margin-bottom:6px\">'+share.toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %</div><div style=\"height:8px;background:rgba(120,120,120,.12);border-radius:999px;overflow:hidden\"><div style=\"height:100%;width:'+Math.min(100,share)+'%;background:'+variables.bar_color+';border-radius:999px\"></div></div></div>'+\n    '</div>';\n  ]]]"
-          "styles":
-            "card":
-              -
-                "height": "[[[ return window.innerWidth <= 520 ? '66px' : '66px'; ]]]"
-              -
-                "padding": "[[[ return window.innerWidth <= 520 ? '0 10px' : '0 18px'; ]]]"
-              -
-                "border": "0"
-              -
-                "border-radius": "0"
-              -
-                "box-shadow": "none"
-              -
-                "cursor": "pointer"
-            "grid":
-              -
-                "grid-template-areas": "\"row\""
-              -
-                "grid-template-columns": "1fr"
-            "custom_fields":
-              "row":
+                  "font-size": "15px"
                 -
-                  "width": "100%"
-      "card_mod":
-        "style": "ha-card {\n  border: 1px solid var(--divider-color) !important;\n  border-radius: 16px !important;\n  box-shadow: none !important;\n  overflow: hidden !important;\n}\n#root {\n  border-radius: 15px !important;\n  overflow: hidden !important;\n}"
-      "view_layout":
-        "grid-area": "assets"
+                  "font-weight": "600"
+              "state":
+                -
+                  "justify-self": "start"
+                -
+                  "font-size": "18px"
+                -
+                  "font-weight": "600"
+              "label":
+                -
+                  "justify-self": "start"
+                -
+                  "font-size": "11px"
+            "tap_action":
+              "action": "more-info"
