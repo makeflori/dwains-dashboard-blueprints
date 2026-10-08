@@ -1,10 +1,10 @@
-# Crypto Wallet · v1.0.0
+# Waste Collection · v1.0.0
 
-Add or remove any number of cryptocurrencies. Each item has a required value sensor, optional price and holdings sensors, editable friendly name and optional icon (defaults to mdi:currency-btc). The portfolio total uses its own sensor.
+Add or remove any number of waste types. Each item has a sensor, an editable display name populated from Home Assistant, and an optional icon (defaults to mdi:trash-can-outline). The configured entity must provide a meaningful collection date in its state or a `date` / `next_date` attribute.
 
 Import in Dwains Dashboard Next → Pages → Add Blueprint → URL:
 
-https://github.com/makeflori/dwains-dashboard-blueprints/blob/main/page-blueprints/Krypto-Wallet/blueprint.yaml
+https://github.com/makeflori/dwains-dashboard-blueprints/blob/main/page-blueprints/WasteCollection/blueprint.yaml
 
 The configuration dialog requires a Dwains Dashboard Next version containing the **repeatable blueprint input** updates in [PR #136](https://github.com/makeflori/dwains-dashboard-next/pull/136). The published blueprint does not require modifying your existing pages.
 

@@ -4,7 +4,7 @@ Select system metric, backup, memory and update entities. Inputs are suggested o
 
 Import in Dwains Dashboard Next → Pages → Add Blueprint → URL:
 
-https://github.com/makeflori/dwains-dashboard-blueprints/blob/main/page-blueprints/Systemstatus/blueprint.yaml
+https://github.com/makeflori/dwains-dashboard-blueprints/blob/main/page-blueprints/SystemMonitor/blueprint.yaml
 
 The configuration dialog requires a Dwains Dashboard Next version containing the **repeatable blueprint input** updates in [PR #136](https://github.com/makeflori/dwains-dashboard-next/pull/136). The published blueprint does not require modifying your existing pages.
 
