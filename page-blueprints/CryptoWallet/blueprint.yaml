@@ -272,6 +272,7 @@
               "volume_entity": "$item.amount_entity$"
               "bar_color": "#ff9800"
               "icon": "$item.icon$"
+              "last": "$item.last$"
             "show_icon": false
             "show_name": false
             "show_state": false
