@@ -15,45 +15,45 @@
     "adguard_protection":
       "name": "Protection"
       "name_de": "Schutz aktivieren"
-      "description": "Protection switch"
-      "description_de": "Schalter für den DNS-Schutz"
+      "description": "e.g. switch.adguard_protection"
+      "description_de": "e.g. switch.adguard_protection"
       "type": "entity-picker"
       "default": ""
     "adguard_filtering":
       "name": "Filtering"
       "name_de": "Filter aktivieren"
-      "description": "Filtering switch"
-      "description_de": "Schalter für die DNS-Filterung"
+      "description": "e.g. switch.adguard_filtering"
+      "description_de": "e.g. switch.adguard_filtering"
       "type": "entity-picker"
       "default": ""
     "adguard_dns_queries":
       "name": "DNS queries"
       "name_de": "DNS-Anfragen"
-      "description": "Total DNS queries sensor"
-      "description_de": "Sensor für die Anzahl der DNS-Anfragen"
+      "description": "e.g. sensor.adguard_dns_queries"
+      "description_de": "e.g. sensor.adguard_dns_queries"
       "type": "entity-picker"
       "suggest_entity": "sensor.adguard_dns_queries"
       "default": ""
     "adguard_dns_queries_blocked":
       "name": "Blocked queries"
       "name_de": "Blockierte Anfragen"
-      "description": "Blocked DNS queries sensor"
-      "description_de": "Sensor für blockierte DNS-Anfragen"
+      "description": "e.g. sensor.adguard_dns_queries_blocked"
+      "description_de": "e.g. sensor.adguard_dns_queries_blocked"
       "type": "entity-picker"
       "suggest_entity": "sensor.adguard_dns_queries_blocked"
       "default": ""
     "adguard_dns_queries_blocked_ratio":
       "name": "Blocked queries ratio"
       "name_de": "Anteil blockierter Anfragen"
-      "description": "Blocked requests percentage sensor"
-      "description_de": "Sensor für den Anteil blockierter DNS-Anfragen"
+      "description": "e.g. sensor.adguard_dns_queries_blocked_ratio"
+      "description_de": "e.g. sensor.adguard_dns_queries_blocked_ratio"
       "type": "entity-picker"
       "default": ""
     "adguard_average_processing_speed":
       "name": "Average processing time"
       "name_de": "Durchschnittliche Verarbeitungszeit"
-      "description": "Average DNS processing time sensor"
-      "description_de": "Sensor für die durchschnittliche DNS-Verarbeitungszeit"
+      "description": "e.g. sensor.adguard_average_processing_speed"
+      "description_de": "e.g. sensor.adguard_average_processing_speed"
       "type": "entity-picker"
       "default": ""
 "card":
@@ -75,7 +75,7 @@
       "layout_type": "custom:grid-layout"
       "layout":
         "grid-template-columns": "1fr 1fr"
-        "grid-template-areas": "\"protection filter\" \"dnsgraph blockedgraph\""
+        "grid-template-areas": "\"protection filter\" \"dnsgraph blockedgraph\" \"ratio speed\""
         "grid-gap": "12px"
         "align-items": "start"
         "margin": "0"
@@ -83,7 +83,7 @@
         "mediaquery":
           "(max-width: 520px)":
             "grid-template-columns": "1fr 1fr"
-            "grid-template-areas": "\"protection filter\" \"dnsgraph dnsgraph\" \"blockedgraph blockedgraph\""
+            "grid-template-areas": "\"protection filter\" \"dnsgraph dnsgraph\" \"blockedgraph blockedgraph\" \"ratio ratio\" \"speed speed\""
             "grid-gap": "8px"
       "cards":
         -
@@ -388,6 +388,94 @@
             "style": "\n    ha-card {\n      border:1px solid var(--divider-color);\n      border-radius:16px !important;\n      box-shadow:none;\n      overflow:visible !important;\n    }\n  "
           "view_layout":
             "grid-area": "blockedgraph"
+        -
+          "type": "custom:button-card"
+          "requires_input": "adguard_dns_queries_blocked_ratio"
+          "entity": "$adguard_dns_queries_blocked_ratio$"
+          "name":
+            "i18n":
+              "de": "Anteil blockierter Anfragen"
+              "en": "Blocked queries ratio"
+          "icon": "mdi:percent"
+          "show_icon": true
+          "show_name": true
+          "show_state": true
+          "tap_action":
+            "action": "more-info"
+          "styles":
+            "card":
+              -
+                "border-radius": "14px"
+              -
+                "padding": "16px"
+              -
+                "box-shadow": "none"
+            "grid":
+              -
+                "grid-template-areas": "\"i n\" \"i s\""
+              -
+                "grid-template-columns": "48px 1fr"
+              -
+                "align-items": "center"
+            "icon":
+              -
+                "width": "26px"
+              -
+                "color": "var(--primary-color)"
+            "name":
+              -
+                "justify-self": "start"
+            "state":
+              -
+                "justify-self": "start"
+              -
+                "font-size": "21px"
+          "view_layout":
+            "grid-area": "ratio"
+        -
+          "type": "custom:button-card"
+          "requires_input": "adguard_average_processing_speed"
+          "entity": "$adguard_average_processing_speed$"
+          "name":
+            "i18n":
+              "de": "Durchschnittliche Verarbeitungszeit"
+              "en": "Average processing time"
+          "icon": "mdi:speedometer"
+          "show_icon": true
+          "show_name": true
+          "show_state": true
+          "tap_action":
+            "action": "more-info"
+          "styles":
+            "card":
+              -
+                "border-radius": "14px"
+              -
+                "padding": "16px"
+              -
+                "box-shadow": "none"
+            "grid":
+              -
+                "grid-template-areas": "\"i n\" \"i s\""
+              -
+                "grid-template-columns": "48px 1fr"
+              -
+                "align-items": "center"
+            "icon":
+              -
+                "width": "26px"
+              -
+                "color": "var(--primary-color)"
+            "name":
+              -
+                "justify-self": "start"
+            "state":
+              -
+                "justify-self": "start"
+              -
+                "font-size": "21px"
+          "view_layout":
+            "grid-area": "speed"
       "view_layout":
         "grid-area": "main"
       "card_mod":
