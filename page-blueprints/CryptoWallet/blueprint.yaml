@@ -240,7 +240,7 @@
           "tap_action":
             "action": "none"
           "custom_fields":
-          "row": "[[[\nconst lang=(hass?.locale?.language||hass?.language||'en').toLowerCase().startsWith('de');\nconst mobile=window.innerWidth<=520;\nconst names=lang?['Coin','Kurs (1 Einheit)','Wert','Anteil']:['Coin','Price (1 unit)','Value','Share'];\nreturn '<div style=\"display:grid;grid-template-columns:minmax(140px,1.45fr) 1fr 1.08fr .88fr;gap:12px;width:100%;box-sizing:border-box;padding:0 0 10px;border-bottom:1px solid var(--divider-color);font-size:12px;font-weight:600;color:var(--secondary-text-color)\">'+names.map((t,i)=>'<span style=\"text-align:'+(i?'right':'left')+'\">'+t+'</span>').join('')+'</div>';\n]]]"
+            "row": "[[[\nconst lang=(hass?.locale?.language||hass?.language||'en').toLowerCase().startsWith('de');\nconst mobile=window.innerWidth<=520;\nconst names=lang?['Coin','Kurs (1 Einheit)','Wert','Anteil']:['Coin','Price (1 unit)','Value','Share'];\nreturn '<div style=\"display:grid;grid-template-columns:minmax(140px,1.45fr) 1fr 1.08fr .88fr;gap:12px;width:100%;box-sizing:border-box;padding:0 0 10px;border-bottom:1px solid var(--divider-color);font-size:12px;font-weight:600;color:var(--secondary-text-color)\">'+names.map((t,i)=>'<span style=\"text-align:'+(i?'right':'left')+'\">'+t+'</span>').join('')+'</div>';\n]]]"
           "styles":
             "card":
               -
