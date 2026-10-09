@@ -94,11 +94,13 @@
               "content": "[[[\n const rows=$json.waste_types$;\n const selected=rows.find(x=>x.entity===entity?.entity_id)||{};\n const de=(hass?.locale?.language||hass?.language||'en').toLowerCase().startsWith('de');\n const name=selected.name||entity?.attributes?.friendly_name||entity?.entity_id||'';\n const icon=selected.icon||'mdi:trash-can-outline';\n const photo=selected.image||'';\n const now=new Date();\n const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());\n const dates=[];\n for(const [key,value] of Object.entries(entity?.attributes||{})){\n   for(const date of [key,value]){\n     if(typeof date==='string'&&/^\\d{4}-\\d{2}-\\d{2}$/.test(date)){\n       const d=new Date(date+'T12:00:00');\n       if(!isNaN(d.getTime())&&d>=today)dates.push(d);\n     }\n   }\n }\n if(typeof entity?.state==='string'&&/^\\d{4}-\\d{2}-\\d{2}$/.test(entity.state)){const d=new Date(entity.state+'T12:00:00');if(!isNaN(d.getTime())&&d>=today)dates.push(d);}\n dates.sort((a,b)=>a-b);\n const date=dates[0];\n const days=date?Math.round((date.getTime()-new Date(today.getFullYear(),today.getMonth(),today.getDate(),12).getTime())/86400000):null;\n const relative=days===null?(de?'Kein Termin':'No date'):days===0?(de?'Heute':'Today'):days===1?(de?'Morgen':'Tomorrow'):(de?'in '+days+' Tagen':'in '+days+' days');\n const absolute=date?date.toLocaleDateString(de?'de-DE':'en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'}):'';\n const mobile=window.innerWidth<=520;\n const size=mobile?52:86;\n return '<div style=\"display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:'+(mobile?204:400)+'px;padding:'+(mobile?'8px':'20px')+';border:1px solid var(--divider-color);border-radius:16px;background:var(--card-background-color);box-sizing:border-box;transition:border-color .15s ease;\">'+\n '<div style=\"width:'+(mobile?95:170)+'px;height:'+(mobile?95:170)+'px;border-radius:50%;background:rgba(33,150,243,.055);display:flex;align-items:center;justify-content:center;margin-bottom:12px\">'+(photo?'<img src=\"'+photo.replace(/\"/g,'&quot;')+'\" style=\"max-width:90%;max-height:90%;object-fit:contain\" alt=\"\">':'<ha-icon icon=\"'+icon+'\" style=\"--mdc-icon-size:'+size+'px;color:var(--primary-color)\"></ha-icon>')+'</div>'+\n '<div style=\"font-size:'+(mobile?16:21)+'px;font-weight:700;text-align:center;color:var(--secondary-text-color);margin-bottom:14px\">'+name+'</div>'+\n '<div style=\"border-radius:999px;background:rgba(33,150,243,.09);color:var(--primary-color);font-size:'+(mobile?14:22)+'px;font-weight:700;padding:10px 14px;text-align:center\"><ha-icon icon=\"mdi:calendar-month\" style=\"--mdc-icon-size:20px;vertical-align:middle\"></ha-icon> '+relative+'</div>'+\n '<div style=\"font-size:'+(mobile?11:16)+'px;text-align:center;color:var(--secondary-text-color);margin-top:14px\">'+absolute+'</div></div>';\n]]]"
             "extra_styles": "ha-card, ha-card:hover, ha-card:focus, ha-card:active { background: transparent !important; background-color: transparent !important; box-shadow: none !important; transform: none !important; filter: none !important; } #container, #container:hover { background: transparent !important; box-shadow: none !important; }"
             "card_mod":
-              "style": "ha-card, ha-card:hover { background: transparent !important; box-shadow: none !important; border: 0 !important; transform: none !important; filter: none !important; } :host, :host(:hover) { background: transparent !important; box-shadow: none !important; transform: none !important; }"
+              "style": ":host, :host(:hover), ha-card, ha-card:hover { display:block !important; height:100% !important; min-height:100% !important; padding:0 !important; margin:0 !important; background:transparent !important; border:0 !important; border-radius:16px !important; box-shadow:none !important; transform:none !important; filter:none !important; overflow:hidden !important; }"
             "styles":
               "card":
                 -
-                  "height": "[[[ return window.innerWidth <= 520 ? '232px' : '430px'; ]]]"
+                  "height": "100%"
+                -
+                  "min-height": "[[[ return window.innerWidth <= 520 ? '232px' : '430px'; ]]]"
                 -
                   "padding": "0"
                 -
@@ -111,6 +113,8 @@
                   "box-shadow": "none"
                 -
                   "overflow": "hidden"
+                -
+                  "pointer-events": "auto"
               "grid":
                 -
                   "grid-template-areas": "\"content\""
