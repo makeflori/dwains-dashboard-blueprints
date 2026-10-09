@@ -405,26 +405,34 @@
           "styles":
             "card":
               -
-                "border-radius": "14px"
+                "border-radius": "16px"
               -
-                "padding": "16px"
+                "padding": "18px"
               -
                 "box-shadow": "none"
+              -
+                "border": "1px solid var(--divider-color)"
+              -
+                "min-height": "102px"
             "grid":
               -
                 "grid-template-areas": "\"i n\" \"i s\""
               -
-                "grid-template-columns": "48px 1fr"
+                "grid-template-columns": "64px minmax(0,1fr)"
               -
                 "align-items": "center"
             "icon":
               -
-                "width": "26px"
+                "width": "30px"
               -
                 "color": "var(--primary-color)"
             "name":
               -
                 "justify-self": "start"
+              -
+                "font-size": "15px"
+              -
+                "font-weight": "700"
             "state":
               -
                 "justify-self": "start"
@@ -449,26 +457,34 @@
           "styles":
             "card":
               -
-                "border-radius": "14px"
+                "border-radius": "16px"
               -
-                "padding": "16px"
+                "padding": "18px"
               -
                 "box-shadow": "none"
+              -
+                "border": "1px solid var(--divider-color)"
+              -
+                "min-height": "102px"
             "grid":
               -
                 "grid-template-areas": "\"i n\" \"i s\""
               -
-                "grid-template-columns": "48px 1fr"
+                "grid-template-columns": "64px minmax(0,1fr)"
               -
                 "align-items": "center"
             "icon":
               -
-                "width": "26px"
+                "width": "30px"
               -
                 "color": "var(--primary-color)"
             "name":
               -
                 "justify-self": "start"
+              -
+                "font-size": "15px"
+              -
+                "font-weight": "700"
             "state":
               -
                 "justify-self": "start"
