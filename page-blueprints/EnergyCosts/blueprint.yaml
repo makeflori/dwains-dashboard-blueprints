@@ -180,10 +180,10 @@ card:
                   animations:
                     enabled: false
                   events:
-                    mounted: "EVAL:function(ctx){const rows=[{\"name\":\"Multimedia\",\"entity\":\"sensor.energy_total_multimedia_calculated\",\"hidden_by_default\":false},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.verbrauch_gesamt_kuehlgefrierschrank\",\"hidden_by_default\":false},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.energy_total_hue_estimated\",\"hidden_by_default\":false},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.verbrauch_gesamt_3d_drucker_fortgefuhrt\",\"hidden_by_default\":false},{\"name\":\"Siebträger\",\"entity\":\"sensor.verbrauch_gesamt_siebtraeger\",\"hidden_by_default\":false},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.verbrauch_gesamt_schreibtisch_fortgefuhrt\",\"hidden_by_default\":true},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.verbrauch_gesamt_waschmaschine\",\"hidden_by_default\":true},{\"name\":\"Testaufbau\",\"entity\":\"sensor.verbrauch_gesamt_testaufbau\",\"hidden_by_default\":true}];if(ctx&&typeof ctx.hideSeries==='function'){rows.filter(r=>r.hidden_by_default).forEach(r=>ctx.hideSeries(r.name));}}"
+                    mounted: "EVAL:function(ctx){const rows=$json.historical_consumption_meters$;if(ctx&&typeof ctx.hideSeries==='function'){rows.filter(r=>r.hidden_by_default).forEach(r=>ctx.hideSeries(r.name));}}"
                 legend:
                   show: true
-                  position: "bottom"
+                  position: "top"
                   fontSize: "11px"
                   itemMargin:
                     horizontal: 7
@@ -378,7 +378,7 @@ card:
                       enabled: false
                     plotOptions:
                       pie:
-                        expandOnClick: true
+                        expandOnClick: false
                         customScale: 0.92
                     states:
                       hover:
