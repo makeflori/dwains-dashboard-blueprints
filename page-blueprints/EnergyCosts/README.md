@@ -1,52 +1,39 @@
-# Energy & Costs — Dwains Dashboard Next
+# Energy & Costs — DDNext
 
-**Unreleased blueprint, version 1.0.** Keep this version until the first release is explicitly approved.
+**Status: unreleased, version 1.0.** Do not bump version before the initial release is approved.
 
-## Installation
+The design references [Madelena's Home Assistant Energy View](https://github.com/Madelena/hass-config-public/blob/main/ui/views/energy.yaml). It follows the hierarchy of a large top-flow visualization, a summary of important values, a history chart, and grouped device cards. It does not reproduce the example's network/source-to-circuit flows, because those meters are not available in this Home Assistant installation.
 
-This page is already installed as **Energie & Kosten** in the connected Dwains Dashboard Next instance. To import it elsewhere, use:
+## Install
+
+The page is already installed as **Energie & Kosten** in the target Dwains Dashboard Next system. To import elsewhere use:
 
 https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml
 
-The default DDNext gallery uses the upstream blueprint registry, not this fork.
+## Structure
 
-## Page design
+1. **Monthly consumption breakdown:** a large, responsive flow diagram based on current device **month-to-date kWh** sensors. Source = measured/estimated consumption of configured devices; five actual/multi-room groupings; leaves = individual devices. Areas and devices are sorted by current monthly kWh, and line widths express relative energy amount. On narrow screens the same data is a ranked horizontal bar chart to avoid unreadable SVG details. Colors are accents; surfaces, text and borders follow the Home Assistant light/dark theme.
+2. **Small KPI row:** monthly monetary costs, annual kWh consumption and annual monetary costs. The monthly kWh total is already present in the flow, so there is no redundant fourth KPI.
+3. **Historical consumption:** one native `statistics-graph` with twelve months of grouped monthly changes from three cumulative source meters: Multimedia, Hue and Siebträger. The three-series history is a *partial device comparison*, not a complete household total.
+4. **Device groups:** Kitchen, Office, Living room, Bathroom and cross-room lighting (actual HA room grouping). Eight Mushroom device tiles display kWh and EUR side by side, without duplicating live power readings which are currently mostly unavailable.
 
-The current page deliberately contains **only three informative sections**:
+Only one proportion breakdown exists; monetary shares are not presented as a second copy of energy shares. Costs are displayed as **EUR absolute figures**, not artificially treated as separate patterns when the same electricity rate applies to all devices.
 
-1. **Overview:** four small, theme-aware Mushroom cards for this month's and this year's total kWh and €.
-2. **Monthly proportions:** two native Home Assistant *distribution* cards, one showing current-month kWh shares and one showing current-month € shares for all eight selected devices. These cards have interactive legends and need no custom JavaScript or historical data queries.
-3. **Monthly historical consumption:** a native Home Assistant *statistics-graph* bar chart over twelve months, using only selected cumulative energy meters with usable long-term statistics.
+The historical source card still requires native long-term statistics and may load more slowly than the live overview; the main flow and device tiles require **no recorder history**.
 
-The dashboard's own page title supplies the heading. No duplicate hero, black-only styling, room cards, live-power totals, custom flow diagrams, mini-graphs or extra per-device tiles are used.
+## Actual data
 
-## Important data limitations
-
-- The two distribution charts show the **proportion within the selected devices**. The monetary chart does **not** claim to distribute the whole monthly bill or standing charges.
-- The three currently validated historical consumption sources are Multimedia, Hue and Siebträger. They are **not the total electricity use of all eight devices**. Other cumulative meters have recorded negative corrections or resets that are unsuitable for an unqualified historical display.
-- Historical monthly costs cannot currently be reconstructed accurately from the user's statistics: total-cost monthly statistics include resets or old frozen values, and `sensor.cost_year_total` has no useful long-term statistics. Do not multiply earlier consumption by today's electricity price.
-- There is an optional `historical_cost_meters` input, but no cost-history chart is displayed unless valid cumulative cost meters are provided. The current installation has none selected.
-- Power sensors that were unavailable in the last checked state are no longer used by the page. This removes misleading zero-watt readings from the visualization; the sensor availability issue remains separate.
-
-## Inputs
-
-- `total_energy_month`, `total_cost_month`, `total_energy_year`, `total_cost_year` — KPI sensors.
-- `monthly_consumption` — monthly kWh sensor list with device names.
-- `monthly_costs` — monthly monetary sensor list with device names.
-- `historical_consumption_meters` — cumulative kWh sensors with verified long-term statistics.
-- `historical_cost_meters` — optional cumulative € sensors with valid long-term statistics; currently unused.
+All eight monthly kWh and EUR device sensors returned current values on 2026-11-22. The historical cumulative energy series for Multimedia, Hue and Siebträger had usable monthly changes; other sources were not included due to historical meter resets or corrections. No historical cost graph is displayed, because it cannot be reliably reconstructed from the available cost statistics without incorrectly assigning today's rate to older months.
 
 ## Dependencies
 
-- Mushroom Template Card
-- layout-card
+- button-card: theme-aware dynamic SVG/monthly group bars
+- Mushroom Template Card: KPI and device entries
+- layout-card: intrinsic responsive card groups
+- `statistics-graph`: native Home Assistant component
 
-`distribution` and `statistics-graph` are **native Home Assistant cards**, available in the target HA 2026.11.2 installation; the page no longer needs button-card, ApexCharts or mini-graph-card.
+## Verification and limitations
 
-## Checks
+The JS for the flow was evaluated against actual HA entity states in narrow and wide simulated window sizes, and all 11 Jinja KPI/device templates were executed successfully. The installed DDNext page source matches the GitHub YAML. The exact visual rendering in the user's browser cannot be verified without screenshot functionality.
 
-The four KPI Jinja templates were executed successfully against current HA sensor states. The installed page was re-read after saving and its blueprint source was identical to GitHub. Actual live browser rendering is not available through the connected HA tools and has not been visually confirmed.
-
-## Version
-
-Remain at `version: "1.0"`. No GitHub release has been created.
+This is **not an actual energy transfer/grid Sankey**. No unsupplied grid, circuit, solar or tariff data are fabricated.
