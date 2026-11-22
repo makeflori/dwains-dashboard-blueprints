@@ -138,7 +138,7 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Aligned energy and costs columns, dynamic monthly history, consistent device colours and compact cards.",
+      "description": "Unified energy KPIs, five initially selected monthly consumers, total-cost allocation and five-column device cards.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
