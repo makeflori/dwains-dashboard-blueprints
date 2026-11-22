@@ -73,7 +73,8 @@ blueprint:
       type: "entity-list"
       entity_domain: "sensor"
       default_icon: "mdi:lightbulb"
-      default: []    spark_kitchen:
+      default: []
+    spark_kitchen:
       name: "kitchen power history"
       name_de: "Kurzverlauf kitchen"
       type: "entity-picker"
