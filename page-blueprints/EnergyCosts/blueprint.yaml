@@ -11,6 +11,7 @@ blueprint:
     - "mushroom-template-card"
     - "layout-card"
     - "apexcharts-card"
+    - "button-card"
   input:
     total_energy_month:
       name: "Monthly energy total"
@@ -77,121 +78,180 @@ card:
   layout_type: "custom:grid-layout"
   layout:
     grid-template-columns: "repeat(4,minmax(0,1fr))"
-    grid-template-areas: "\"summary summary summary summary\" \"visual visual visual visual\" \"kitchen office living other\""
-    grid-gap: "12px"
-    max-width: "1370px"
-    margin: "0 auto"
+    grid-template-areas: "\"flow flow flow flow\" \"stats stats stats donut\" \"kitchen office living other\""
+    grid-gap: "11px"
     align-items: "start"
+    max-width: "1400px"
+    margin: "0 auto"
     mediaquery:
-      "(max-width: 1050px)":
+      "(max-width:1050px)":
         grid-template-columns: "repeat(2,minmax(0,1fr))"
-        grid-template-areas: "\"summary summary\" \"visual visual\" \"kitchen office\" \"living other\""
-      "(max-width: 600px)":
+        grid-template-areas: "\"flow flow\" \"stats stats\" \"donut donut\" \"kitchen office\" \"living other\""
+      "(max-width:620px)":
         grid-template-columns: "minmax(0,1fr)"
-        grid-template-areas: "\"summary\" \"visual\" \"kitchen\" \"office\" \"living\" \"other\""
+        grid-template-areas: "\"flow\" \"stats\" \"donut\" \"kitchen\" \"office\" \"living\" \"other\""
   cards:
+    -
+      type: "custom:button-card"
+      view_layout:
+        grid-area: "flow"
+      show_icon: false
+      show_name: false
+      show_state: false
+      show_label: false
+      tap_action:
+        action: "none"
+      triggers_update:
+        - "sensor.power_current_multimedia_calibrated"
+        - "sensor.power_current_kuehlgefrierschrank"
+        - "sensor.power_current_hue_total"
+        - "sensor.power_current_3d_drucker_steckdose"
+        - "sensor.power_current_siebtraeger"
+        - "sensor.power_current_schreibtisch_steckdose"
+        - "sensor.power_current_waschmaschine"
+        - "sensor.power_current_testaufbau"
+      custom_fields:
+        flow: "[[[\nconst data=$json.current_power$;\nconst names=[\"Küche\",\"Büro\",\"Wohnbereich\",\"Weitere\"],colors=[\"#56b89f\",\"#d34b80\",\"#709cdb\",\"#d9ad5a\"];\nconst group=n=>[\"Kühlgefrierschrank\",\"Siebträger\"].includes(n)?0:[\"3D-Drucker\",\"Schreibtisch-Technik\",\"Testaufbau\"].includes(n)?1:n===\"Multimedia\"?2:3;\nconst rows=data.map(d=>{const s=states[d.entity],v=Number(s?.state);return {name:d.name,group:group(d.name),watts:s&&Number.isFinite(v)&&![\"unknown\",\"unavailable\"].includes(s.state)?Math.max(0,v):0}});\nconst groups=names.map((name,i)=>({name,color:colors[i],list:rows.filter(d=>d.group===i),y:76+i*96}));\nconst sum=rows.reduce((s,r)=>s+r.watts,0),fmt=n=>Math.round(n).toLocaleString(\"de-DE\"),esc=s=>String(s).replace(/&/g,\"&amp;\").replace(/</g,\"&lt;\");\nconst heading='<div style=\"color:#d5a8c0;font-size:12px;letter-spacing:1.2px;font-weight:700;margin-bottom:8px\">LEISTUNGSVERTEILUNG · JETZT</div>';\nif(window.innerWidth<770){\nlet html=groups.map(g=>{let n=g.list.reduce((s,r)=>s+r.watts,0);return '<div style=\"display:grid;grid-template-columns:100px 1fr 60px;gap:10px;align-items:center;margin-top:14px;font-size:12px\"><span>'+g.name+'</span><div style=\"height:8px;background:#34323a;border-radius:4px\"><div style=\"height:8px;border-radius:4px;background:'+g.color+';width:'+(sum?100*n/sum:0)+'%\"></div></div><span style=\"text-align:right\">'+fmt(n)+' W</span></div>'}).join('');\nreturn '<div style=\"padding:20px;background:#131217;color:#f6f3f7;border-radius:12px\">'+heading+'<div style=\"font-size:32px;font-weight:750\">'+fmt(sum)+' W</div>'+html+'</div>';\n}\nconst all=groups.flatMap(g=>g.list),ys=[68,106,153,191,229,279,334,372];\nall.forEach((r,i)=>r.y=ys[i]??60+i*40);\nlet paths=\"\",labels=\"\";\nfor(const g of groups){\nlet value=g.list.reduce((s,r)=>s+r.watts,0);\nif(value>0)paths+='<path d=\"M214 229 C320 229 386 '+g.y+' 505 '+g.y+'\" fill=\"none\" stroke=\"'+g.color+'\" stroke-width=\"'+Math.max(2,32*value/Math.max(1,sum))+'\" stroke-opacity=\".65\"/>';\nlabels+='<rect x=\"513\" y=\"'+(g.y-18)+'\" width=\"6\" height=\"36\" rx=\"2\" fill=\"'+g.color+'\"/><text x=\"532\" y=\"'+(g.y-4)+'\" fill=\"#f8f5fa\" font-size=\"15\">'+g.name+'</text><text x=\"532\" y=\"'+(g.y+14)+'\" fill=\"#aba8b4\" font-size=\"12\">'+fmt(value)+' W</text>';\nfor(const d of g.list){\nif(d.watts>0)paths+='<path d=\"M644 '+g.y+' C745 '+g.y+' 765 '+d.y+' 875 '+d.y+'\" fill=\"none\" stroke=\"'+g.color+'\" stroke-opacity=\".7\" stroke-width=\"'+Math.max(2,15*d.watts/Math.max(1,value))+'\"/>';\nlabels+='<rect x=\"880\" y=\"'+(d.y-8)+'\" width=\"5\" height=\"16\" rx=\"2\" fill=\"'+(d.watts?g.color:\"#45444e\")+'\"/><text x=\"895\" y=\"'+(d.y-2)+'\" fill=\"#f3eff5\" font-size=\"13\">'+esc(d.name)+'</text><text x=\"895\" y=\"'+(d.y+14)+'\" fill=\"#a9a6b2\" font-size=\"11\">'+fmt(d.watts)+' W</text>';\n}\n}\nreturn '<div style=\"background:#131217;border:1px solid #34303b;border-radius:13px;padding:16px 21px;box-sizing:border-box;overflow:hidden\">'+heading+'<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1170 415\" width=\"100%\" role=\"img\" aria-label=\"Aufteilung der erfassten Leistung\"><text x=\"52\" y=\"30\" fill=\"#a9a6b2\" font-size=\"12\">ERFASSTE LEISTUNG</text><text x=\"510\" y=\"30\" fill=\"#a9a6b2\" font-size=\"12\">BEREICHE</text><text x=\"880\" y=\"30\" fill=\"#a9a6b2\" font-size=\"12\">GERÄTE</text>'+paths+'<rect x=\"207\" y=\"195\" width=\"8\" height=\"64\" rx=\"2\" fill=\"#d34b80\"/><text x=\"50\" y=\"218\" fill=\"#fff\" font-size=\"36\" font-weight=\"750\">'+fmt(sum)+'</text><text x=\"52\" y=\"239\" fill=\"#aaa7b3\" font-size=\"14\">W aktuell</text>'+labels+'</svg></div>';\n]]]"
+      styles:
+        card:
+          -
+            background: "transparent"
+          -
+            border: "none"
+          -
+            box-shadow: "none"
+          -
+            padding: "0"
+        grid:
+          -
+            grid-template-areas: "\"flow\""
+          -
+            grid-template-columns: "minmax(0,1fr)"
+        custom_fields:
+          flow:
+            -
+              width: "100%"
     -
       type: "custom:layout-card"
       layout_type: "custom:grid-layout"
       view_layout:
-        grid-area: "summary"
+        grid-area: "stats"
       layout:
-        grid-template-columns: "repeat(4,minmax(0,1fr))"
+        grid-template-columns: "repeat(2,minmax(0,1fr))"
         grid-gap: "9px"
-        mediaquery:
-          "(max-width: 750px)":
-            grid-template-columns: "repeat(2,minmax(0,1fr))"
       cards:
         -
           type: "custom:mushroom-template-card"
           primary: "Jetzt · Leistung"
-          secondary: "{% set ids=$json.current_power$ %}{% set ns=namespace(sum=0,seen=0) %}{% for p in ids %}{% if is_number(states(p.entity)) %}{% set ns.sum=ns.sum+(states(p.entity)|float) %}{% set ns.seen=ns.seen+1 %}{% endif %}{% endfor %}{{ ('%.0f'|format(ns.sum)) ~ ' W' if ns.seen>0 else '–' }}"
+          secondary: "{% set ids=[{\"name\":\"Multimedia\",\"entity\":\"sensor.power_current_multimedia_calibrated\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.power_current_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.power_current_hue_total\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.power_current_3d_drucker_steckdose\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.power_current_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.power_current_schreibtisch_steckdose\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.power_current_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.power_current_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set ns=namespace(sum=0,seen=0) %}{% for p in ids %}{% if is_number(states(p.entity)) %}{% set ns.sum=ns.sum+(states(p.entity)|float) %}{% set ns.seen=ns.seen+1 %}{% endif %}{% endfor %}{{ ('%.0f'|format(ns.sum)) ~ ' W' if ns.seen>0 else '–' }}"
           icon: "mdi:flash"
           color: "pink"
           tap_action:
             action: "none"
           card_mod:
-            style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-top:2px solid #CB477D;border-radius:12px;box-shadow:none;}"
+            style: "ha-card {background:#191a20!important;color:#f5f3f7!important;--primary-text-color:#f5f3f7;--secondary-text-color:#a8a5b2;border:1px solid #34323b;border-top:2px solid #d34b80;border-radius:10px;box-shadow:none;}"
         -
           type: "custom:mushroom-template-card"
-          entity: "$total_energy_month$"
-          requires_input: "total_energy_month"
+          entity: "sensor.energy_month_total"
           primary: "Monat · Verbrauch"
-          secondary: "{% set raw=states('$total_energy_month$') %}{{ (('%.2f'|format(raw|float))|replace('.', ',')) ~ ' kWh' if is_number(raw) else '–' }}"
+          secondary: "{% set raw=states('sensor.energy_month_total') %}{{ (('%.2f'|format(raw|float))|replace('.', ',')) ~ ' kWh' if is_number(raw) else '–' }}"
           icon: "mdi:lightning-bolt"
           color: "teal"
           tap_action:
             action: "more-info"
           card_mod:
-            style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-top:2px solid #57B7A0;border-radius:12px;box-shadow:none;}"
+            style: "ha-card {background:#191a20!important;color:#f5f3f7!important;--primary-text-color:#f5f3f7;--secondary-text-color:#a8a5b2;border:1px solid #34323b;border-top:2px solid #56b89f;border-radius:10px;box-shadow:none;}"
         -
           type: "custom:mushroom-template-card"
-          entity: "$total_cost_month$"
-          requires_input: "total_cost_month"
+          entity: "sensor.cost_month_total"
           primary: "Monat · Kosten"
-          secondary: "{% set raw=states('$total_cost_month$') %}{{ (('%.2f'|format(raw|float))|replace('.', ',')) ~ ' €' if is_number(raw) else '–' }}"
+          secondary: "{% set raw=states('sensor.cost_month_total') %}{{ (('%.2f'|format(raw|float))|replace('.', ',')) ~ ' €' if is_number(raw) else '–' }}"
           icon: "mdi:currency-eur"
           color: "amber"
           tap_action:
             action: "more-info"
           card_mod:
-            style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-top:2px solid #D6A25C;border-radius:12px;box-shadow:none;}"
+            style: "ha-card {background:#191a20!important;color:#f5f3f7!important;--primary-text-color:#f5f3f7;--secondary-text-color:#a8a5b2;border:1px solid #34323b;border-top:2px solid #d9ad5a;border-radius:10px;box-shadow:none;}"
         -
           type: "custom:mushroom-template-card"
-          entity: "$total_cost_year$"
-          requires_input: "total_cost_year"
+          entity: "sensor.cost_year_total"
           primary: "Jahr · Kosten"
-          secondary: "{% set raw=states('$total_cost_year$') %}{{ (('%.2f'|format(raw|float))|replace('.', ',')) ~ ' €' if is_number(raw) else '–' }}"
+          secondary: "{% set raw=states('sensor.cost_year_total') %}{{ (('%.2f'|format(raw|float))|replace('.', ',')) ~ ' €' if is_number(raw) else '–' }}"
           icon: "mdi:calendar-check-outline"
           color: "purple"
           tap_action:
             action: "more-info"
           card_mod:
-            style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-top:2px solid #977AC7;border-radius:12px;box-shadow:none;}"
+            style: "ha-card {background:#191a20!important;color:#f5f3f7!important;--primary-text-color:#f5f3f7;--secondary-text-color:#a8a5b2;border:1px solid #34323b;border-top:2px solid #997fc7;border-radius:10px;box-shadow:none;}"
     -
       type: "custom:apexcharts-card"
-      requires_input: "current_power"
       chart_type: "donut"
       locale: "de"
       graph_span: "1h"
       update_interval: "1min"
       header:
         show: true
-        title: "Leistungsverteilung · jetzt"
+        title: "ANTEILE · JETZT"
         show_states: false
-      color_list:
-        - "#CB477D"
-        - "#E7A44D"
-        - "#63B5A8"
-        - "#7799DA"
-        - "#AA83C8"
-        - "#D17E83"
-        - "#65BEC9"
-        - "#9AB3B8"
+      color_list: []
       series:
         -
-          repeat: "current_power"
-          template:
-            entity: "$item.entity$"
-            name: "$item.name$"
-            data_generator: "const n=Number(entity.state);return [[Date.now(),Number.isFinite(n)&&n>0?n:0]];"
-            show:
-              legend_value: false
+          entity: "sensor.power_current_multimedia_calibrated"
+          name: "Multimedia"
+          data_generator: "const n=Number(entity.state);return [[Date.now(),Number.isFinite(n)&&n>0?n:0]];"
+          show:
+            legend_value: false
+        -
+          entity: "sensor.power_current_kuehlgefrierschrank"
+          name: "Kühlgefrierschrank"
+          data_generator: "const n=Number(entity.state);return [[Date.now(),Number.isFinite(n)&&n>0?n:0]];"
+          show:
+            legend_value: false
+        -
+          entity: "sensor.power_current_hue_total"
+          name: "Hue-Beleuchtung"
+          data_generator: "const n=Number(entity.state);return [[Date.now(),Number.isFinite(n)&&n>0?n:0]];"
+          show:
+            legend_value: false
+        -
+          entity: "sensor.power_current_3d_drucker_steckdose"
+          name: "3D-Drucker"
+          data_generator: "const n=Number(entity.state);return [[Date.now(),Number.isFinite(n)&&n>0?n:0]];"
+          show:
+            legend_value: false
+        -
+          entity: "sensor.power_current_siebtraeger"
+          name: "Siebträger"
+          data_generator: "const n=Number(entity.state);return [[Date.now(),Number.isFinite(n)&&n>0?n:0]];"
+          show:
+            legend_value: false
+        -
+          entity: "sensor.power_current_schreibtisch_steckdose"
+          name: "Schreibtisch-Technik"
+          data_generator: "const n=Number(entity.state);return [[Date.now(),Number.isFinite(n)&&n>0?n:0]];"
+          show:
+            legend_value: false
+        -
+          entity: "sensor.power_current_waschmaschine"
+          name: "Waschmaschine"
+          data_generator: "const n=Number(entity.state);return [[Date.now(),Number.isFinite(n)&&n>0?n:0]];"
+          show:
+            legend_value: false
+        -
+          entity: "sensor.power_current_testaufbau"
+          name: "Testaufbau"
+          data_generator: "const n=Number(entity.state);return [[Date.now(),Number.isFinite(n)&&n>0?n:0]];"
+          show:
+            legend_value: false
       apex_config:
         chart:
-          height: 300
+          height: 260
           toolbar:
             show: false
         legend:
           show: true
-          position: "bottom"
+          position: "right"
           fontSize: "11px"
-          markers:
-            width: 8
-            height: 8
-          itemMargin:
-            horizontal: 7
-            vertical: 3
         plotOptions:
           pie:
             donut:
@@ -212,134 +272,262 @@ card:
         stroke:
           width: 0
       card_mod:
-        style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
+        style: "ha-card {background:#191a20!important;color:#f5f3f7!important;--primary-text-color:#f5f3f7;--secondary-text-color:#a8a5b2;border:1px solid #34323b;border-top:2px solid #d34b80;border-radius:10px;box-shadow:none;}"
       view_layout:
-        grid-area: "visual"
+        grid-area: "donut"
     -
       type: "vertical-stack"
       cards:
         -
-          type: "heading"
-          heading: "Küche"
-          heading_style: "subtitle"
-          icon: "mdi:chef-hat"
+          type: "custom:button-card"
+          name: "KÜCHE"
+          show_icon: false
+          show_state: false
+          tap_action:
+            action: "none"
+          styles:
+            card:
+              -
+                background: "transparent"
+              -
+                border: "none"
+              -
+                box-shadow: "none"
+              -
+                padding: "11px 2px 5px"
+            name:
+              -
+                justify-self: "start"
+              -
+                font-size: "12px"
+              -
+                font-weight: "750"
+              -
+                letter-spacing: "1px"
+              -
+                color: "#56b89f"
         -
           type: "custom:layout-card"
           layout_type: "custom:grid-layout"
-          requires_input: "kitchen"
           layout:
             grid-template-columns: "minmax(0,1fr)"
             grid-gap: "7px"
           cards:
             -
-              repeat: "kitchen"
-              template:
-                type: "custom:mushroom-template-card"
-                entity: "$item.entity$"
-                primary: "$item.name$"
-                secondary: "{% set energy=states('$item.entity$') %}{% set costItems=$json.monthly_costs$ %}{% set powerItems=$json.current_power$ %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == '$item.name$' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == '$item.name$' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
-                icon: "$item.icon$"
-                color: "teal"
-                multiline_secondary: true
-                tap_action:
-                  action: "more-info"
-                card_mod:
-                  style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
+              type: "custom:mushroom-template-card"
+              entity: "sensor.verbrauch_monat_kuehlgefrierschrank"
+              primary: "Kühlgefrierschrank"
+              secondary: "{% set energy=states('sensor.verbrauch_monat_kuehlgefrierschrank') %}{% set costItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.cost_month_multimedia\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.cost_month_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.cost_month_huetotal\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.cost_month_3ddrucker\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.cost_month_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.cost_month_schreibtisch\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.cost_month_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.cost_month_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set powerItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.power_current_multimedia_calibrated\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.power_current_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.power_current_hue_total\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.power_current_3d_drucker_steckdose\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.power_current_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.power_current_schreibtisch_steckdose\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.power_current_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.power_current_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == 'Kühlgefrierschrank' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == 'Kühlgefrierschrank' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
+              icon: "mdi:fridge-outline"
+              color: "teal"
+              multiline_secondary: true
+              tap_action:
+                action: "more-info"
+              card_mod:
+                style: "ha-card {background:#191a20!important;color:#f5f3f7!important;--primary-text-color:#f5f3f7;--secondary-text-color:#a8a5b2;border:1px solid #34323b;border-top:2px solid #56b89f;border-radius:10px;box-shadow:none;}"
+            -
+              type: "custom:mushroom-template-card"
+              entity: "sensor.verbrauch_monat_siebtraeger"
+              primary: "Siebträger"
+              secondary: "{% set energy=states('sensor.verbrauch_monat_siebtraeger') %}{% set costItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.cost_month_multimedia\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.cost_month_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.cost_month_huetotal\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.cost_month_3ddrucker\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.cost_month_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.cost_month_schreibtisch\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.cost_month_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.cost_month_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set powerItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.power_current_multimedia_calibrated\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.power_current_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.power_current_hue_total\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.power_current_3d_drucker_steckdose\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.power_current_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.power_current_schreibtisch_steckdose\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.power_current_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.power_current_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == 'Siebträger' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == 'Siebträger' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
+              icon: "mdi:coffee-maker"
+              color: "teal"
+              multiline_secondary: true
+              tap_action:
+                action: "more-info"
+              card_mod:
+                style: "ha-card {background:#191a20!important;color:#f5f3f7!important;--primary-text-color:#f5f3f7;--secondary-text-color:#a8a5b2;border:1px solid #34323b;border-top:2px solid #56b89f;border-radius:10px;box-shadow:none;}"
       view_layout:
         grid-area: "kitchen"
     -
       type: "vertical-stack"
       cards:
         -
-          type: "heading"
-          heading: "Büro"
-          heading_style: "subtitle"
-          icon: "mdi:desk"
+          type: "custom:button-card"
+          name: "BÜRO"
+          show_icon: false
+          show_state: false
+          tap_action:
+            action: "none"
+          styles:
+            card:
+              -
+                background: "transparent"
+              -
+                border: "none"
+              -
+                box-shadow: "none"
+              -
+                padding: "11px 2px 5px"
+            name:
+              -
+                justify-self: "start"
+              -
+                font-size: "12px"
+              -
+                font-weight: "750"
+              -
+                letter-spacing: "1px"
+              -
+                color: "#d34b80"
         -
           type: "custom:layout-card"
           layout_type: "custom:grid-layout"
-          requires_input: "office"
           layout:
             grid-template-columns: "minmax(0,1fr)"
             grid-gap: "7px"
           cards:
             -
-              repeat: "office"
-              template:
-                type: "custom:mushroom-template-card"
-                entity: "$item.entity$"
-                primary: "$item.name$"
-                secondary: "{% set energy=states('$item.entity$') %}{% set costItems=$json.monthly_costs$ %}{% set powerItems=$json.current_power$ %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == '$item.name$' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == '$item.name$' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
-                icon: "$item.icon$"
-                color: "pink"
-                multiline_secondary: true
-                tap_action:
-                  action: "more-info"
-                card_mod:
-                  style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
+              type: "custom:mushroom-template-card"
+              entity: "sensor.verbrauch_monat_3d_drucker"
+              primary: "3D-Drucker"
+              secondary: "{% set energy=states('sensor.verbrauch_monat_3d_drucker') %}{% set costItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.cost_month_multimedia\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.cost_month_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.cost_month_huetotal\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.cost_month_3ddrucker\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.cost_month_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.cost_month_schreibtisch\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.cost_month_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.cost_month_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set powerItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.power_current_multimedia_calibrated\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.power_current_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.power_current_hue_total\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.power_current_3d_drucker_steckdose\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.power_current_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.power_current_schreibtisch_steckdose\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.power_current_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.power_current_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == '3D-Drucker' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == '3D-Drucker' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
+              icon: "mdi:printer-3d"
+              color: "pink"
+              multiline_secondary: true
+              tap_action:
+                action: "more-info"
+              card_mod:
+                style: "ha-card {background:#191a20!important;color:#f5f3f7!important;--primary-text-color:#f5f3f7;--secondary-text-color:#a8a5b2;border:1px solid #34323b;border-top:2px solid #d34b80;border-radius:10px;box-shadow:none;}"
+            -
+              type: "custom:mushroom-template-card"
+              entity: "sensor.verbrauch_monat_schreibtisch"
+              primary: "Schreibtisch-Technik"
+              secondary: "{% set energy=states('sensor.verbrauch_monat_schreibtisch') %}{% set costItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.cost_month_multimedia\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.cost_month_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.cost_month_huetotal\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.cost_month_3ddrucker\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.cost_month_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.cost_month_schreibtisch\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.cost_month_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.cost_month_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set powerItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.power_current_multimedia_calibrated\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.power_current_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.power_current_hue_total\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.power_current_3d_drucker_steckdose\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.power_current_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.power_current_schreibtisch_steckdose\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.power_current_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.power_current_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == 'Schreibtisch-Technik' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == 'Schreibtisch-Technik' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
+              icon: "mdi:desktop-classic"
+              color: "pink"
+              multiline_secondary: true
+              tap_action:
+                action: "more-info"
+              card_mod:
+                style: "ha-card {background:#191a20!important;color:#f5f3f7!important;--primary-text-color:#f5f3f7;--secondary-text-color:#a8a5b2;border:1px solid #34323b;border-top:2px solid #d34b80;border-radius:10px;box-shadow:none;}"
+            -
+              type: "custom:mushroom-template-card"
+              entity: "sensor.verbrauch_monat_testaufbau"
+              primary: "Testaufbau"
+              secondary: "{% set energy=states('sensor.verbrauch_monat_testaufbau') %}{% set costItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.cost_month_multimedia\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.cost_month_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.cost_month_huetotal\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.cost_month_3ddrucker\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.cost_month_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.cost_month_schreibtisch\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.cost_month_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.cost_month_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set powerItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.power_current_multimedia_calibrated\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.power_current_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.power_current_hue_total\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.power_current_3d_drucker_steckdose\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.power_current_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.power_current_schreibtisch_steckdose\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.power_current_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.power_current_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == 'Testaufbau' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == 'Testaufbau' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
+              icon: "mdi:flask-outline"
+              color: "pink"
+              multiline_secondary: true
+              tap_action:
+                action: "more-info"
+              card_mod:
+                style: "ha-card {background:#191a20!important;color:#f5f3f7!important;--primary-text-color:#f5f3f7;--secondary-text-color:#a8a5b2;border:1px solid #34323b;border-top:2px solid #d34b80;border-radius:10px;box-shadow:none;}"
       view_layout:
         grid-area: "office"
     -
       type: "vertical-stack"
       cards:
         -
-          type: "heading"
-          heading: "Wohnbereich"
-          heading_style: "subtitle"
-          icon: "mdi:sofa"
+          type: "custom:button-card"
+          name: "WOHNBEREICH"
+          show_icon: false
+          show_state: false
+          tap_action:
+            action: "none"
+          styles:
+            card:
+              -
+                background: "transparent"
+              -
+                border: "none"
+              -
+                box-shadow: "none"
+              -
+                padding: "11px 2px 5px"
+            name:
+              -
+                justify-self: "start"
+              -
+                font-size: "12px"
+              -
+                font-weight: "750"
+              -
+                letter-spacing: "1px"
+              -
+                color: "#709cdb"
         -
           type: "custom:layout-card"
           layout_type: "custom:grid-layout"
-          requires_input: "living"
           layout:
             grid-template-columns: "minmax(0,1fr)"
             grid-gap: "7px"
           cards:
             -
-              repeat: "living"
-              template:
-                type: "custom:mushroom-template-card"
-                entity: "$item.entity$"
-                primary: "$item.name$"
-                secondary: "{% set energy=states('$item.entity$') %}{% set costItems=$json.monthly_costs$ %}{% set powerItems=$json.current_power$ %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == '$item.name$' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == '$item.name$' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
-                icon: "$item.icon$"
-                color: "purple"
-                multiline_secondary: true
-                tap_action:
-                  action: "more-info"
-                card_mod:
-                  style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
+              type: "custom:mushroom-template-card"
+              entity: "sensor.verbrauch_monat_multimedia_kalibriert"
+              primary: "Multimedia"
+              secondary: "{% set energy=states('sensor.verbrauch_monat_multimedia_kalibriert') %}{% set costItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.cost_month_multimedia\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.cost_month_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.cost_month_huetotal\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.cost_month_3ddrucker\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.cost_month_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.cost_month_schreibtisch\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.cost_month_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.cost_month_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set powerItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.power_current_multimedia_calibrated\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.power_current_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.power_current_hue_total\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.power_current_3d_drucker_steckdose\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.power_current_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.power_current_schreibtisch_steckdose\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.power_current_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.power_current_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == 'Multimedia' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == 'Multimedia' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
+              icon: "mdi:television"
+              color: "purple"
+              multiline_secondary: true
+              tap_action:
+                action: "more-info"
+              card_mod:
+                style: "ha-card {background:#191a20!important;color:#f5f3f7!important;--primary-text-color:#f5f3f7;--secondary-text-color:#a8a5b2;border:1px solid #34323b;border-top:2px solid #709cdb;border-radius:10px;box-shadow:none;}"
       view_layout:
         grid-area: "living"
     -
       type: "vertical-stack"
       cards:
         -
-          type: "heading"
-          heading: "Weitere Geräte"
-          heading_style: "subtitle"
-          icon: "mdi:home-lightning-bolt-outline"
+          type: "custom:button-card"
+          name: "WEITERE"
+          show_icon: false
+          show_state: false
+          tap_action:
+            action: "none"
+          styles:
+            card:
+              -
+                background: "transparent"
+              -
+                border: "none"
+              -
+                box-shadow: "none"
+              -
+                padding: "11px 2px 5px"
+            name:
+              -
+                justify-self: "start"
+              -
+                font-size: "12px"
+              -
+                font-weight: "750"
+              -
+                letter-spacing: "1px"
+              -
+                color: "#d9ad5a"
         -
           type: "custom:layout-card"
           layout_type: "custom:grid-layout"
-          requires_input: "other"
           layout:
             grid-template-columns: "minmax(0,1fr)"
             grid-gap: "7px"
           cards:
             -
-              repeat: "other"
-              template:
-                type: "custom:mushroom-template-card"
-                entity: "$item.entity$"
-                primary: "$item.name$"
-                secondary: "{% set energy=states('$item.entity$') %}{% set costItems=$json.monthly_costs$ %}{% set powerItems=$json.current_power$ %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == '$item.name$' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == '$item.name$' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
-                icon: "$item.icon$"
-                color: "amber"
-                multiline_secondary: true
-                tap_action:
-                  action: "more-info"
-                card_mod:
-                  style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
+              type: "custom:mushroom-template-card"
+              entity: "sensor.verbrauch_monat_hue_geschaetzt"
+              primary: "Hue-Beleuchtung"
+              secondary: "{% set energy=states('sensor.verbrauch_monat_hue_geschaetzt') %}{% set costItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.cost_month_multimedia\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.cost_month_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.cost_month_huetotal\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.cost_month_3ddrucker\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.cost_month_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.cost_month_schreibtisch\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.cost_month_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.cost_month_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set powerItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.power_current_multimedia_calibrated\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.power_current_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.power_current_hue_total\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.power_current_3d_drucker_steckdose\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.power_current_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.power_current_schreibtisch_steckdose\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.power_current_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.power_current_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == 'Hue-Beleuchtung' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == 'Hue-Beleuchtung' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
+              icon: "mdi:lightbulb-group-outline"
+              color: "amber"
+              multiline_secondary: true
+              tap_action:
+                action: "more-info"
+              card_mod:
+                style: "ha-card {background:#191a20!important;color:#f5f3f7!important;--primary-text-color:#f5f3f7;--secondary-text-color:#a8a5b2;border:1px solid #34323b;border-top:2px solid #d9ad5a;border-radius:10px;box-shadow:none;}"
+            -
+              type: "custom:mushroom-template-card"
+              entity: "sensor.verbrauch_monat_waschmaschine"
+              primary: "Waschmaschine"
+              secondary: "{% set energy=states('sensor.verbrauch_monat_waschmaschine') %}{% set costItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.cost_month_multimedia\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.cost_month_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.cost_month_huetotal\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.cost_month_3ddrucker\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.cost_month_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.cost_month_schreibtisch\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.cost_month_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.cost_month_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set powerItems=[{\"name\":\"Multimedia\",\"entity\":\"sensor.power_current_multimedia_calibrated\",\"icon\":\"mdi:television\"},{\"name\":\"Kühlgefrierschrank\",\"entity\":\"sensor.power_current_kuehlgefrierschrank\",\"icon\":\"mdi:fridge-outline\"},{\"name\":\"Hue-Beleuchtung\",\"entity\":\"sensor.power_current_hue_total\",\"icon\":\"mdi:lightbulb-group-outline\"},{\"name\":\"3D-Drucker\",\"entity\":\"sensor.power_current_3d_drucker_steckdose\",\"icon\":\"mdi:printer-3d\"},{\"name\":\"Siebträger\",\"entity\":\"sensor.power_current_siebtraeger\",\"icon\":\"mdi:coffee-maker\"},{\"name\":\"Schreibtisch-Technik\",\"entity\":\"sensor.power_current_schreibtisch_steckdose\",\"icon\":\"mdi:desktop-classic\"},{\"name\":\"Waschmaschine\",\"entity\":\"sensor.power_current_waschmaschine\",\"icon\":\"mdi:washing-machine\"},{\"name\":\"Testaufbau\",\"entity\":\"sensor.power_current_testaufbau\",\"icon\":\"mdi:flask-outline\"}] %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == 'Waschmaschine' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == 'Waschmaschine' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
+              icon: "mdi:washing-machine"
+              color: "amber"
+              multiline_secondary: true
+              tap_action:
+                action: "more-info"
+              card_mod:
+                style: "ha-card {background:#191a20!important;color:#f5f3f7!important;--primary-text-color:#f5f3f7;--secondary-text-color:#a8a5b2;border:1px solid #34323b;border-top:2px solid #d9ad5a;border-radius:10px;box-shadow:none;}"
       view_layout:
         grid-area: "other"
