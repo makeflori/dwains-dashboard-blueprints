@@ -303,8 +303,6 @@ card:
                   action: "more-info"
                 card_mod:
                   style: "ha-card {background:#191a20!important;color:#f5f5f7!important;--primary-text-color:#f5f5f7;--secondary-text-color:#a8a5b2;border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
-      view_layout:
-        grid-area: "kitchen"
         -
           type: "custom:mini-graph-card"
           requires_input: "spark_kitchen"
@@ -326,6 +324,9 @@ card:
             fill: true
           card_mod:
             style: "ha-card {background:#191a20!important;border:1px solid #34323b;border-radius:10px;box-shadow:none;padding:0 7px;}"
+      view_layout:
+        grid-area: "kitchen"
+
     -
       type: "vertical-stack"
       cards:
@@ -356,8 +357,6 @@ card:
                   action: "more-info"
                 card_mod:
                   style: "ha-card {background:#191a20!important;color:#f5f5f7!important;--primary-text-color:#f5f5f7;--secondary-text-color:#a8a5b2;border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
-      view_layout:
-        grid-area: "office"
         -
           type: "custom:mini-graph-card"
           requires_input: "spark_office"
@@ -379,6 +378,9 @@ card:
             fill: true
           card_mod:
             style: "ha-card {background:#191a20!important;border:1px solid #34323b;border-radius:10px;box-shadow:none;padding:0 7px;}"
+      view_layout:
+        grid-area: "office"
+
     -
       type: "vertical-stack"
       cards:
@@ -409,8 +411,6 @@ card:
                   action: "more-info"
                 card_mod:
                   style: "ha-card {background:#191a20!important;color:#f5f5f7!important;--primary-text-color:#f5f5f7;--secondary-text-color:#a8a5b2;border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
-      view_layout:
-        grid-area: "living"
         -
           type: "custom:mini-graph-card"
           requires_input: "spark_living"
@@ -432,6 +432,9 @@ card:
             fill: true
           card_mod:
             style: "ha-card {background:#191a20!important;border:1px solid #34323b;border-radius:10px;box-shadow:none;padding:0 7px;}"
+      view_layout:
+        grid-area: "living"
+
     -
       type: "vertical-stack"
       cards:
@@ -462,9 +465,6 @@ card:
                   action: "more-info"
                 card_mod:
                   style: "ha-card {background:#191a20!important;color:#f5f5f7!important;--primary-text-color:#f5f5f7;--secondary-text-color:#a8a5b2;border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
-      view_layout:
-        grid-area: "other"
-
         -
           type: "custom:mini-graph-card"
           requires_input: "spark_other"
@@ -486,3 +486,5 @@ card:
             fill: true
           card_mod:
             style: "ha-card {background:#191a20!important;border:1px solid #34323b;border-radius:10px;box-shadow:none;padding:0 7px;}"
+      view_layout:
+        grid-area: "other"
