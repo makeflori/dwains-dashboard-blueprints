@@ -138,14 +138,14 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Four energy/cost KPIs, all-device monthly history, an enlarged consumption donut and grouped device cost tiles.",
+      "description": "Aligned energy and costs columns, dynamic monthly history, consistent device colours and compact cards.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
       "custom_cards": [
         "button-card",
         "layout-card",
-        "card-mod"
+        "apexcharts-card"
       ]
     },
     {
