@@ -138,7 +138,7 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Compact monthly device Sankey, energy/cost KPIs, device shares and historical consumption.",
+      "description": "Four energy/cost KPIs, all-device monthly history, an enlarged consumption donut and grouped device cost tiles.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
