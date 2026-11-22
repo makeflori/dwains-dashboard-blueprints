@@ -1,8 +1,8 @@
 blueprint:
   name: "Energy & Costs"
   name_de: "Energie & Kosten"
-  description: "Compact energy dashboard with clear KPIs, consumption trends and device costs."
-  description_de: "Kompakte Energieübersicht mit Kennzahlen, Verbrauchsverlauf und Gerätekosten."
+  description: "Device energy shares and monthly device costs without slow history queries."
+  description_de: "Verbrauchsanteile und Gerätekosten ohne langsame Historienabfragen."
   type: "page"
   author: "makeflori"
   version: "1.0"
@@ -50,23 +50,21 @@ blueprint:
       entity_domain: "sensor"
       default_icon: "mdi:currency-eur"
       default: []
-    cumulative_meters:
-      name: "Lifetime energy meters for monthly trend"
-      name_de: "Gesamtverbrauchszähler für Monatsverlauf"
-      type: "entity-list"
-      entity_domain: "sensor"
-      default_icon: "mdi:chart-column"
-      default: []
 card:
   type: "custom:layout-card"
   layout_type: "custom:grid-layout"
   layout:
-    grid-template-columns: "minmax(0,1fr)"
-    grid-template-areas: "\"summary\" \"trendHead\" \"trend\" \"devicesHead\" \"devices\""
-    grid-gap: "8px"
+    grid-template-columns: "minmax(0,0.92fr) minmax(0,1.08fr)"
+    grid-template-areas: "\"summary summary\" \"chart devices\""
+    grid-gap: "11px"
     align-items: "start"
     max-width: "1240px"
     margin: "0 auto"
+    mediaquery:
+      "(max-width: 860px)":
+        grid-template-columns: "minmax(0,1fr)"
+        grid-template-areas: "\"summary\" \"chart\" \"devices\""
+        grid-gap: "9px"
   cards:
     -
       type: "custom:layout-card"
@@ -83,59 +81,51 @@ card:
       cards:
         -
           type: "custom:mushroom-template-card"
-          requires_input: "total_energy_month"
-          entity: "$total_energy_month$"
+          entity: "sensor.energy_month_total"
           primary: "Verbrauch · Monat"
-          secondary: "{% set s = states('$total_energy_month$') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' kWh' if is_number(s) else '–' }}"
+          secondary: "{% set s = states('sensor.energy_month_total') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' kWh' if is_number(s) else '–' }}"
           icon: "mdi:lightning-bolt"
           color: "blue"
           tap_action:
             action: "more-info"
         -
           type: "custom:mushroom-template-card"
-          requires_input: "total_cost_month"
-          entity: "$total_cost_month$"
+          entity: "sensor.cost_month_total"
           primary: "Kosten · Monat"
-          secondary: "{% set s = states('$total_cost_month$') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' €' if is_number(s) else '–' }}"
+          secondary: "{% set s = states('sensor.cost_month_total') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' €' if is_number(s) else '–' }}"
           icon: "mdi:currency-eur"
           color: "amber"
           tap_action:
             action: "more-info"
         -
           type: "custom:mushroom-template-card"
-          requires_input: "total_energy_year"
-          entity: "$total_energy_year$"
+          entity: "sensor.energy_year_total"
           primary: "Verbrauch · Jahr"
-          secondary: "{% set s = states('$total_energy_year$') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' kWh' if is_number(s) else '–' }}"
+          secondary: "{% set s = states('sensor.energy_year_total') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' kWh' if is_number(s) else '–' }}"
           icon: "mdi:calendar-month"
           color: "teal"
           tap_action:
             action: "more-info"
         -
           type: "custom:mushroom-template-card"
-          requires_input: "total_cost_year"
-          entity: "$total_cost_year$"
+          entity: "sensor.cost_year_total"
           primary: "Kosten · Jahr"
-          secondary: "{% set s = states('$total_cost_year$') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' €' if is_number(s) else '–' }}"
+          secondary: "{% set s = states('sensor.cost_year_total') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' €' if is_number(s) else '–' }}"
           icon: "mdi:wallet-outline"
           color: "purple"
           tap_action:
             action: "more-info"
     -
-      type: "heading"
-      heading: "Verbrauchsverlauf"
-      view_layout:
-        grid-area: "trendHead"
-    -
       type: "custom:apexcharts-card"
-      requires_input: "cumulative_meters"
+      requires_input: "monthly_consumption"
+      chart_type: "donut"
       locale: "de"
+      graph_span: "1h"
+      update_interval: "5min"
       header:
-        show: false
-      graph_span: "365d"
-      now:
-        show: false
-      stacked: true
+        show: true
+        title: "Verbrauchsanteile · Monat"
+        show_states: false
       color_list:
         - "#559FD4"
         - "#65BBA6"
@@ -147,90 +137,67 @@ card:
         - "#A9B6C6"
       series:
         -
-          repeat: "cumulative_meters"
+          repeat: "monthly_consumption"
           template:
             entity: "$item.entity$"
             name: "$item.name$"
-            type: "column"
-            statistics:
-              type: "change"
-              period: "month"
-              align: "start"
-            fill_raw: "null"
-            transform: "return x == null || !Number.isFinite(Number(x)) || Number(x) < 0 ? null : Number(x);"
+            data_generator: "const n = Number(entity.state); return [[Date.now(), Number.isFinite(n) && n >= 0 ? n : 0]];"
             show:
               legend_value: false
-      yaxis:
-        -
-          min: 0
-          decimals: 0
-          apex_config:
-            title:
-              text: "kWh"
       apex_config:
         chart:
-          height: 315
-          stacked: true
+          height: 330
           toolbar:
             show: false
-        xaxis:
-          type: "datetime"
-          labels:
-            format: "MMM yy"
-            datetimeUTC: false
-            hideOverlappingLabels: true
-          tickAmount: 12
-        tooltip:
-          x:
-            format: "MMMM yyyy"
-          shared: true
-        plotOptions:
-          bar:
-            columnWidth: "60%"
-            borderRadius: 2
         legend:
           show: true
           position: "bottom"
           fontSize: "11px"
-          onItemClick:
-            toggleDataSeries: true
+          itemMargin:
+            horizontal: 7
+            vertical: 4
         dataLabels:
           enabled: false
-        grid:
-          borderColor: "var(--divider-color)"
-          strokeDashArray: 3
+        plotOptions:
+          pie:
+            donut:
+              size: "64%"
         stroke:
           width: 0
+        tooltip:
+          x:
+            show: false
       view_layout:
-        grid-area: "trend"
+        grid-area: "chart"
     -
-      type: "heading"
-      heading: "Geräte · aktueller Monat"
-      view_layout:
-        grid-area: "devicesHead"
-    -
-      type: "custom:layout-card"
-      layout_type: "custom:grid-layout"
-      requires_input: "monthly_consumption"
-      view_layout:
-        grid-area: "devices"
-      layout:
-        grid-template-columns: "repeat(4,minmax(0,1fr))"
-        grid-gap: "9px"
-        mediaquery:
-          "(max-width: 1050px)":
-            grid-template-columns: "repeat(2,minmax(0,1fr))"
-          "(max-width: 530px)":
-            grid-template-columns: "minmax(0,1fr)"
+      type: "vertical-stack"
       cards:
         -
-          repeat: "monthly_consumption"
-          template:
-            type: "custom:mushroom-template-card"
-            entity: "$item.entity$"
-            primary: "$item.name$"
-            secondary: "{% set value = states('$item.entity$') %}\n{% set prices = $json.monthly_costs$ %}\n{% set result = namespace(cost='– €') %}\n{% for c in prices %}\n  {% if c.name == '$item.name$' and is_number(states(c.entity)) %}\n    {% set result.cost = (('%.2f' | format(states(c.entity)|float)) | replace('.', ',')) ~ ' €' %}\n  {% endif %}\n{% endfor %}\n{{ (('%.2f' | format(value|float)) | replace('.', ',')) ~ ' kWh' if is_number(value) else '– kWh' }} · {{ result.cost }}"
-            icon: "$item.icon$"
-            color: "blue"
-            tap_action:
-              action: "more-info"
+          type: "heading"
+          heading: "Geräte · Monat"
+        -
+          type: "custom:layout-card"
+          layout_type: "custom:grid-layout"
+          requires_input: "monthly_consumption"
+          layout:
+            grid-template-columns: "repeat(2,minmax(0,1fr))"
+            grid-gap: "8px"
+            mediaquery:
+              "(max-width: 510px)":
+                grid-template-columns: "minmax(0,1fr)"
+          cards:
+            -
+              repeat: "monthly_consumption"
+              template:
+                type: "custom:mushroom-template-card"
+                entity: "$item.entity$"
+                primary: "$item.name$"
+                secondary: "{% set value = states('$item.entity$') %}\n{% set prices = $json.monthly_costs$ %}\n{% set result = namespace(cost='–') %}\n{% for c in prices %}\n  {% if c.name == '$item.name$' and is_number(states(c.entity)) %}\n    {% set result.cost = (('%.2f' | format(states(c.entity)|float)) | replace('.', ',')) %}\n  {% endif %}\n{% endfor %}\n{{ (('%.2f' | format(value|float)) | replace('.', ',')) if is_number(value) else '–' }} kWh · {{ result.cost }} €"
+                icon: "$item.icon$"
+                color: "blue"
+                tap_action:
+                  action: "more-info"
+                card_mod:
+                  style: "ha-card {border-radius:13px; border:1px solid var(--divider-color);box-shadow:none;}"
+      view_layout:
+        grid-area: "devices"
