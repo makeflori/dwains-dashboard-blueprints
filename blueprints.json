@@ -138,7 +138,7 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Compact energy overview with fast current-month device shares and costs for every device.",
+      "description": "Live power distribution and area-grouped energy consumption and costs, inspired by Madelena's energy view.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
