@@ -1,38 +1,48 @@
 # Energy & Costs — Dwains Dashboard Next
 
-Version **1.2.0**. A responsive energy page with differentiated consumption and cost views, without requiring a household grid meter.
+**Unreleased blueprint, version 1.0.** This page is intended to be configured and reviewed before the first release.
 
 ## Install
 
-Open the blueprint page **Energie & Kosten** in Dwains Dashboard Next, or import the page YAML directly:
+The existing Dwains Dashboard Next installation already has the page under **Energie & Kosten**. The dashboard page stores the blueprint YAML and a resolved card configuration.
+
+For another installation, import:
 
 https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml
 
-The Dashboard Next stock gallery loads the official blueprint repository; this fork's entries are not automatically displayed there.
+The stock DDNext blueprint gallery reads the upstream repository, not this fork. Import the URL directly unless the gallery source is changed.
 
-Requires **button-card**, **layout-card**, and **apexcharts-card**. All three were present in the target Home Assistant installation when version 1.1.0 was prepared.
+Required cards: [button-card](https://github.com/custom-cards/button-card), [layout-card](https://github.com/thomasloven/lovelace-layout-card) and [apexcharts-card](https://github.com/RomRider/apexcharts-card).
 
-## Layout and data sources
+## Design and structure
 
-- Four headline tiles for month/year consumption and costs. The total cost sensors may **include the electricity base fee**; the tiles label that clearly.
-- Monthly energy distribution for any number of chosen device-month kWh sensors, shown with a donut chart, ranked horizontal bars, values and shares.
-- Monthly device costs, shown separately with a donut chart and comparison bars. These include only devices for which a cost sensor is provided. They do **not** silently claim to equal the total monthly cost including a base fee.
-- Twelve-month chart using Home Assistant long-term statistics via ApexCharts. Select **cumulative energy meters only**. Negative correction entries are omitted from the chart as missing values, not treated as negative usage or as zero.
+The dashboard's own page title and icon provide the navigation header. **No hero or duplicate page title** is rendered.
 
-All per-device values are taken from current sensor states, not fabricated from a grid consumption sensor.
+### Monat
 
-## Verified example configuration
+- Two side-by-side KPIs: device electricity consumption and costs for the current month.
+- One device comparison with **usage and cost in adjacent columns**.
+- Devices are sorted by their current consumption and have a small relative-consumption bar.
+- Device-specific icons appear **to the left of names**.
+- A dash in the costs column means no cost sensor was selected for this device; it is not a zero-cost claim.
 
-The installed copy uses the eight monthly energy consumers currently configured in the energy dashboard. The selected device-cost sensors are Multimedia, 3D-Drucker, Hue, and Schreibtisch-Technik. The historical chart in the installed dashboard includes all eight configured consumption meters, and excludes invalid negative monthly statistics. Missing months are gaps, not evidence of zero consumption.
+Costs are looked up by matching the configured device names in the separate energy and cost entity lists. Keep names consistent when editing those inputs. A sensor is never invented for an unmeasured device.
 
-Some meters have historical resets/corrections. Their negative month changes are hidden rather than plotted below zero. Correction of the historical statistics is a separate data-quality task.
+### Jahr
 
-## Historical cost accuracy
+- Two side-by-side KPIs for yearly consumption and costs.
+- Twelve-month consumption graph using the selected cumulative kWh sensors with Home Assistant long-term statistics, presented with month/year labels such as **Jan 26**.
+- Historical negative meter corrections are omitted as missing data points (not shown as negative energy and not replaced with 0).
+- Annual device cost comparison for the selected yearly cost sensors.
 
-The page displays cost sensors exactly as configured. It does not calculate previous months using today's rate. Where rates changed, the underlying cost-sensor calculation or an archived cost ledger must preserve historical tariffs. The month/year headline cost figures should be audited separately if they appear inconsistent.
+The installed configuration includes eight device energy meters, four monthly device cost sensors and three yearly device cost sensors. The numbers are read directly from Home Assistant. Monthly and annual total cost entities can include standing charges; device costs are not automatically equal to those totals.
 
-## Implementation details
+## Data integrity
 
-- Cards use theme-aware text, left-aligned icons and responsive layouts. The horizontal axis uses month and year (e.g. Jan 26). Extraneous headings and the clipped footer notice have been removed.
-- Input lists for monthly consumption, monthly costs, and historical meters are user-configurable.
-- Does not modify Home Assistant recorder, statistics, energy source settings, hardware counters, or cost formulas.
+This is a presentation blueprint, not a billing ledger. It does **not** modify the sensors, recorder, price history, or Home Assistant Energy Dashboard configuration. A correct historical monetary view requires the cost sensors themselves to preserve past electricity tariffs; this blueprint does not retroactively multiply past energy use by today's tariff.
+
+The Apple Human Interface Guidelines informed the layout choices: hierarchy, consistent spacing, readable values and restrained use of visual embellishment. This is not a claim of native Apple UI certification.
+
+## Versioning
+
+Keep `blueprint.version: "1.0"` during the current unpublished design iterations. Only advance the version when a first release is explicitly approved.
