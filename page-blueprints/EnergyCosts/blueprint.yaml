@@ -1,13 +1,14 @@
 blueprint:
   name: "Energy & Costs"
   name_de: "Energie & Kosten"
-  description: "Compact energy dashboard with monthly statistics and device-level consumption and costs."
-  description_de: "Kompakte Energieübersicht mit Monatsverlauf sowie Verbrauch und Kosten je Gerät."
+  description: "Compact energy dashboard with clear KPIs, consumption trends and device costs."
+  description_de: "Kompakte Energieübersicht mit Kennzahlen, Verbrauchsverlauf und Gerätekosten."
   type: "page"
   author: "makeflori"
   version: "1.0"
   icon: "mdi:lightning-bolt-circle"
   custom_cards:
+    - "mushroom-template-card"
     - "layout-card"
     - "apexcharts-card"
   input:
@@ -60,37 +61,80 @@ card:
   type: "custom:layout-card"
   layout_type: "custom:grid-layout"
   layout:
-    grid-template-columns: "minmax(0,1.15fr) minmax(0,0.85fr)"
-    grid-template-areas: "\"summary summary\" \"trend devices\""
-    grid-gap: "12px"
+    grid-template-columns: "minmax(0,1fr)"
+    grid-template-areas: "\"summary\" \"trendHead\" \"trend\" \"devicesHead\" \"devices\""
+    grid-gap: "8px"
     align-items: "start"
     max-width: "1240px"
     margin: "0 auto"
-    mediaquery:
-      "(max-width: 900px)":
-        grid-template-columns: "minmax(0,1fr)"
-        grid-template-areas: "\"summary\" \"trend\" \"devices\""
-        grid-gap: "10px"
   cards:
     -
-      type: "markdown"
+      type: "custom:layout-card"
+      layout_type: "custom:grid-layout"
       view_layout:
         grid-area: "summary"
-      content: "| Zeitraum | Verbrauch | Kosten |\n|:--|--:|--:|\n| **Monat** | **{{ ('%.2f' | format(states('$total_energy_month$') | float)) | replace('.', ',') if is_number(states('$total_energy_month$')) else '–' }} kWh** | **{{ ('%.2f' | format(states('$total_cost_month$') | float)) | replace('.', ',') if is_number(states('$total_cost_month$')) else '–' }} €** |\n| **Jahr** | **{{ ('%.2f' | format(states('$total_energy_year$') | float)) | replace('.', ',') if is_number(states('$total_energy_year$')) else '–' }} kWh** | **{{ ('%.2f' | format(states('$total_cost_year$') | float)) | replace('.', ',') if is_number(states('$total_cost_year$')) else '–' }} €** |"
-      card_mod:
-        style: "ha-card { border:1px solid var(--divider-color);border-radius:14px;box-shadow:none; } ha-markdown { font-variant-numeric:tabular-nums; }"
+      layout:
+        grid-template-columns: "repeat(4,minmax(0,1fr))"
+        grid-gap: "9px"
+        mediaquery:
+          "(max-width: 680px)":
+            grid-template-columns: "repeat(2,minmax(0,1fr))"
+            grid-gap: "8px"
+      cards:
+        -
+          type: "custom:mushroom-template-card"
+          requires_input: "total_energy_month"
+          entity: "$total_energy_month$"
+          primary: "Verbrauch · Monat"
+          secondary: "{% set s = states('$total_energy_month$') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' kWh' if is_number(s) else '–' }}"
+          icon: "mdi:lightning-bolt"
+          color: "blue"
+          tap_action:
+            action: "more-info"
+        -
+          type: "custom:mushroom-template-card"
+          requires_input: "total_cost_month"
+          entity: "$total_cost_month$"
+          primary: "Kosten · Monat"
+          secondary: "{% set s = states('$total_cost_month$') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' €' if is_number(s) else '–' }}"
+          icon: "mdi:currency-eur"
+          color: "amber"
+          tap_action:
+            action: "more-info"
+        -
+          type: "custom:mushroom-template-card"
+          requires_input: "total_energy_year"
+          entity: "$total_energy_year$"
+          primary: "Verbrauch · Jahr"
+          secondary: "{% set s = states('$total_energy_year$') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' kWh' if is_number(s) else '–' }}"
+          icon: "mdi:calendar-month"
+          color: "teal"
+          tap_action:
+            action: "more-info"
+        -
+          type: "custom:mushroom-template-card"
+          requires_input: "total_cost_year"
+          entity: "$total_cost_year$"
+          primary: "Kosten · Jahr"
+          secondary: "{% set s = states('$total_cost_year$') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' €' if is_number(s) else '–' }}"
+          icon: "mdi:wallet-outline"
+          color: "purple"
+          tap_action:
+            action: "more-info"
+    -
+      type: "heading"
+      heading: "Verbrauchsverlauf"
+      view_layout:
+        grid-area: "trendHead"
     -
       type: "custom:apexcharts-card"
-      view_layout:
-        grid-area: "trend"
+      requires_input: "cumulative_meters"
+      locale: "de"
       header:
-        show: true
-        title: "Verbrauch · 12 Monate"
-        show_states: false
+        show: false
       graph_span: "365d"
       now:
         show: false
-      locale: "de"
       stacked: true
       color_list:
         - "#559FD4"
@@ -101,13 +145,6 @@ card:
         - "#69B8C7"
         - "#D19ABB"
         - "#A9B6C6"
-      yaxis:
-        -
-          min: 0
-          decimals: 0
-          apex_config:
-            title:
-              text: "kWh"
       series:
         -
           repeat: "cumulative_meters"
@@ -123,9 +160,16 @@ card:
             transform: "return x == null || !Number.isFinite(Number(x)) || Number(x) < 0 ? null : Number(x);"
             show:
               legend_value: false
+      yaxis:
+        -
+          min: 0
+          decimals: 0
+          apex_config:
+            title:
+              text: "kWh"
       apex_config:
         chart:
-          height: 300
+          height: 315
           stacked: true
           toolbar:
             show: false
@@ -145,7 +189,11 @@ card:
             columnWidth: "60%"
             borderRadius: 2
         legend:
-          show: false
+          show: true
+          position: "bottom"
+          fontSize: "11px"
+          onItemClick:
+            toggleDataSeries: true
         dataLabels:
           enabled: false
         grid:
@@ -153,12 +201,36 @@ card:
           strokeDashArray: 3
         stroke:
           width: 0
-      requires_input: "cumulative_meters"
+      view_layout:
+        grid-area: "trend"
     -
-      type: "markdown"
+      type: "heading"
+      heading: "Geräte · aktueller Monat"
+      view_layout:
+        grid-area: "devicesHead"
+    -
+      type: "custom:layout-card"
+      layout_type: "custom:grid-layout"
+      requires_input: "monthly_consumption"
       view_layout:
         grid-area: "devices"
-      content: "{% set energy = $json.monthly_consumption$ -%}\n{% set costs = $json.monthly_costs$ -%}\n{% set ns = namespace(entries=[]) -%}\n{% for e in energy -%}\n{% set value = states(e.entity) | float(-1) -%}\n{% set cost = namespace(text='–') -%}\n{% for c in costs -%}\n{% if c.name == e.name and is_number(states(c.entity)) -%}\n{% set cost.text = ('%.2f' | format(states(c.entity)|float)) | replace('.', ',') -%}\n{% endif -%}\n{% endfor -%}\n{% set ns.entries = ns.entries + [dict(name=e.name, value=value, cost=cost.text)] -%}\n{% endfor -%}\n| Gerät · Monat | kWh | € |\n|:--|--:|--:|\n{% for e in ns.entries | sort(attribute='value', reverse=true) -%}\n| {{ e.name }} | {{ (('%.2f' | format(e.value)) | replace('.', ',')) if e.value >= 0 else '–' }} | {{ e.cost }} |\n{% endfor %}"
-      card_mod:
-        style: "ha-card { border:1px solid var(--divider-color);border-radius:14px;box-shadow:none; } ha-markdown { font-variant-numeric:tabular-nums; }"
-      requires_input: "monthly_consumption"
+      layout:
+        grid-template-columns: "repeat(4,minmax(0,1fr))"
+        grid-gap: "9px"
+        mediaquery:
+          "(max-width: 1050px)":
+            grid-template-columns: "repeat(2,minmax(0,1fr))"
+          "(max-width: 530px)":
+            grid-template-columns: "minmax(0,1fr)"
+      cards:
+        -
+          repeat: "monthly_consumption"
+          template:
+            type: "custom:mushroom-template-card"
+            entity: "$item.entity$"
+            primary: "$item.name$"
+            secondary: "{% set value = states('$item.entity$') %}\n{% set prices = $json.monthly_costs$ %}\n{% set result = namespace(cost='– €') %}\n{% for c in prices %}\n  {% if c.name == '$item.name$' and is_number(states(c.entity)) %}\n    {% set result.cost = (('%.2f' | format(states(c.entity)|float)) | replace('.', ',')) ~ ' €' %}\n  {% endif %}\n{% endfor %}\n{{ (('%.2f' | format(value|float)) | replace('.', ',')) ~ ' kWh' if is_number(value) else '– kWh' }} · {{ result.cost }}"
+            icon: "$item.icon$"
+            color: "blue"
+            tap_action:
+              action: "more-info"
