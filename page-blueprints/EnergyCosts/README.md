@@ -12,15 +12,15 @@ https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/pag
 
 Dwains Dashboard Next's default gallery points to the upstream blueprint repository. The blueprint is already installed as the page **Energie & Kosten** in the target DDNext dashboard and can also be imported via URL elsewhere.
 
-Required HACS frontend cards: **button-card**, **layout-card**, and **apexcharts-card**.
+Required HACS frontend cards: **layout-card** and **apexcharts-card**. The summary and device table use Home Assistant's native markdown card with Jinja templates (no button-card JavaScript).
 
 ## Visual layout
 
 Only three principal components, no duplicate page title or hero:
 
-1. A single, compact KPI strip with monthly energy, monthly cost, yearly energy and yearly cost. On narrow screens it wraps to two columns.
+1. A compact native Markdown summary table with month/year energy and cost values.
 2. One 12-month stacked bar chart. Eight color-coded energy meter series share the same palette as the device list. Historical negative meter corrections are suppressed as missing observations, not misrepresented as negative or zero consumption. The horizontal axis displays month and year, such as `Jan 26`.
-3. One compact device comparison table showing current monthly kWh and known monetary device costs. A dash means no cost sensor was configured for that device. A thin usage bar provides a relative comparison. The rows are sorted by usage.
+3. A compact native Markdown table showing current monthly kWh and known monetary device costs. A dash means no cost sensor was configured. The rows are sorted by consumption.
 
 On wide displays, the chart and device comparison are adjacent. On narrow displays, they stack. The layout favors scanning information over decorative cards.
 
@@ -44,4 +44,4 @@ Do not select monthly-reset utility meters for the historical chart. The chart u
 
 This blueprint is a read-only visualization. It does not change recorder statistics, energy-source settings, cost calculations or technical entity IDs. A total monetary sensor may include fixed standing charges; the sum of individually selected device costs is not intended to equal that total. Historical cost correctness depends on the underlying Home Assistant sensors retaining past tariffs.
 
-Visual verification in a live browser is not currently available because Home Assistant's dashboard screenshot option is disabled. The stored configuration, YAML source and JavaScript expressions have been checked.
+Visual verification in a live browser is not currently available because Home Assistant's dashboard screenshot option is disabled. The two Jinja templates were executed against live Home Assistant sensor states and the dashboard configuration was checked after saving.
