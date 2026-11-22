@@ -12,6 +12,7 @@ blueprint:
     - "layout-card"
     - "apexcharts-card"
     - "button-card"
+    - "mini-graph-card"
   input:
     total_energy_month:
       name: "Monthly energy total"
@@ -72,7 +73,30 @@ blueprint:
       type: "entity-list"
       entity_domain: "sensor"
       default_icon: "mdi:lightbulb"
-      default: []
+      default: []    spark_kitchen:
+      name: "kitchen power history"
+      name_de: "Kurzverlauf kitchen"
+      type: "entity-picker"
+      entity_domain: sensor
+      default: ""
+    spark_office:
+      name: "office power history"
+      name_de: "Kurzverlauf office"
+      type: "entity-picker"
+      entity_domain: sensor
+      default: ""
+    spark_living:
+      name: "living power history"
+      name_de: "Kurzverlauf living"
+      type: "entity-picker"
+      entity_domain: sensor
+      default: ""
+    spark_other:
+      name: "other power history"
+      name_de: "Kurzverlauf other"
+      type: "entity-picker"
+      entity_domain: sensor
+      default: ""
 card:
   type: "custom:layout-card"
   layout_type: "custom:grid-layout"
@@ -280,6 +304,27 @@ card:
                   style: "ha-card {background:#191a20!important;color:#f5f5f7!important;--primary-text-color:#f5f5f7;--secondary-text-color:#a8a5b2;border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
       view_layout:
         grid-area: "kitchen"
+        -
+          type: "custom:mini-graph-card"
+          requires_input: "spark_kitchen"
+          entities:
+            -
+              entity: "$spark_kitchen$"
+          name: ""
+          hours_to_show: 2
+          points_per_hour: 2
+          line_width: 2
+          height: 38
+          color: "#56b89f"
+          show:
+            name: false
+            state: false
+            icon: false
+            labels: false
+            points: false
+            fill: true
+          card_mod:
+            style: "ha-card {background:#191a20!important;border:1px solid #34323b;border-radius:10px;box-shadow:none;padding:0 7px;}"
     -
       type: "vertical-stack"
       cards:
@@ -312,6 +357,27 @@ card:
                   style: "ha-card {background:#191a20!important;color:#f5f5f7!important;--primary-text-color:#f5f5f7;--secondary-text-color:#a8a5b2;border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
       view_layout:
         grid-area: "office"
+        -
+          type: "custom:mini-graph-card"
+          requires_input: "spark_office"
+          entities:
+            -
+              entity: "$spark_office$"
+          name: ""
+          hours_to_show: 2
+          points_per_hour: 2
+          line_width: 2
+          height: 38
+          color: "#d34b80"
+          show:
+            name: false
+            state: false
+            icon: false
+            labels: false
+            points: false
+            fill: true
+          card_mod:
+            style: "ha-card {background:#191a20!important;border:1px solid #34323b;border-radius:10px;box-shadow:none;padding:0 7px;}"
     -
       type: "vertical-stack"
       cards:
@@ -344,6 +410,27 @@ card:
                   style: "ha-card {background:#191a20!important;color:#f5f5f7!important;--primary-text-color:#f5f5f7;--secondary-text-color:#a8a5b2;border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
       view_layout:
         grid-area: "living"
+        -
+          type: "custom:mini-graph-card"
+          requires_input: "spark_living"
+          entities:
+            -
+              entity: "$spark_living$"
+          name: ""
+          hours_to_show: 2
+          points_per_hour: 2
+          line_width: 2
+          height: 38
+          color: "#709cdb"
+          show:
+            name: false
+            state: false
+            icon: false
+            labels: false
+            points: false
+            fill: true
+          card_mod:
+            style: "ha-card {background:#191a20!important;border:1px solid #34323b;border-radius:10px;box-shadow:none;padding:0 7px;}"
     -
       type: "vertical-stack"
       cards:
@@ -376,3 +463,25 @@ card:
                   style: "ha-card {background:#191a20!important;color:#f5f5f7!important;--primary-text-color:#f5f5f7;--secondary-text-color:#a8a5b2;border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
       view_layout:
         grid-area: "other"
+
+        -
+          type: "custom:mini-graph-card"
+          requires_input: "spark_other"
+          entities:
+            -
+              entity: "$spark_other$"
+          name: ""
+          hours_to_show: 2
+          points_per_hour: 2
+          line_width: 2
+          height: 38
+          color: "#d9ad5a"
+          show:
+            name: false
+            state: false
+            icon: false
+            labels: false
+            points: false
+            fill: true
+          card_mod:
+            style: "ha-card {background:#191a20!important;border:1px solid #34323b;border-radius:10px;box-shadow:none;padding:0 7px;}"
