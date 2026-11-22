@@ -138,14 +138,15 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Unified energy KPIs, five initially selected monthly consumers, total-cost allocation and five-column device cards.",
+      "description": "Unified consumption/cost KPI cards, compact history, enlarged cost donut with verified standing charge and five device columns.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
       "custom_cards": [
         "button-card",
         "layout-card",
-        "apexcharts-card"
+        "apexcharts-card",
+        "card-mod"
       ]
     },
     {
