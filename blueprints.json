@@ -138,14 +138,14 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Compact energy flow and a concise monthly history/summary row, with device costs by area.",
+      "description": "Compact monthly device Sankey, energy/cost KPIs, device shares and historical consumption.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
       "custom_cards": [
         "button-card",
-        "mushroom-template-card",
-        "layout-card"
+        "layout-card",
+        "card-mod"
       ]
     },
     {
