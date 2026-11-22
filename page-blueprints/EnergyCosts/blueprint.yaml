@@ -1,16 +1,16 @@
 blueprint:
   name: "Energy & Costs"
   name_de: "Energie & Kosten"
-  description: "Monthly device energy flow, concise costs and statistics, grouped devices; inspired by Madelena's layout."
-  description_de: "Verbrauchsfluss des Monats, kompakte Kosten und Verlauf, Geräte nach Bereichen; angelehnt an Madelenas Gestaltung."
+  description: "Compact monthly device Sankey, energy/cost KPIs, device shares and historical consumption."
+  description_de: "Kompakter Monatsverbrauchsfluss, Energie- und Kostenkennzahlen, Geräteanteile und Verbrauchsverlauf."
   icon: "mdi:lightning-bolt-circle"
   type: "page"
   author: "makeflori"
   version: "1.0"
   custom_cards:
     - "button-card"
-    - "mushroom-template-card"
     - "layout-card"
+    - "card-mod"
   input:
     total_energy_month:
       name: "Monthly total consumption"
