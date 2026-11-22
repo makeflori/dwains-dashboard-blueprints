@@ -138,7 +138,7 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Unified energy/cost KPIs with monthly historical consumption and a native interactive ApexCharts cost donut.",
+      "description": "Consistent two-row KPIs, month-grouped energy history and interactive cost donut with full consumption, cost and percentage table.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
@@ -146,6 +146,7 @@
         "button-card",
         "layout-card",
         "apexcharts-card",
+        "vertical-stack-in-card",
         "card-mod"
       ]
     },
