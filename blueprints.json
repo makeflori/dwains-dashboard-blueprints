@@ -138,9 +138,9 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Clean consumption and cost dashboard with device comparisons and monthly trends.",
+      "description": "Consumption and costs by device, with monthly comparisons and yearly trends.",
       "type": "page",
-      "version": "1.2.0",
+      "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
       "custom_cards": [
         "button-card",
