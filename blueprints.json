@@ -143,7 +143,6 @@
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
       "custom_cards": [
-        "button-card",
         "layout-card",
         "apexcharts-card"
       ]
