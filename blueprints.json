@@ -138,7 +138,7 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Consistent two-row KPIs, month-grouped energy history and interactive cost donut with full consumption, cost and percentage table.",
+      "description": "Responsive 2x2 mobile KPIs, six-month energy comparison and interactive pie with full device cost and consumption table.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
