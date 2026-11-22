@@ -1,39 +1,43 @@
 # Energy & Costs — DDNext
 
-**Status: unreleased, version 1.0.** Do not bump version before the initial release is approved.
+**Status: unreleased, version 1.0.** The initial release/version bump is still pending approval.
 
-The design references [Madelena's Home Assistant Energy View](https://github.com/Madelena/hass-config-public/blob/main/ui/views/energy.yaml). It follows the hierarchy of a compact top-flow visualization, a side-by-side summary/history row, and grouped device cards. It does not reproduce the example's network/source-to-circuit flows, because those meters are not available in this Home Assistant installation.
+This page is informed by [Madelena's Home Assistant Energy View](https://github.com/Madelena/hass-config-public/blob/main/ui/views/energy.yaml). It adapts the denser, more data-focused layout to available energy and cost sensors. It is **not** a grid/source/circuit electricity Sankey: those quantities are not provided by this installation.
 
-## Install
+## Install and source
 
-The page is already installed as **Energie & Kosten** in the target Dwains Dashboard Next system. To import elsewhere use:
+The page is installed as **Energie & Kosten** in the target Dwains Dashboard Next dashboard. Reusable source:
 
 https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml
 
-## Structure
+Updating the GitHub YAML alone does **not** update an existing page. DDNext stores both the blueprint YAML and the resolved card configuration in its dashboard strategy's `pages`. Both were updated together for the installed page.
 
-1. **Monthly consumption breakdown:** a compact, responsive flow diagram based on current device **month-to-date kWh** sensors. Source = measured/estimated consumption of configured devices; five actual/multi-room groupings; leaves = individual devices. Areas and devices are sorted by current monthly kWh, and line widths express relative energy amount. On narrow screens the same data is a ranked horizontal bar chart to avoid unreadable SVG details. Colors are accents; surfaces, text and borders follow the Home Assistant light/dark theme.
-2. **Summary beside history:** three concise KPIs (monthly monetary costs, annual kWh consumption and annual monetary costs) alongside a compact history graph on desktop; stacked on mobile. The monthly kWh total is already present in the flow, so there is no redundant fourth KPI.
-3. **Historical consumption:** one native `statistics-graph` with a fixed-height 295px card and explicit `stat_types: [change]`, using twelve months of grouped monthly changes from three cumulative source meters: Multimedia, Hue and Siebträger. The three-series history is a *partial device comparison*, not a complete household total.
-4. **Device groups:** three wider columns at typical desktop widths (one column on phones), grouped as Kitchen, Office, Living room, Bathroom and cross-room lighting (actual HA room grouping). Eight Mushroom device tiles display kWh and EUR side by side, without duplicating live power readings which are currently mostly unavailable.
+## Layout
 
-Only one proportion breakdown exists; monetary shares are not presented as a second copy of energy shares. Costs are displayed as **EUR absolute figures**, not artificially treated as separate patterns when the same electricity rate applies to all devices.
+1. **Recorded device flow (month-to-date):** compact, filled SVG ribbons for measured/estimated device consumption → configured groups → devices. Group and device positions are sorted by month-to-date kWh. Widths represent measured quantities; the diagram is not a simulation of physical power flow. The phone layout switches to ranked expandable group bars with device details. Background, borders and text use Home Assistant theme tokens; category colors are accents.
+2. **Overview:** four numerical KPIs for current month's overall kWh and EUR plus annual kWh and EUR. The total-month sensor is optional for new installations; if unavailable, the current sum of listed devices is shown. The accompanying donut displays **device shares of the recorded device total** once, in kWh; no duplicate price-share chart is drawn.
+3. **History:** one native `statistics-graph` showing monthly `change` for configured *cumulative* energy meters over the last 180 days. This is a selected-device comparison, not a complete household history. It requires recorder long-term statistics and may load after the instant cards.
+4. **Devices:** grouped device cards show month-to-date kWh, EUR cost, and a bar labeled with that device's percentage of the **recorded devices**. Device cards open the underlying consumption entity on tap. No fabricated history sparklines or live-W values are shown.
+5. **Performance:** the Sankey and overview compute from current HA states without recorder requests. Device cards subscribe only to the configured consumption and cost sensors; the overview likewise listens to its actual dependencies. Only the history graph queries long-term recorder data.
 
-The historical source card still requires native long-term statistics and may load more slowly than the live overview; the main flow and device tiles require **no recorder history**.
+The optional `total_energy_month` input refers to the whole monthly energy counter, so its figure can differ slightly from the sum of the eight selected devices visualized in the flow and donut.
 
-## Actual data
+## Existing HA bindings
 
-All eight monthly kWh and EUR device sensors returned current values on 2026-11-22. The historical cumulative energy series for Multimedia, Hue and Siebträger had usable monthly changes; other sources were not included due to historical meter resets or corrections. No historical cost graph is displayed, because it cannot be reliably reconstructed from the available cost statistics without incorrectly assigning today's rate to older months.
+The installed page preserves its 8 device consumption entities, 8 device cost entities, 5 configured groups and 3 cumulative historical source meters (Multimedia, Hue, Siebträger). All existing entity IDs and associations are retained.
+
+The historical comparison should have data: in Home Assistant, the three configured source sensors returned monthly `change` statistics for the preceding six months on 2026-11-22. The former graph occupied excessive space in the actual dashboard screenshot; this revision removes the nested layout wrappers and shortens the window.
 
 ## Dependencies
 
-- button-card: theme-aware dynamic SVG/monthly group bars
-- Mushroom Template Card: KPI and device entries
-- layout-card: intrinsic responsive card groups
-- `statistics-graph`: native Home Assistant component
+- [button-card](https://github.com/custom-cards/button-card): dynamic flow, overview and device layouts
+- [layout-card](https://github.com/thomasloven/lovelace-layout-card): responsive grouping
+- Home Assistant native `statistics-graph`: historical monthly aggregates
 
-## Verification and limitations
+## Validation and limitations
 
-The JS for the flow was evaluated against actual HA entity states in narrow and wide simulated window sizes, and all 11 Jinja KPI/device templates were executed successfully. The installed DDNext page source matches the GitHub YAML. The exact visual rendering in the user's browser cannot be verified without screenshot functionality.
+The installed page's stored source was read before editing. After the rewrite, its complete source was read back and confirmed byte-for-byte identical to the GitHub blueprint. The resolved card configuration includes the new flow, overview, historical graph and eight device cards, and the same entity bindings were preserved.
 
-This is **not an actual energy transfer/grid Sankey**. No unsupplied grid, circuit, solar or tariff data are fabricated.
+**Browser rendering has not yet been visually verified.** In particular, the native statistics graph should be inspected in the real DDNext frontend after it finishes loading; availability of long-term statistics alone does not guarantee a correct frontend render.
+
+The page uses light/dark theme variables, no hard-coded black card backgrounds, and no historical cost series derived from applying today's rate to old electricity consumption.
