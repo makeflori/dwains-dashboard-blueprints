@@ -1,34 +1,46 @@
 # Energy & Costs — Dwains Dashboard Next
 
-**Unreleased version 1.0.** Do not increase the version until the first release is approved.
+**Status: unreleased. Blueprint version stays 1.0 until its first approved release.**
 
-The page is already installed in Dwains Dashboard Next as **Energie & Kosten**.
+## Installation
 
-## Blueprint
+Existing installation: DDNext page **Energie & Kosten**. Elsewhere, import directly from:
 
 https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml
 
-The stock DDNext gallery loads upstream blueprints, so use the URL when importing into a different installation.
+The stock DDNext gallery loads the upstream blueprint repository. This fork has its own catalog entry, but the installed page also stores the complete blueprint.
 
-## Compact layout
+## Layout
 
-The existing DDNext page header supplies the title and icon. No duplicate hero is rendered.
+The DDNext page supplies the title and icon. There is no additional hero.
 
-- **Four compact KPIs** arranged in one row on desktop and two columns on mobile: monthly consumption, monthly costs, yearly consumption and yearly costs.
-- **Energy history** displays 12 months of cumulative energy consumption as a stacked bar chart with a visible legend and German month/year labels. Negative corrections in historical statistics are omitted as missing data points.
-- **Eight compact device tiles**, four columns on wider screens and fewer on narrower screens, each showing a device icon, device name, monthly kWh and current monthly euro cost when a cost sensor exists. A dash means no device cost sensor exists; it is not a claim of zero cost.
+- **Four compact overview tiles:** monthly kWh, monthly €, annual kWh, annual €.
+- **Monthly device shares:** an ApexCharts donut based only on current monthly energy sensor states, with a device legend. It uses `data_generator` for each series instead of querying 12 months of recorder long-term statistics. This is a month distribution, **not a historical timeline**.
+- **Eight device cards:** a two-column grid of Mushroom Template cards (single column on narrow screens), each with a device icon, monthly consumption and monthly monetary costs.
 
-The cards use the **Mushroom Template Card** for typography and semantic icon styling, not manually generated markdown tables. The graph uses **ApexCharts**, and placement uses **layout-card**. All three are installed in the target Home Assistant.
+The recorded historical energy statistics are not deleted or changed; they are simply not loaded on this overview page. Individual sensor history remains accessible through Home Assistant.
 
-## Inputs
+## Data sources
 
-- `total_energy_month`, `total_cost_month`, `total_energy_year`, `total_cost_year`: headline sensor entities
-- `monthly_consumption`: one or more monthly energy sensors with names and icons
-- `monthly_costs`: monthly monetary sensors; match device names to consumption entries to show costs
-- `cumulative_meters`: lifetime energy meter sensors with long-term statistics
+Select an energy sensor for each entry in `monthly_consumption`. Add corresponding monetary sensors to `monthly_costs` using the same device name (for example, `Multimedia`). The blueprint matches costs by name and never invents a monetary value where no sensor exists.
 
-The blueprint does not modify meter data, energy settings, tariff history or Home Assistant automations. Total cost sensors may include fixed fees that are not represented among the device cost tiles.
+The reference Home Assistant installation now contains monthly cost sensors for all eight devices. Four were added alongside tariff correction helpers:
 
-## Checks
+- Kühlgefrierschrank: `sensor.cost_month_kuehlgefrierschrank`
+- Waschmaschine: `sensor.cost_month_waschmaschine`
+- Siebträger: `sensor.cost_month_siebtraeger`
+- Testaufbau: `sensor.cost_month_testaufbau`
 
-Before installation, all 12 Mushroom secondary templates were rendered successfully against the current Home Assistant state. The stored DDNext page and GitHub YAML were verified to have identical blueprint source. Actual browser rendering still needs visual confirmation after refresh.
+Existing cost sensors cover Multimedia, Hue, 3D-Drucker and Schreibtisch-Technik. The newly created monthly cost sensors use the same rate-change correction logic as the existing sensors. The underlying Home Assistant automation also resets and updates their correction helpers.
+
+The main monthly/annual cost tiles use the existing total-cost entities; those totals can include a standing fee and need not equal the sum of device-only costs.
+
+## Dependencies
+
+- Mushroom Template Card
+- layout-card
+- apexcharts-card
+
+The chart uses ApexCharts `chart_type: donut` with `data_generator`, so the main page avoids recorder requests. The user should check browser rendering after deployment; live screenshot access is not enabled in this installation.
+
+No firmware, equipment, recorder data or energy source preferences are changed by the blueprint.
