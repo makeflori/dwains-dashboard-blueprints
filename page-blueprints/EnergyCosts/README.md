@@ -1,47 +1,34 @@
 # Energy & Costs — Dwains Dashboard Next
 
-**Status: unreleased, version 1.0.** Keep the version at 1.0 until the initial release is explicitly approved.
+**Unreleased version 1.0.** Do not increase the version until the first release is approved.
 
-## Purpose
+The page is already installed in Dwains Dashboard Next as **Energie & Kosten**.
 
-A compact, grid-meter-independent view of current device electricity consumption, available device cost sensors and the last 12 months of energy usage.
-
-Import URL:
+## Blueprint
 
 https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml
 
-Dwains Dashboard Next's default gallery points to the upstream blueprint repository. The blueprint is already installed as the page **Energie & Kosten** in the target DDNext dashboard and can also be imported via URL elsewhere.
+The stock DDNext gallery loads upstream blueprints, so use the URL when importing into a different installation.
 
-Required HACS frontend cards: **layout-card** and **apexcharts-card**. The summary and device table use Home Assistant's native markdown card with Jinja templates (no button-card JavaScript).
+## Compact layout
 
-## Visual layout
+The existing DDNext page header supplies the title and icon. No duplicate hero is rendered.
 
-Only three principal components, no duplicate page title or hero:
+- **Four compact KPIs** arranged in one row on desktop and two columns on mobile: monthly consumption, monthly costs, yearly consumption and yearly costs.
+- **Energy history** displays 12 months of cumulative energy consumption as a stacked bar chart with a visible legend and German month/year labels. Negative corrections in historical statistics are omitted as missing data points.
+- **Eight compact device tiles**, four columns on wider screens and fewer on narrower screens, each showing a device icon, device name, monthly kWh and current monthly euro cost when a cost sensor exists. A dash means no device cost sensor exists; it is not a claim of zero cost.
 
-1. A compact native Markdown summary table with month/year energy and cost values.
-2. One 12-month stacked bar chart. Eight color-coded energy meter series share the same palette as the device list. Historical negative meter corrections are suppressed as missing observations, not misrepresented as negative or zero consumption. The horizontal axis displays month and year, such as `Jan 26`.
-3. A compact native Markdown table showing current monthly kWh and known monetary device costs. A dash means no cost sensor was configured. The rows are sorted by consumption.
+The cards use the **Mushroom Template Card** for typography and semantic icon styling, not manually generated markdown tables. The graph uses **ApexCharts**, and placement uses **layout-card**. All three are installed in the target Home Assistant.
 
-On wide displays, the chart and device comparison are adjacent. On narrow displays, they stack. The layout favors scanning information over decorative cards.
+## Inputs
 
-The eight device-month sensors and eight lifetime energy meters in the installed page are existing Home Assistant entities. Monthly cost sensors are separately configured for four devices; no missing monetary values are fabricated. The four total KPI sensors are independent of a grid-source registration.
+- `total_energy_month`, `total_cost_month`, `total_energy_year`, `total_cost_year`: headline sensor entities
+- `monthly_consumption`: one or more monthly energy sensors with names and icons
+- `monthly_costs`: monthly monetary sensors; match device names to consumption entries to show costs
+- `cumulative_meters`: lifetime energy meter sensors with long-term statistics
 
-## Configuration inputs
+The blueprint does not modify meter data, energy settings, tariff history or Home Assistant automations. Total cost sensors may include fixed fees that are not represented among the device cost tiles.
 
-| Input | Value |
-|---|---|
-| `total_energy_month` | Current monthly total, kWh |
-| `total_cost_month` | Current monthly total, EUR |
-| `total_energy_year` | Current yearly total, kWh |
-| `total_cost_year` | Current yearly total, EUR |
-| `monthly_consumption` | Per-device monthly kWh sensors (entity-list) |
-| `monthly_costs` | Per-device monetary cost sensors (entity-list); names must match the monthly consumption entries |
-| `cumulative_meters` | Per-device lifetime kWh meters with recorder long-term statistics for the 12-month chart |
+## Checks
 
-Do not select monthly-reset utility meters for the historical chart. The chart uses statistics of cumulative counters.
-
-## Limitations
-
-This blueprint is a read-only visualization. It does not change recorder statistics, energy-source settings, cost calculations or technical entity IDs. A total monetary sensor may include fixed standing charges; the sum of individually selected device costs is not intended to equal that total. Historical cost correctness depends on the underlying Home Assistant sensors retaining past tariffs.
-
-Visual verification in a live browser is not currently available because Home Assistant's dashboard screenshot option is disabled. The two Jinja templates were executed against live Home Assistant sensor states and the dashboard configuration was checked after saving.
+Before installation, all 12 Mushroom secondary templates were rendered successfully against the current Home Assistant state. The stored DDNext page and GitHub YAML were verified to have identical blueprint source. Actual browser rendering still needs visual confirmation after refresh.
