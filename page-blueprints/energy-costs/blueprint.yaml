@@ -1,0 +1,236 @@
+blueprint:
+  name: Energy & Costs
+  name_de: Energie & Kosten
+  description: Energy consumption, device costs and long-term trends without requiring a grid meter.
+  description_de: Geräteverbräuche, Stromkosten und Monatsverläufe ohne Netzstromzähler.
+  icon: mdi:lightning-bolt-circle
+  author: makeflori
+  version: "1.0.0"
+  type: page
+  custom_cards:
+    - button-card
+  input:
+    title:
+      name: Page title
+      name_de: Seitentitel
+      type: text-field
+      default: Energie & Kosten
+    total_energy_month:
+      name: Total consumption this month (optional)
+      name_de: Verbrauch dieses Monats gesamt (optional)
+      type: entity-picker
+      entity_domain: sensor
+      default: ""
+    total_cost_month:
+      name: Total cost this month (optional)
+      name_de: Kosten dieses Monats gesamt (optional)
+      type: entity-picker
+      entity_domain: sensor
+      default: ""
+    total_energy_year:
+      name: Total consumption this year (optional)
+      name_de: Verbrauch dieses Jahres gesamt (optional)
+      type: entity-picker
+      entity_domain: sensor
+      default: ""
+    total_cost_year:
+      name: Total cost this year (optional)
+      name_de: Kosten dieses Jahres gesamt (optional)
+      type: entity-picker
+      entity_domain: sensor
+      default: ""
+    monthly_consumption:
+      name: Monthly consumption by device
+      name_de: Monatsverbrauch je Gerät
+      description: Select monthly kWh sensors. Add as many as required.
+      description_de: Monatliche kWh-Sensoren auswählen; beliebig viele Geräte.
+      type: entity-list
+      entity_domain: sensor
+      default_icon: mdi:flash
+      default: []
+    monthly_costs:
+      name: Monthly costs by device
+      name_de: Monatskosten je Gerät
+      description: Select existing monetary sensors. No current-price back-calculation.
+      description_de: Vorhandene Kostensensoren auswählen; keine rückwirkende Neuberechnung.
+      type: entity-list
+      entity_domain: sensor
+      default_icon: mdi:currency-eur
+      default: []
+    yearly_costs:
+      name: Yearly costs by device
+      name_de: Jahreskosten je Gerät
+      type: entity-list
+      entity_domain: sensor
+      default_icon: mdi:calendar
+      default: []
+    cumulative_meters:
+      name: Cumulative energy meters for monthly history
+      name_de: Gesamtverbrauchszähler für den Monatsverlauf
+      description: Choose cumulative kWh sensors with long-term statistics (not monthly utility meters).
+      description_de: Gesamtverbrauchszähler mit Langzeitstatistik auswählen, keine zurückgesetzten Monatszähler.
+      type: entity-list
+      entity_domain: sensor
+      default_icon: mdi:chart-bar
+      default: []
+
+card:
+  type: vertical-stack
+  cards:
+    - type: markdown
+      content: |
+        # $title$
+        Geräteverbräuche und Kosten unabhängig von einem Netzstromzähler.
+      card_mod:
+        style: |
+          ha-card { background: transparent; border: 0; box-shadow: none; padding: 0; }
+    - type: grid
+      columns: 2
+      square: false
+      cards:
+        - type: custom:button-card
+          requires_input: total_energy_month
+          entity: $total_energy_month$
+          name: Verbrauch · Monat
+          icon: mdi:lightning-bolt
+          show_state: true
+          tap_action: {action: more-info}
+          styles:
+            card: [ "border-radius: 16px", "padding: 18px", "box-shadow: none" ]
+            icon: [ "width: 28px", "color: var(--primary-color)" ]
+            name: [ "font-size: 13px", "color: var(--secondary-text-color)", "font-weight: 500" ]
+            state: [ "font-size: 26px", "font-weight: 700", "padding-top: 6px" ]
+        - type: custom:button-card
+          requires_input: total_cost_month
+          entity: $total_cost_month$
+          name: Kosten · Monat
+          icon: mdi:currency-eur
+          show_state: true
+          tap_action: {action: more-info}
+          styles:
+            card: [ "border-radius: 16px", "padding: 18px", "box-shadow: none" ]
+            icon: [ "width: 28px", "color: var(--warning-color)" ]
+            name: [ "font-size: 13px", "color: var(--secondary-text-color)", "font-weight: 500" ]
+            state: [ "font-size: 26px", "font-weight: 700", "padding-top: 6px" ]
+        - type: custom:button-card
+          requires_input: total_energy_year
+          entity: $total_energy_year$
+          name: Verbrauch · Jahr
+          icon: mdi:calendar
+          show_state: true
+          tap_action: {action: more-info}
+          styles:
+            card: [ "border-radius: 16px", "padding: 18px", "box-shadow: none" ]
+            icon: [ "width: 28px", "color: var(--primary-color)" ]
+            name: [ "font-size: 13px", "color: var(--secondary-text-color)", "font-weight: 500" ]
+            state: [ "font-size: 26px", "font-weight: 700", "padding-top: 6px" ]
+        - type: custom:button-card
+          requires_input: total_cost_year
+          entity: $total_cost_year$
+          name: Kosten · Jahr
+          icon: mdi:cash
+          show_state: true
+          tap_action: {action: more-info}
+          styles:
+            card: [ "border-radius: 16px", "padding: 18px", "box-shadow: none" ]
+            icon: [ "width: 28px", "color: var(--warning-color)" ]
+            name: [ "font-size: 13px", "color: var(--secondary-text-color)", "font-weight: 500" ]
+            state: [ "font-size: 26px", "font-weight: 700", "padding-top: 6px" ]
+    - type: markdown
+      requires_input: monthly_consumption
+      content: "### Verbrauch je Gerät · aktueller Monat"
+    - type: grid
+      requires_input: monthly_consumption
+      columns: 2
+      square: false
+      cards:
+        - repeat: monthly_consumption
+          template:
+            type: custom:button-card
+            entity: $item.entity$
+            name: $item.name$
+            icon: $item.icon$
+            show_state: true
+            show_label: false
+            tap_action: {action: more-info}
+            styles:
+              card: [ "border-radius: 14px", "padding: 16px", "box-shadow: none" ]
+              grid: [ "grid-template-areas: 'i n' 's s'", "grid-template-columns: 38px 1fr" ]
+              icon: [ "width: 24px", "color: var(--primary-color)" ]
+              name: [ "justify-self: start", "font-weight: 600", "font-size: 14px", "white-space: normal" ]
+              state: [ "justify-self: start", "font-size: 22px", "font-weight: 700", "padding-top: 8px" ]
+    - type: markdown
+      requires_input: monthly_costs
+      content: |
+        ### Kosten je Gerät · aktueller Monat
+        Die Balken vergleichen die ausgewählten Geräte miteinander; 100 % entspricht dem höchsten Monatsbetrag.
+    - type: grid
+      requires_input: monthly_costs
+      columns: 2
+      square: false
+      cards:
+        - repeat: monthly_costs
+          template:
+            type: custom:button-card
+            entity: $item.entity$
+            name: $item.name$
+            icon: $item.icon$
+            show_state: true
+            tap_action: {action: more-info}
+            custom_fields:
+              bar: |
+                [[[
+                  const rows = $json.monthly_costs$;
+                  const numbers = rows.map(row => Number(states[row.entity]?.state)).filter(Number.isFinite);
+                  const maxValue = Math.max(0, ...numbers);
+                  const current = Number(entity?.state);
+                  const percent = maxValue > 0 && Number.isFinite(current)
+                    ? Math.max(0, Math.min(100, current / maxValue * 100)) : 0;
+                  return '<div title="' + percent.toFixed(0) + '% of the highest selected device cost" style="height:7px;border-radius:99px;background:var(--divider-color);overflow:hidden;margin-top:12px">' +
+                    '<div style="height:100%;width:' + percent + '%;background:var(--warning-color);border-radius:99px"></div></div>';
+                ]]]
+            styles:
+              card: [ "border-radius: 14px", "padding: 16px", "box-shadow: none" ]
+              grid: [ "grid-template-areas: 'i n' 's s' 'bar bar'", "grid-template-columns: 38px 1fr" ]
+              icon: [ "width: 24px", "color: var(--warning-color)" ]
+              name: [ "justify-self: start", "font-weight: 600", "font-size: 14px", "white-space: normal" ]
+              state: [ "justify-self: start", "font-size: 22px", "font-weight: 700", "padding-top: 8px" ]
+              custom_fields:
+                bar: [ "width: 100%" ]
+    - type: markdown
+      requires_input: cumulative_meters
+      content: "### Verbrauchsverlauf · letzte 12 Monate"
+    - type: statistics-graph
+      requires_input: cumulative_meters
+      entities: $entities.cumulative_meters$
+      chart_type: bar
+      period: month
+      stat_types:
+        - change
+      days_to_show: 365
+      hide_legend: false
+    - type: markdown
+      requires_input: yearly_costs
+      content: "### Kosten je Gerät · laufendes Jahr"
+    - type: grid
+      requires_input: yearly_costs
+      columns: 2
+      square: false
+      cards:
+        - repeat: yearly_costs
+          template:
+            type: custom:button-card
+            entity: $item.entity$
+            name: $item.name$
+            icon: $item.icon$
+            show_state: true
+            tap_action: {action: more-info}
+            styles:
+              card: [ "border-radius: 14px", "padding: 16px", "box-shadow: none" ]
+              grid: [ "grid-template-areas: 'i n' 's s'", "grid-template-columns: 38px 1fr" ]
+              icon: [ "width: 24px", "color: var(--warning-color)" ]
+              name: [ "justify-self: start", "font-weight: 600", "font-size: 14px", "white-space: normal" ]
+              state: [ "justify-self: start", "font-size: 22px", "font-weight: 700", "padding-top: 8px" ]
+    - type: markdown
+      content: |
+        *Hinweis: Kosten stammen ausschließlich aus den ausgewählten Kostensensoren. Historische Tarifänderungen können nur korrekt dargestellt werden, wenn diese Sensoren historische Kosten unverändert fortschreiben. Hue-Verbrauch kann geschätzt sein.*
