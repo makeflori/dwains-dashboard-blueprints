@@ -1,88 +1,135 @@
 blueprint:
   name: "Energy & Costs"
   name_de: "Energie & Kosten"
-  description: "Energy and cost shares this month and trustworthy monthly trends using native Home Assistant cards."
-  description_de: "Verbrauchs- und Kostenanteile im Monat sowie verlässliche Monatsverläufe mit nativen Home-Assistant-Karten."
-  type: "page"
+  description: "Monthly device energy flow, concise costs and statistics, grouped devices; inspired by Madelena's layout."
+  description_de: "Verbrauchsfluss des Monats, kompakte Kosten und Verlauf, Geräte nach Bereichen; angelehnt an Madelenas Gestaltung."
   icon: "mdi:lightning-bolt-circle"
+  type: "page"
   author: "makeflori"
   version: "1.0"
   custom_cards:
+    - "button-card"
     - "mushroom-template-card"
     - "layout-card"
   input:
-    total_energy_month:
-      name: "Monthly electricity consumption"
-      name_de: "Verbrauch Monat"
-      type: "entity-picker"
-      entity_domain: "sensor"
-      default: ""
     total_cost_month:
-      name: "Monthly electricity costs"
-      name_de: "Kosten Monat"
+      name: "Monthly total costs"
+      name_de: "Monatskosten"
       type: "entity-picker"
       entity_domain: "sensor"
       default: ""
     total_energy_year:
-      name: "Yearly electricity consumption"
-      name_de: "Verbrauch Jahr"
+      name: "Yearly total consumption"
+      name_de: "Jahresverbrauch"
       type: "entity-picker"
       entity_domain: "sensor"
       default: ""
     total_cost_year:
-      name: "Yearly electricity costs"
-      name_de: "Kosten Jahr"
+      name: "Yearly total costs"
+      name_de: "Jahreskosten"
       type: "entity-picker"
       entity_domain: "sensor"
       default: ""
     monthly_consumption:
-      name: "Device consumption this month"
+      name: "Current month energy per device"
       name_de: "Monatsverbrauch je Gerät"
       type: "entity-list"
       entity_domain: "sensor"
       default_icon: "mdi:lightning-bolt"
       default: []
     monthly_costs:
-      name: "Device costs this month"
+      name: "Current month costs per device"
       name_de: "Monatskosten je Gerät"
       type: "entity-list"
       entity_domain: "sensor"
       default_icon: "mdi:currency-eur"
       default: []
     historical_consumption_meters:
-      name: "Cumulative energy meters with valid statistics"
-      name_de: "Gesamtverbrauchszähler mit gültiger Historie"
+      name: "Cumulative meters with long-term statistics"
+      name_de: "Kumulierte Zähler mit Langzeitstatistik"
       type: "entity-list"
       entity_domain: "sensor"
       default_icon: "mdi:chart-column"
       default: []
-    historical_cost_meters:
-      name: "Cumulative cost meters (optional)"
-      name_de: "Kumulative Kostenzähler mit Historie (optional)"
+    kitchen:
+      name: "Devices in Küche"
+      name_de: "Geräte Küche"
       type: "entity-list"
       entity_domain: "sensor"
-      default_icon: "mdi:currency-eur"
+      default_icon: "mdi:fridge-outline"
+      default: []
+    office:
+      name: "Devices in Büro"
+      name_de: "Geräte Büro"
+      type: "entity-list"
+      entity_domain: "sensor"
+      default_icon: "mdi:desktop-classic"
+      default: []
+    living:
+      name: "Devices in Wohnzimmer"
+      name_de: "Geräte Wohnzimmer"
+      type: "entity-list"
+      entity_domain: "sensor"
+      default_icon: "mdi:sofa-outline"
+      default: []
+    bathroom:
+      name: "Devices in Bad"
+      name_de: "Geräte Bad"
+      type: "entity-list"
+      entity_domain: "sensor"
+      default_icon: "mdi:washing-machine"
+      default: []
+    other:
+      name: "Devices in Raumübergreifend"
+      name_de: "Geräte Raumübergreifend"
+      type: "entity-list"
+      entity_domain: "sensor"
+      default_icon: "mdi:lightbulb-group-outline"
       default: []
 card:
   type: "vertical-stack"
   cards:
     -
+      type: "custom:button-card"
+      requires_input: "monthly_consumption"
+      show_name: false
+      show_icon: false
+      show_state: false
+      show_label: false
+      tap_action:
+        action: "none"
+      triggers_update: "$entities.monthly_consumption$"
+      custom_fields:
+        flow: "[[[\nconst definitions=[\n{key:\"kitchen\",name:\"Küche\",color:\"#57b89e\",devices:$json.kitchen$},\n{key:\"office\",name:\"Büro\",color:\"#d44d83\",devices:$json.office$},\n{key:\"living\",name:\"Wohnzimmer\",color:\"#699dda\",devices:$json.living$},\n{key:\"bathroom\",name:\"Bad\",color:\"#aa8bd0\",devices:$json.bathroom$},\n{key:\"other\",name:\"Raumübergreifend\",color:\"#daa84d\",devices:$json.other$}\n];\nconst escape=s=>String(s??\"\").replace(/&/g,\"&amp;\").replace(/</g,\"&lt;\").replace(/>/g,\"&gt;\").replace(/\"/g,\"&quot;\");\nconst value=id=>{const s=states[id],v=Number(s?.state);return s&&![\"unknown\",\"unavailable\"].includes(s.state)&&Number.isFinite(v)&&v>=0?v:null;};\nconst fmt=v=>v===null?\"–\":v.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2});\nconst groups=definitions.map(g=>({...g,items:g.devices.map(d=>({name:d.name,entity:d.entity,kwh:value(d.entity),icon:d.icon})).sort((a,b)=>(b.kwh??-1)-(a.kwh??-1))})).map(g=>({...g,sum:g.items.reduce((s,x)=>s+(x.kwh??0),0)})).filter(g=>g.items.length).sort((a,b)=>b.sum-a.sum);\nconst all=groups.flatMap(g=>g.items),total=groups.reduce((s,g)=>s+g.sum,0),known=all.filter(d=>d.kwh!==null).length;\nconst bg=\"var(--ha-card-background,var(--card-background-color))\",fg=\"var(--primary-text-color)\",muted=\"var(--secondary-text-color)\",border=\"var(--divider-color)\";\nconst header='<div style=\"display:flex;gap:10px;align-items:baseline;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px\">'+\n'<div style=\"min-width:0\"><div style=\"font-size:11px;font-weight:750;letter-spacing:1.1px;color:var(--secondary-text-color)\">VERBRAUCHSAUFTEILUNG</div>'+\n'<div style=\"font-size:12px;color:'+muted+';margin-top:5px\">Erfasste Geräte · aktueller Monat</div></div>'+\n'<div style=\"font-size:clamp(23px,3vw,34px);font-weight:740;font-variant-numeric:tabular-nums;white-space:nowrap;color:'+fg+'\">'+fmt(total)+' <span style=\"font-size:13px;color:'+muted+'\">kWh</span></div></div>';\nconst box=(inner)=>'<div style=\"box-sizing:border-box;min-width:0;padding:20px 21px;background:'+bg+';border:1px solid '+border+';border-radius:13px;overflow:hidden;font-family:inherit\">'+header+inner+'</div>';\nif(typeof window===\"undefined\"||window.innerWidth<820){\n const list=groups.map(g=>{\n  const share=total>0?100*g.sum/total:0;\n  return '<div style=\"display:grid;grid-template-columns:minmax(85px,112px) minmax(0,1fr) 75px;align-items:center;gap:10px;padding:11px 0;border-top:1px solid '+border+'\">'+\n   '<span style=\"font-size:12px;font-weight:570;color:'+fg+';overflow-wrap:anywhere\">'+escape(g.name)+'</span>'+\n   '<div style=\"height:9px;background:'+border+';border-radius:6px;overflow:hidden\"><div style=\"height:100%;width:'+share.toFixed(2)+'%;background:'+g.color+';border-radius:6px\"></div></div>'+\n   '<span style=\"font-size:12px;color:'+fg+';text-align:right;font-variant-numeric:tabular-nums\">'+fmt(g.sum)+'</span></div>';\n }).join(\"\");\n return box(list+(known<all.length?'<div style=\"font-size:11px;color:'+muted+';margin-top:8px\">'+known+' von '+all.length+' Verbrauchswerten verfügbar</div>':\"\"));\n}\nlet count=0;\nfor(const g of groups){for(const d of g.items){d.y=62+count*46;count++;}g.y=g.items.reduce((s,d)=>s+d.y,0)/g.items.length;}\nconst height=Math.max(440,90+count*46);\nlet svg='<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1160 '+height+'\" width=\"100%\" role=\"img\" style=\"display:block;max-width:100%\" aria-label=\"Monatlicher Stromverbrauch nach Bereichen und Geräten\">'+\n'<text x=\"28\" y=\"26\" font-size=\"11\" fill=\"'+muted+'\">ERFASSTE VERBRAUCHER</text>'+\n'<text x=\"432\" y=\"26\" font-size=\"11\" fill=\"'+muted+'\">BEREICHE</text>'+\n'<text x=\"820\" y=\"26\" font-size=\"11\" fill=\"'+muted+'\">GERÄTE</text>';\nconst y0=height/2;\nsvg+='<rect x=\"169\" y=\"'+(y0-37)+'\" width=\"9\" height=\"74\" rx=\"3\" fill=\"var(--primary-color)\"/>'+\n'<text x=\"28\" y=\"'+(y0-10)+'\" font-size=\"29\" font-weight=\"720\" fill=\"'+fg+'\">'+fmt(total)+'</text>'+\n'<text x=\"30\" y=\"'+(y0+13)+'\" font-size=\"13\" fill=\"'+muted+'\">kWh im Monat</text>';\nfor(const g of groups){\n const stroke=total>0?Math.max(1.5,34*g.sum/total):1.5;\n if(g.sum>0)svg+='<path d=\"M177 '+y0+' C285 '+y0+' 334 '+g.y+' 430 '+g.y+'\" fill=\"none\" stroke=\"'+g.color+'\" stroke-opacity=\".58\" stroke-width=\"'+stroke.toFixed(1)+'\"/>';\n svg+='<rect x=\"435\" y=\"'+(g.y-16)+'\" width=\"6\" height=\"32\" rx=\"2\" fill=\"'+g.color+'\"/>'+\n  '<text x=\"452\" y=\"'+(g.y-3)+'\" font-size=\"14\" fill=\"'+fg+'\">'+escape(g.name)+'</text>'+\n  '<text x=\"452\" y=\"'+(g.y+14)+'\" font-size=\"11\" fill=\"'+muted+'\">'+fmt(g.sum)+' kWh</text>';\n for(const d of g.items){\n  const thick=g.sum>0?Math.max(1.3,18*(d.kwh??0)/g.sum):1.3;\n  if(d.kwh>0)svg+='<path d=\"M650 '+g.y+' C728 '+g.y+' 762 '+d.y+' 811 '+d.y+'\" fill=\"none\" stroke=\"'+g.color+'\" stroke-opacity=\".7\" stroke-width=\"'+thick.toFixed(1)+'\"/>';\n  svg+='<rect x=\"816\" y=\"'+(d.y-9)+'\" width=\"5\" height=\"18\" rx=\"2\" fill=\"'+g.color+'\"/>'+\n  '<text x=\"834\" y=\"'+(d.y-3)+'\" font-size=\"13\" fill=\"'+fg+'\">'+escape(d.name)+'</text>'+\n  '<text x=\"834\" y=\"'+(d.y+13)+'\" font-size=\"11\" fill=\"'+muted+'\">'+fmt(d.kwh)+' kWh</text>';\n }\n}\nsvg+='</svg>';\nreturn box(svg);\n]]]"
+      styles:
+        card:
+          -
+            border: "none"
+          -
+            box-shadow: "none"
+          -
+            padding: "0"
+          -
+            background: "transparent"
+        grid:
+          -
+            grid-template-areas: "\"flow\""
+          -
+            grid-template-columns: "minmax(0,1fr)"
+        custom_fields:
+          flow:
+            -
+              width: "100%"
+            -
+              min-width: "0"
+    -
       type: "custom:layout-card"
       layout_type: "custom:grid-layout"
       layout:
-        grid-template-columns: "repeat(auto-fit,minmax(min(100%,158px),1fr))"
-        grid-gap: "9px"
+        grid-template-columns: "repeat(auto-fit,minmax(min(100%,230px),1fr))"
+        grid-gap: "10px"
+        align-items: "start"
       cards:
-        -
-          type: "custom:mushroom-template-card"
-          requires_input: "total_energy_month"
-          entity: "$total_energy_month$"
-          primary: "Verbrauch · Monat"
-          secondary: "{% set v=states('$total_energy_month$') %}{{ (('%.2f'|format(v|float))|replace('.',',')) ~ ' kWh' if is_number(v) else '–' }}"
-          icon: "mdi:lightning-bolt"
-          color: "teal"
-          tap_action:
-            action: "more-info"
         -
           type: "custom:mushroom-template-card"
           requires_input: "total_cost_month"
@@ -100,7 +147,7 @@ card:
           primary: "Verbrauch · Jahr"
           secondary: "{% set v=states('$total_energy_year$') %}{{ (('%.2f'|format(v|float))|replace('.',',')) ~ ' kWh' if is_number(v) else '–' }}"
           icon: "mdi:calendar-month-outline"
-          color: "blue"
+          color: "teal"
           tap_action:
             action: "more-info"
         -
@@ -117,64 +164,149 @@ card:
       type: "custom:layout-card"
       layout_type: "custom:grid-layout"
       layout:
-        grid-template-columns: "repeat(auto-fit,minmax(min(100%,350px),1fr))"
+        grid-template-columns: "minmax(0,1fr)"
+        grid-gap: "10px"
+      cards:
+        -
+          type: "statistics-graph"
+          title: "Monatsverlauf · ausgewählte Geräte"
+          requires_input: "historical_consumption_meters"
+          entities:
+            -
+              repeat: "historical_consumption_meters"
+              template:
+                entity: "$item.entity$"
+                name: "$item.name$"
+          days_to_show: 365
+          period: "month"
+          chart_type: "bar"
+          stat_types:
+            - "change"
+          min_y_axis: 0
+          hide_legend: false
+    -
+      type: "custom:layout-card"
+      layout_type: "custom:grid-layout"
+      layout:
+        grid-template-columns: "repeat(auto-fit,minmax(min(100%,260px),1fr))"
         grid-gap: "12px"
         align-items: "start"
       cards:
         -
-          type: "distribution"
-          requires_input: "monthly_consumption"
-          title: "Verbrauchsanteile · Monat"
-          entities:
+          type: "vertical-stack"
+          cards:
             -
-              repeat: "monthly_consumption"
-              template:
-                entity: "$item.entity$"
-                name: "$item.name$"
-        -
-          type: "distribution"
-          requires_input: "monthly_costs"
-          title: "Gerätekostenanteile · Monat"
-          entities:
+              type: "heading"
+              heading: "Küche"
+              heading_style: "subtitle"
+              icon: "mdi:fridge-outline"
             -
-              repeat: "monthly_costs"
-              template:
-                entity: "$item.entity$"
-                name: "$item.name$"
-    -
-      type: "statistics-graph"
-      requires_input: "historical_consumption_meters"
-      title: "Monatsverlauf · ausgewählte Geräte"
-      entities:
+              type: "vertical-stack"
+              requires_input: "kitchen"
+              cards:
+                -
+                  repeat: "kitchen"
+                  template:
+                    type: "custom:mushroom-template-card"
+                    entity: "$item.entity$"
+                    primary: "$item.name$"
+                    secondary: "{% set e=states('$item.entity$') -%}\n{% set prices=$json.monthly_costs$ -%}\n{% set ns=namespace(price='–') -%}\n{% for p in prices -%}\n{% if p.name=='$item.name$' and is_number(states(p.entity)) -%}\n{% set ns.price=(('%.2f'|format(states(p.entity)|float))|replace('.',',')) -%}\n{% endif -%}\n{% endfor -%}\n{{ (('%.2f'|format(e|float))|replace('.',',')) if is_number(e) else '–' }} kWh · {{ ns.price }} €"
+                    icon: "$item.icon$"
+                    color: "teal"
+                    tap_action:
+                      action: "more-info"
         -
-          repeat: "historical_consumption_meters"
-          template:
-            entity: "$item.entity$"
-            name: "$item.name$"
-      days_to_show: 365
-      period: "month"
-      chart_type: "bar"
-      stat_types:
-        - "change"
-      min_y_axis: 0
-      hide_legend: false
-    -
-      type: "statistics-graph"
-      requires_input: "historical_cost_meters"
-      title: "Historische Gerätekosten · Monat"
-      entities:
+          type: "vertical-stack"
+          cards:
+            -
+              type: "heading"
+              heading: "Büro"
+              heading_style: "subtitle"
+              icon: "mdi:desktop-classic"
+            -
+              type: "vertical-stack"
+              requires_input: "office"
+              cards:
+                -
+                  repeat: "office"
+                  template:
+                    type: "custom:mushroom-template-card"
+                    entity: "$item.entity$"
+                    primary: "$item.name$"
+                    secondary: "{% set e=states('$item.entity$') -%}\n{% set prices=$json.monthly_costs$ -%}\n{% set ns=namespace(price='–') -%}\n{% for p in prices -%}\n{% if p.name=='$item.name$' and is_number(states(p.entity)) -%}\n{% set ns.price=(('%.2f'|format(states(p.entity)|float))|replace('.',',')) -%}\n{% endif -%}\n{% endfor -%}\n{{ (('%.2f'|format(e|float))|replace('.',',')) if is_number(e) else '–' }} kWh · {{ ns.price }} €"
+                    icon: "$item.icon$"
+                    color: "pink"
+                    tap_action:
+                      action: "more-info"
         -
-          repeat: "historical_cost_meters"
-          template:
-            entity: "$item.entity$"
-            name: "$item.name$"
-      days_to_show: 365
-      period: "month"
-      chart_type: "bar"
-      stat_types:
-        - "change"
-      min_y_axis: 0
-      hide_legend: false
+          type: "vertical-stack"
+          cards:
+            -
+              type: "heading"
+              heading: "Wohnzimmer"
+              heading_style: "subtitle"
+              icon: "mdi:sofa-outline"
+            -
+              type: "vertical-stack"
+              requires_input: "living"
+              cards:
+                -
+                  repeat: "living"
+                  template:
+                    type: "custom:mushroom-template-card"
+                    entity: "$item.entity$"
+                    primary: "$item.name$"
+                    secondary: "{% set e=states('$item.entity$') -%}\n{% set prices=$json.monthly_costs$ -%}\n{% set ns=namespace(price='–') -%}\n{% for p in prices -%}\n{% if p.name=='$item.name$' and is_number(states(p.entity)) -%}\n{% set ns.price=(('%.2f'|format(states(p.entity)|float))|replace('.',',')) -%}\n{% endif -%}\n{% endfor -%}\n{{ (('%.2f'|format(e|float))|replace('.',',')) if is_number(e) else '–' }} kWh · {{ ns.price }} €"
+                    icon: "$item.icon$"
+                    color: "blue"
+                    tap_action:
+                      action: "more-info"
+        -
+          type: "vertical-stack"
+          cards:
+            -
+              type: "heading"
+              heading: "Bad"
+              heading_style: "subtitle"
+              icon: "mdi:washing-machine"
+            -
+              type: "vertical-stack"
+              requires_input: "bathroom"
+              cards:
+                -
+                  repeat: "bathroom"
+                  template:
+                    type: "custom:mushroom-template-card"
+                    entity: "$item.entity$"
+                    primary: "$item.name$"
+                    secondary: "{% set e=states('$item.entity$') -%}\n{% set prices=$json.monthly_costs$ -%}\n{% set ns=namespace(price='–') -%}\n{% for p in prices -%}\n{% if p.name=='$item.name$' and is_number(states(p.entity)) -%}\n{% set ns.price=(('%.2f'|format(states(p.entity)|float))|replace('.',',')) -%}\n{% endif -%}\n{% endfor -%}\n{{ (('%.2f'|format(e|float))|replace('.',',')) if is_number(e) else '–' }} kWh · {{ ns.price }} €"
+                    icon: "$item.icon$"
+                    color: "purple"
+                    tap_action:
+                      action: "more-info"
+        -
+          type: "vertical-stack"
+          cards:
+            -
+              type: "heading"
+              heading: "Raumübergreifend"
+              heading_style: "subtitle"
+              icon: "mdi:lightbulb-group-outline"
+            -
+              type: "vertical-stack"
+              requires_input: "other"
+              cards:
+                -
+                  repeat: "other"
+                  template:
+                    type: "custom:mushroom-template-card"
+                    entity: "$item.entity$"
+                    primary: "$item.name$"
+                    secondary: "{% set e=states('$item.entity$') -%}\n{% set prices=$json.monthly_costs$ -%}\n{% set ns=namespace(price='–') -%}\n{% for p in prices -%}\n{% if p.name=='$item.name$' and is_number(states(p.entity)) -%}\n{% set ns.price=(('%.2f'|format(states(p.entity)|float))|replace('.',',')) -%}\n{% endif -%}\n{% endfor -%}\n{{ (('%.2f'|format(e|float))|replace('.',',')) if is_number(e) else '–' }} kWh · {{ ns.price }} €"
+                    icon: "$item.icon$"
+                    color: "amber"
+                    tap_action:
+                      action: "more-info"
     -
       type: "conditional"
       conditions:
