@@ -138,16 +138,14 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Madelena-inspired live power flow with dark summary tiles, device shares and short area sparklines.",
+      "description": "Theme-aware energy page with current-power ranking, real room groups and monthly costs.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
       "custom_cards": [
-        "mushroom-template-card",
-        "layout-card",
-        "apexcharts-card",
         "button-card",
-        "mini-graph-card"
+        "mushroom-template-card",
+        "layout-card"
       ]
     },
     {
