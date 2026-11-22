@@ -326,3 +326,28 @@ card:
                     color: "amber"
                     tap_action:
                       action: "more-info"
+    -
+      type: "conditional"
+      conditions:
+        -
+          condition: "screen"
+          media_query: "(max-width: 767px)"
+      card:
+        type: "custom:button-card"
+        show_name: false
+        show_icon: false
+        show_state: false
+        tap_action:
+          action: "none"
+        styles:
+          card:
+            -
+              height: "calc(76px + env(safe-area-inset-bottom, 0px))"
+            -
+              background: "transparent"
+            -
+              box-shadow: "none"
+            -
+              border: "none"
+            -
+              padding: "0"
