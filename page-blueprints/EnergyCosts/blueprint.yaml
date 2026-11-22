@@ -161,7 +161,9 @@ card:
               state: [ "justify-self: start", "font-size: 22px", "font-weight: 700", "padding-top: 8px" ]
     - type: markdown
       requires_input: monthly_costs
-      content: "### Kosten je Gerät · aktueller Monat"
+      content: |
+        ### Kosten je Gerät · aktueller Monat
+        Die Balken vergleichen die ausgewählten Geräte miteinander; 100 % entspricht dem höchsten Monatsbetrag.
     - type: grid
       requires_input: monthly_costs
       columns: 2
@@ -175,12 +177,26 @@ card:
             icon: $item.icon$
             show_state: true
             tap_action: {action: more-info}
+            custom_fields:
+              bar: |
+                [[[
+                  const rows = $json.monthly_costs$;
+                  const numbers = rows.map(row => Number(states[row.entity]?.state)).filter(Number.isFinite);
+                  const maxValue = Math.max(0, ...numbers);
+                  const current = Number(entity?.state);
+                  const percent = maxValue > 0 && Number.isFinite(current)
+                    ? Math.max(0, Math.min(100, current / maxValue * 100)) : 0;
+                  return '<div title="' + percent.toFixed(0) + '% of the highest selected device cost" style="height:7px;border-radius:99px;background:var(--divider-color);overflow:hidden;margin-top:12px">' +
+                    '<div style="height:100%;width:' + percent + '%;background:var(--warning-color);border-radius:99px"></div></div>';
+                ]]]
             styles:
               card: [ "border-radius: 14px", "padding: 16px", "box-shadow: none" ]
-              grid: [ "grid-template-areas: 'i n' 's s'", "grid-template-columns: 38px 1fr" ]
+              grid: [ "grid-template-areas: 'i n' 's s' 'bar bar'", "grid-template-columns: 38px 1fr" ]
               icon: [ "width: 24px", "color: var(--warning-color)" ]
               name: [ "justify-self: start", "font-weight: 600", "font-size: 14px", "white-space: normal" ]
               state: [ "justify-self: start", "font-size: 22px", "font-weight: 700", "padding-top: 8px" ]
+              custom_fields:
+                bar: [ "width: 100%" ]
     - type: markdown
       requires_input: cumulative_meters
       content: "### Verbrauchsverlauf · letzte 12 Monate"
