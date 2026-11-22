@@ -1,8 +1,8 @@
 blueprint:
   name: "Energy & Costs"
   name_de: "Energie & Kosten"
-  description: "Balanced energy KPIs, grouped monthly consumption and interactive cost donut with detailed distribution table."
-  description_de: "Konsistente Energie-Kennzahlen, Monatsgruppen und interaktive Kostenverteilung mit vollständiger Tabelle."
+  description: "Responsive energy KPIs, six-month trend and interactive pie with usage, costs and shares."
+  description_de: "Responsive Energiekennzahlen, sechs Monate Verbrauch und interaktive Verteilung mit Verbrauch, Kosten und Anteil."
   icon: "mdi:lightning-bolt-circle"
   type: "page"
   author: "makeflori"
@@ -84,7 +84,7 @@ card:
           repeat: "monthly_consumption"
           template: "$item.entity$"
       custom_fields:
-        panel: "[[[\nconst read=id=>{const st=states[id];const v=Number(st?.state);return st&&![\"unknown\",\"unavailable\"].includes(st.state)&&Number.isFinite(v)?v:null;};\nconst fmt=n=>n===null?\"–\":n.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2});\nconst meters=$json.monthly_consumption$,measured=read(\"$total_energy_month$\");\nconst data=[\n{title:\"Verbrauch · Monat\",value:measured===null?meters.reduce((s,a)=>s+(read(a.entity)??0),0):measured,unit:\"kWh\",kind:\"energy\"},\n{title:\"Verbrauch · Jahr\",value:read(\"$total_energy_year$\"),unit:\"kWh\",kind:\"energy\"},\n{title:\"Kosten · Monat\",value:read(\"$total_cost_month$\"),unit:\"€\",kind:\"cost\"},\n{title:\"Kosten · Jahr\",value:read(\"$total_cost_year$\"),unit:\"€\",kind:\"cost\"}\n];\nconst symbols={\nenergy:'<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 2 4.5 13H11l-1 9L19.5 10H13V2Z\"/></svg>',\ncost:'<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"3\"/><path d=\"M16 12h5\"/><circle cx=\"16\" cy=\"12\" r=\"1\"/></svg>'\n};\nconst tile=r=>'<section style=\"box-sizing:border-box;min-width:0;height:112px;display:flex;flex-direction:column;justify-content:space-between;gap:7px;padding:14px 17px 15px;background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;color:var(--primary-text-color)\"><div style=\"display:flex;align-items:center;gap:10px\"><span aria-hidden=\"true\" style=\"width:26px;flex-shrink:0;display:flex;color:'+(r.kind===\"cost\"?\"#c9952b\":\"var(--primary-color)\")+'\">'+symbols[r.kind]+'</span><span style=\"font-size:13px;font-weight:650;line-height:1.3;white-space:nowrap\">'+r.title+'</span></div><div style=\"display:flex;justify-content:flex-end;align-items:baseline;gap:5px;min-width:0\"><strong style=\"font-size:clamp(24px,2.4vw,32px);font-weight:700;line-height:1.1;letter-spacing:-.4px;font-variant-numeric:tabular-nums\">'+fmt(r.value)+'</strong><span style=\"font-size:12px;white-space:nowrap;color:var(--secondary-text-color)\">'+r.unit+'</span></div></section>';\nreturn '<div style=\"box-sizing:border-box;padding:0 9px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px;font-family:inherit\">'+data.map(tile).join(\"\")+'</div>';\n]]]"
+        panel: "[[[\nconst read=id=>{const st=states[id];const v=Number(st?.state);return st&&![\"unknown\",\"unavailable\"].includes(st.state)&&Number.isFinite(v)?v:null;};\nconst fmt=n=>n===null?\"–\":n.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2});\nconst meters=$json.monthly_consumption$,measured=read(\"$total_energy_month$\");\nconst data=[\n{title:\"Verbrauch · Monat\",value:measured===null?meters.reduce((s,a)=>s+(read(a.entity)??0),0):measured,unit:\"kWh\",kind:\"energy\"},\n{title:\"Verbrauch · Jahr\",value:read(\"$total_energy_year$\"),unit:\"kWh\",kind:\"energy\"},\n{title:\"Kosten · Monat\",value:read(\"$total_cost_month$\"),unit:\"€\",kind:\"cost\"},\n{title:\"Kosten · Jahr\",value:read(\"$total_cost_year$\"),unit:\"€\",kind:\"cost\"}\n];\nconst symbols={\nenergy:'<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 2 4.5 13H11l-1 9L19.5 10H13V2Z\"/></svg>',\ncost:'<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"3\"/><path d=\"M16 12h5\"/><circle cx=\"16\" cy=\"12\" r=\"1\"/></svg>'\n};\nconst tile=r=>'<section style=\"box-sizing:border-box;min-width:0;height:112px;display:flex;flex-direction:column;justify-content:space-between;gap:7px;padding:14px 17px 15px;background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;color:var(--primary-text-color)\"><div style=\"display:flex;align-items:center;gap:10px\"><span aria-hidden=\"true\" style=\"width:26px;flex-shrink:0;display:flex;color:'+(r.kind===\"cost\"?\"#c9952b\":\"var(--primary-color)\")+'\">'+symbols[r.kind]+'</span><span style=\"font-size:13px;font-weight:650;line-height:1.3;white-space:nowrap\">'+r.title+'</span></div><div style=\"display:flex;justify-content:flex-end;align-items:baseline;gap:5px;min-width:0\"><strong style=\"font-size:clamp(24px,2.4vw,32px);font-weight:700;line-height:1.1;letter-spacing:-.4px;font-variant-numeric:tabular-nums\">'+fmt(r.value)+'</strong><span style=\"font-size:12px;white-space:nowrap;color:var(--secondary-text-color)\">'+r.unit+'</span></div></section>';\nreturn '<style>.ec-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;box-sizing:border-box;padding:0 9px}@media(max-width:770px){.ec-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0 3px}.ec-summary section{height:100px!important;padding:11px 12px!important}.ec-summary strong{font-size:clamp(19px,5.5vw,26px)!important}.ec-summary span{font-size:11px}}</style><div class=\"ec-summary\" style=\"font-family:inherit\">'+data.map(tile).join(\"\")+'</div>';\n]]]"
       styles:
         card:
           -
@@ -148,7 +148,7 @@ card:
                     textAlign: "left"
             -
               type: "custom:apexcharts-card"
-              graph_span: "215d"
+              graph_span: "184d"
               span:
                 end: "month"
               update_interval: "10min"
@@ -164,22 +164,6 @@ card:
                 - "#db7950"
                 - "#6c86a6"
                 - "#ad62a0"
-              yaxis:
-                -
-                  min: 0
-                  max: "auto"
-                  decimals: 0
-                  apex_config:
-                    tickAmount: 4
-                    title:
-                      text: "kWh"
-                      style:
-                        fontSize: "11px"
-                        fontWeight: 400
-                    labels:
-                      style:
-                        fontSize: "11px"
-                        fontWeight: 400
               all_series_config:
                 type: "column"
                 statistics:
@@ -189,22 +173,26 @@ card:
                 transform: "return x === null || !Number.isFinite(Number(x)) || Number(x) < 0 ? null : Number(x);"
               apex_config:
                 chart:
-                  height: 325
+                  height: 290
                   fontFamily: "inherit"
                   toolbar:
                     show: false
                   animations:
                     enabled: false
+                  events:
+                    mounted: "EVAL:function(ctx){const rows=$json.historical_consumption_meters$;if(ctx&&typeof ctx.hideSeries==='function'){rows.filter(r=>r.hidden_by_default).forEach(r=>ctx.hideSeries(r.name));}}"
                 legend:
                   show: true
                   position: "bottom"
                   fontSize: "11px"
                   itemMargin:
-                    horizontal: 8
-                    vertical: 6
+                    horizontal: 7
+                    vertical: 5
+                  onItemClick:
+                    toggleDataSeries: true
                 plotOptions:
                   bar:
-                    columnWidth: "66%"
+                    columnWidth: "72%"
                     borderRadius: 2
                 tooltip:
                   enabled: true
@@ -218,220 +206,201 @@ card:
                     show: false
                   axisTicks:
                     show: false
-                  crosshairs:
-                    show: false
                   tooltip:
                     enabled: false
+                  crosshairs:
+                    show: false
                 grid:
+                  borderColor: "var(--divider-color)"
+                  strokeDashArray: 3
                   padding:
                     top: 4
-                    bottom: 25
-                    left: 6
-                    right: 10
+                    bottom: 35
+                    left: 7
+                    right: 7
                 dataLabels:
                   enabled: false
                 annotations:
                   xaxis:
                     -
-                      x: "EVAL:(()=>{const t=new Date();const a=new Date(t.getFullYear(),t.getMonth()+-6,1);const b=new Date(t.getFullYear(),t.getMonth()+-5,1);return Math.round((a.getTime()+b.getTime())/2)})()"
+                      x: "EVAL:(()=>{const n=new Date(),a=new Date(n.getFullYear(),n.getMonth()+-5,1),b=new Date(n.getFullYear(),n.getMonth()+-4,1);return Math.round((a.getTime()+b.getTime())/2)})()"
                       borderColor: "transparent"
-                      strokeDashArray: 0
                       label:
-                        text: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-6,1).toLocaleDateString(\"de-DE\",{month:\"short\",year:\"2-digit\"})})()"
+                        text: "EVAL:(()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth()+-5,1).toLocaleDateString(\"de-DE\",{month:\"short\"})})()"
                         position: "bottom"
                         orientation: "horizontal"
-                        offsetY: 17
+                        offsetY: 20
                         borderColor: "transparent"
                         style:
                           background: "transparent"
                           color: "var(--secondary-text-color)"
                           fontSize: "11px"
-                          fontWeight: 500
+                          fontWeight: 400
                           padding:
-                            left: 1
-                            right: 1
-                            top: 2
-                            bottom: 1
+                            left: 0
+                            right: 0
+                            top: 0
+                            bottom: 0
                     -
-                      x: "EVAL:(()=>{const t=new Date();const a=new Date(t.getFullYear(),t.getMonth()+-5,1);const b=new Date(t.getFullYear(),t.getMonth()+-4,1);return Math.round((a.getTime()+b.getTime())/2)})()"
+                      x: "EVAL:(()=>{const n=new Date(),a=new Date(n.getFullYear(),n.getMonth()+-4,1),b=new Date(n.getFullYear(),n.getMonth()+-3,1);return Math.round((a.getTime()+b.getTime())/2)})()"
                       borderColor: "transparent"
-                      strokeDashArray: 0
                       label:
-                        text: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-5,1).toLocaleDateString(\"de-DE\",{month:\"short\",year:\"2-digit\"})})()"
+                        text: "EVAL:(()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth()+-4,1).toLocaleDateString(\"de-DE\",{month:\"short\"})})()"
                         position: "bottom"
                         orientation: "horizontal"
-                        offsetY: 17
+                        offsetY: 20
                         borderColor: "transparent"
                         style:
                           background: "transparent"
                           color: "var(--secondary-text-color)"
                           fontSize: "11px"
-                          fontWeight: 500
+                          fontWeight: 400
                           padding:
-                            left: 1
-                            right: 1
-                            top: 2
-                            bottom: 1
+                            left: 0
+                            right: 0
+                            top: 0
+                            bottom: 0
                     -
-                      x: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-5,1).getTime()})()"
+                      x: "EVAL:(()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth()+-4,1).getTime()})()"
                       borderColor: "var(--divider-color)"
                       strokeDashArray: 3
-                      opacity: 0.55
+                      opacity: 0.35
                       label:
                         text: ""
                         borderColor: "transparent"
                         style:
                           background: "transparent"
                     -
-                      x: "EVAL:(()=>{const t=new Date();const a=new Date(t.getFullYear(),t.getMonth()+-4,1);const b=new Date(t.getFullYear(),t.getMonth()+-3,1);return Math.round((a.getTime()+b.getTime())/2)})()"
+                      x: "EVAL:(()=>{const n=new Date(),a=new Date(n.getFullYear(),n.getMonth()+-3,1),b=new Date(n.getFullYear(),n.getMonth()+-2,1);return Math.round((a.getTime()+b.getTime())/2)})()"
                       borderColor: "transparent"
-                      strokeDashArray: 0
                       label:
-                        text: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-4,1).toLocaleDateString(\"de-DE\",{month:\"short\",year:\"2-digit\"})})()"
+                        text: "EVAL:(()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth()+-3,1).toLocaleDateString(\"de-DE\",{month:\"short\"})})()"
                         position: "bottom"
                         orientation: "horizontal"
-                        offsetY: 17
+                        offsetY: 20
                         borderColor: "transparent"
                         style:
                           background: "transparent"
                           color: "var(--secondary-text-color)"
                           fontSize: "11px"
-                          fontWeight: 500
+                          fontWeight: 400
                           padding:
-                            left: 1
-                            right: 1
-                            top: 2
-                            bottom: 1
+                            left: 0
+                            right: 0
+                            top: 0
+                            bottom: 0
                     -
-                      x: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-4,1).getTime()})()"
+                      x: "EVAL:(()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth()+-3,1).getTime()})()"
                       borderColor: "var(--divider-color)"
                       strokeDashArray: 3
-                      opacity: 0.55
+                      opacity: 0.35
                       label:
                         text: ""
                         borderColor: "transparent"
                         style:
                           background: "transparent"
                     -
-                      x: "EVAL:(()=>{const t=new Date();const a=new Date(t.getFullYear(),t.getMonth()+-3,1);const b=new Date(t.getFullYear(),t.getMonth()+-2,1);return Math.round((a.getTime()+b.getTime())/2)})()"
+                      x: "EVAL:(()=>{const n=new Date(),a=new Date(n.getFullYear(),n.getMonth()+-2,1),b=new Date(n.getFullYear(),n.getMonth()+-1,1);return Math.round((a.getTime()+b.getTime())/2)})()"
                       borderColor: "transparent"
-                      strokeDashArray: 0
                       label:
-                        text: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-3,1).toLocaleDateString(\"de-DE\",{month:\"short\",year:\"2-digit\"})})()"
+                        text: "EVAL:(()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth()+-2,1).toLocaleDateString(\"de-DE\",{month:\"short\"})})()"
                         position: "bottom"
                         orientation: "horizontal"
-                        offsetY: 17
+                        offsetY: 20
                         borderColor: "transparent"
                         style:
                           background: "transparent"
                           color: "var(--secondary-text-color)"
                           fontSize: "11px"
-                          fontWeight: 500
+                          fontWeight: 400
                           padding:
-                            left: 1
-                            right: 1
-                            top: 2
-                            bottom: 1
+                            left: 0
+                            right: 0
+                            top: 0
+                            bottom: 0
                     -
-                      x: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-3,1).getTime()})()"
+                      x: "EVAL:(()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth()+-2,1).getTime()})()"
                       borderColor: "var(--divider-color)"
                       strokeDashArray: 3
-                      opacity: 0.55
+                      opacity: 0.35
                       label:
                         text: ""
                         borderColor: "transparent"
                         style:
                           background: "transparent"
                     -
-                      x: "EVAL:(()=>{const t=new Date();const a=new Date(t.getFullYear(),t.getMonth()+-2,1);const b=new Date(t.getFullYear(),t.getMonth()+-1,1);return Math.round((a.getTime()+b.getTime())/2)})()"
+                      x: "EVAL:(()=>{const n=new Date(),a=new Date(n.getFullYear(),n.getMonth()+-1,1),b=new Date(n.getFullYear(),n.getMonth()+0,1);return Math.round((a.getTime()+b.getTime())/2)})()"
                       borderColor: "transparent"
-                      strokeDashArray: 0
                       label:
-                        text: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-2,1).toLocaleDateString(\"de-DE\",{month:\"short\",year:\"2-digit\"})})()"
+                        text: "EVAL:(()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth()+-1,1).toLocaleDateString(\"de-DE\",{month:\"short\"})})()"
                         position: "bottom"
                         orientation: "horizontal"
-                        offsetY: 17
+                        offsetY: 20
                         borderColor: "transparent"
                         style:
                           background: "transparent"
                           color: "var(--secondary-text-color)"
                           fontSize: "11px"
-                          fontWeight: 500
+                          fontWeight: 400
                           padding:
-                            left: 1
-                            right: 1
-                            top: 2
-                            bottom: 1
+                            left: 0
+                            right: 0
+                            top: 0
+                            bottom: 0
                     -
-                      x: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-2,1).getTime()})()"
+                      x: "EVAL:(()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth()+-1,1).getTime()})()"
                       borderColor: "var(--divider-color)"
                       strokeDashArray: 3
-                      opacity: 0.55
+                      opacity: 0.35
                       label:
                         text: ""
                         borderColor: "transparent"
                         style:
                           background: "transparent"
                     -
-                      x: "EVAL:(()=>{const t=new Date();const a=new Date(t.getFullYear(),t.getMonth()+-1,1);const b=new Date(t.getFullYear(),t.getMonth()+0,1);return Math.round((a.getTime()+b.getTime())/2)})()"
+                      x: "EVAL:(()=>{const n=new Date(),a=new Date(n.getFullYear(),n.getMonth()+0,1),b=new Date(n.getFullYear(),n.getMonth()+1,1);return Math.round((a.getTime()+b.getTime())/2)})()"
                       borderColor: "transparent"
-                      strokeDashArray: 0
                       label:
-                        text: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-1,1).toLocaleDateString(\"de-DE\",{month:\"short\",year:\"2-digit\"})})()"
+                        text: "EVAL:(()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth()+0,1).toLocaleDateString(\"de-DE\",{month:\"short\"})})()"
                         position: "bottom"
                         orientation: "horizontal"
-                        offsetY: 17
+                        offsetY: 20
                         borderColor: "transparent"
                         style:
                           background: "transparent"
                           color: "var(--secondary-text-color)"
                           fontSize: "11px"
-                          fontWeight: 500
+                          fontWeight: 400
                           padding:
-                            left: 1
-                            right: 1
-                            top: 2
-                            bottom: 1
+                            left: 0
+                            right: 0
+                            top: 0
+                            bottom: 0
                     -
-                      x: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-1,1).getTime()})()"
+                      x: "EVAL:(()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth()+0,1).getTime()})()"
                       borderColor: "var(--divider-color)"
                       strokeDashArray: 3
-                      opacity: 0.55
+                      opacity: 0.35
                       label:
                         text: ""
                         borderColor: "transparent"
                         style:
                           background: "transparent"
-                    -
-                      x: "EVAL:(()=>{const t=new Date();const a=new Date(t.getFullYear(),t.getMonth()+0,1);const b=new Date(t.getFullYear(),t.getMonth()+1,1);return Math.round((a.getTime()+b.getTime())/2)})()"
-                      borderColor: "transparent"
-                      strokeDashArray: 0
-                      label:
-                        text: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+0,1).toLocaleDateString(\"de-DE\",{month:\"short\",year:\"2-digit\"})})()"
-                        position: "bottom"
-                        orientation: "horizontal"
-                        offsetY: 17
-                        borderColor: "transparent"
-                        style:
-                          background: "transparent"
-                          color: "var(--secondary-text-color)"
-                          fontSize: "11px"
-                          fontWeight: 500
-                          padding:
-                            left: 1
-                            right: 1
-                            top: 2
-                            bottom: 1
-                    -
-                      x: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+0,1).getTime()})()"
-                      borderColor: "var(--divider-color)"
-                      strokeDashArray: 3
-                      opacity: 0.55
-                      label:
-                        text: ""
-                        borderColor: "transparent"
-                        style:
-                          background: "transparent"
+                yaxis:
+                  min: 0
+                  forceNiceScale: true
+                  showAlways: true
+                  showForNullSeries: true
+                  tickAmount: 4
+                  labels:
+                    style:
+                      fontSize: "11px"
+                      fontWeight: 400
+                  title:
+                    text: "kWh"
+                    style:
+                      fontSize: "11px"
+                      fontWeight: 400
               series:
                 -
                   repeat: "historical_consumption_meters"
@@ -441,13 +410,10 @@ card:
                     unit: "kWh"
                     float_precision: 1
                     show:
-                      hidden_by_default: "$item.hidden_by_default$"
                       legend_value: false
                       in_legend: true
-              experimental:
-                hidden_by_default: true
               card_mod:
-                style: "ha-card {background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;} .apexcharts-xaxistooltip {display:none!important;} .apexcharts-tooltip {background:var(--ha-card-background,var(--card-background-color))!important;opacity:1!important;color:var(--primary-text-color)!important;border:1px solid var(--divider-color)!important;box-shadow:0 4px 14px rgba(0,0,0,.16)!important;}"
+                style: "ha-card {background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;} .apexcharts-xaxistooltip {display:none!important;} .apexcharts-xaxis-annotations text {transform:rotate(-35deg);transform-box:fill-box;transform-origin:center!important;} .apexcharts-tooltip {background:var(--ha-card-background,var(--card-background-color))!important;color:var(--primary-text-color)!important;opacity:1!important;border:1px solid var(--divider-color)!important;}"
           card_mod:
             style: "ha-card {border:1px solid var(--divider-color);border-radius:12px;background:var(--ha-card-background,var(--card-background-color));box-shadow:none;overflow:hidden;min-height:420px;}"
         -
@@ -492,7 +458,7 @@ card:
               cards:
                 -
                   type: "custom:apexcharts-card"
-                  chart_type: "donut"
+                  chart_type: "pie"
                   update_interval: "1min"
                   cache: true
                   header:
@@ -530,13 +496,13 @@ card:
                         datalabels: false
                   apex_config:
                     chart:
-                      height: 300
+                      height: 250
                       fontFamily: "inherit"
                       toolbar:
                         show: false
                       animations:
                         enabled: true
-                        speed: 240
+                        speed: 200
                     legend:
                       show: false
                     dataLabels:
@@ -544,39 +510,25 @@ card:
                     plotOptions:
                       pie:
                         expandOnClick: true
-                        donut:
-                          size: "66%"
-                          labels:
-                            show: true
-                            name:
-                              show: false
-                            value:
-                              show: false
-                            total:
-                              show: true
-                              showAlways: true
-                              label: "€ / Monat"
-                              fontSize: "12px"
-                              fontWeight: 500
-                              formatter: "EVAL:function(w){const n=w.globals.seriesTotals.reduce((a,b)=>a+(Number(b)||0),0);return n.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2});}"
+                        customScale: 0.9
                     states:
                       hover:
                         filter:
                           type: "lighten"
-                          value: 0.09
+                          value: 0.12
                       active:
                         filter:
                           type: "none"
                     tooltip:
                       enabled: true
                       fillSeriesColor: false
-                      custom: "EVAL:function({series,seriesIndex,w}){const n=w.globals.labels[seriesIndex]||\"\";const v=Number(series[seriesIndex])||0;const t=series.reduce((a,b)=>a+(Number(b)||0),0);const p=t>0?100*v/t:0;return '<div style=\"background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:8px;padding:10px 12px;box-shadow:0 4px 15px rgba(0,0,0,.18);color:var(--primary-text-color);opacity:1;font-family:inherit;font-size:12px\"><div style=\"font-weight:650;margin-bottom:4px\">'+n+'</div><div>'+v.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2})+' € · '+p.toLocaleString(\"de-DE\",{maximumFractionDigits:1})+' %</div></div>';}"
+                      custom: "EVAL:function({series,seriesIndex,w}){const name=String(w.globals.labels[seriesIndex]||\"\");const value=Number(series[seriesIndex])||0;const total=series.reduce((n,x)=>n+(Number(x)||0),0);const refs=$json.monthly_consumption$;const r=refs.find(x=>x.name===name);const hass=typeof document!==\"undefined\"?document.querySelector(\"home-assistant\")?.hass:null;const raw=r?hass?.states?.[r.entity]?.state:null;const kwh=raw!==null&&raw!==undefined&&raw!==\"\"&&Number.isFinite(Number(raw))?Number(raw).toLocaleString(\"de-DE\",{maximumFractionDigits:1})+\" kWh\":\"–\";const costs=value.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2})+\" €\";const pct=total>0?(100*value/total).toLocaleString(\"de-DE\",{maximumFractionDigits:1})+\" %\":\"–\";const clean=x=>String(x).replace(/&/g,\"&amp;\").replace(/</g,\"&lt;\").replace(/>/g,\"&gt;\");return '<div style=\"background:var(--ha-card-background,var(--card-background-color));color:var(--primary-text-color);border:1px solid var(--divider-color);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.2);padding:10px 12px;font-size:12px;min-width:145px\"><strong style=\"display:block;margin-bottom:7px\">'+clean(name)+'</strong><div>Verbrauch: '+kwh+'</div><div>Kosten: '+costs+'</div><div>Anteil: '+pct+'</div></div>';}"
                     stroke:
                       width: 1
                       colors:
                         - "var(--card-background-color)"
                   card_mod:
-                    style: "ha-card {background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;} .apexcharts-tooltip {opacity:1!important;background:var(--ha-card-background,var(--card-background-color))!important;box-shadow:0 4px 15px rgba(0,0,0,.18)!important;}"
+                    style: "ha-card {background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;} .apexcharts-tooltip {opacity:1!important;background:var(--ha-card-background,var(--card-background-color))!important;}"
                 -
                   type: "custom:button-card"
                   show_name: false
