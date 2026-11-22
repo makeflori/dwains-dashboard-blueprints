@@ -140,7 +140,7 @@
       "name": "Energy & Costs",
       "description": "Energy consumption, device costs and long-term trends without requiring a grid meter.",
       "type": "page",
-      "version": "1.0.1",
+      "version": "1.0.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
       "custom_cards": [
         "button-card"
