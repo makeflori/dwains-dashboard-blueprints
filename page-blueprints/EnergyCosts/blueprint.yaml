@@ -1,401 +1,135 @@
 blueprint:
   name: "Energy & Costs"
   name_de: "Energie & Kosten"
-  description: "Consumption and costs by device, with monthly comparisons and yearly trends."
-  description_de: "Verbrauch und Kosten je Gerät im Monatsvergleich mit Jahresverlauf."
-  icon: "mdi:lightning-bolt-circle"
+  description: "Compact energy dashboard with monthly statistics and device-level consumption and costs."
+  description_de: "Kompakte Energieübersicht mit Monatsverlauf sowie Verbrauch und Kosten je Gerät."
+  type: "page"
   author: "makeflori"
   version: "1.0"
-  type: "page"
+  icon: "mdi:lightning-bolt-circle"
   custom_cards:
     - "button-card"
     - "layout-card"
     - "apexcharts-card"
   input:
     total_energy_month:
-      name: "Monthly consumption"
-      name_de: "Monatsverbrauch"
+      name: "Total monthly energy"
+      name_de: "Verbrauch Monat gesamt"
       type: "entity-picker"
       entity_domain: "sensor"
       default: ""
     total_cost_month:
-      name: "Monthly cost"
-      name_de: "Monatskosten"
+      name: "Total monthly cost"
+      name_de: "Kosten Monat gesamt"
       type: "entity-picker"
       entity_domain: "sensor"
       default: ""
     total_energy_year:
-      name: "Yearly consumption"
-      name_de: "Jahresverbrauch"
+      name: "Total yearly energy"
+      name_de: "Verbrauch Jahr gesamt"
       type: "entity-picker"
       entity_domain: "sensor"
       default: ""
     total_cost_year:
-      name: "Yearly cost"
-      name_de: "Jahreskosten"
+      name: "Total yearly cost"
+      name_de: "Kosten Jahr gesamt"
       type: "entity-picker"
       entity_domain: "sensor"
       default: ""
     monthly_consumption:
-      name: "Monthly consumption by device"
-      name_de: "Monatsverbrauch nach Gerät"
+      name: "Monthly device consumption"
+      name_de: "Verbrauch je Gerät im Monat"
       type: "entity-list"
       entity_domain: "sensor"
       default_icon: "mdi:lightning-bolt"
       default: []
     monthly_costs:
-      name: "Monthly costs by device"
-      name_de: "Monatliche Gerätekosten"
-      type: "entity-list"
-      entity_domain: "sensor"
-      default_icon: "mdi:currency-eur"
-      default: []
-    yearly_costs:
-      name: "Yearly costs by device"
-      name_de: "Jährliche Gerätekosten"
+      name: "Monthly device costs"
+      name_de: "Kosten je Gerät im Monat"
       type: "entity-list"
       entity_domain: "sensor"
       default_icon: "mdi:currency-eur"
       default: []
     cumulative_meters:
-      name: "Cumulative meters for history"
-      name_de: "Gesamtzähler für Monatsverlauf"
+      name: "Lifetime energy meters for monthly trend"
+      name_de: "Gesamtverbrauchszähler für Monatsverlauf"
       type: "entity-list"
       entity_domain: "sensor"
-      default_icon: "mdi:chart-bar"
+      default_icon: "mdi:chart-column"
       default: []
 card:
   type: "custom:layout-card"
   layout_type: "custom:grid-layout"
   layout:
-    grid-template-columns: "minmax(0,1fr)"
-    grid-template-areas: "\"monthTitle\" \"monthKpis\" \"monthly\" \"yearTitle\" \"yearKpis\" \"history\" \"yearcost\""
+    grid-template-columns: "minmax(0,1.15fr) minmax(0,0.85fr)"
+    grid-template-areas: "\"summary summary\" \"trend devices\""
     grid-gap: "12px"
     align-items: "start"
+    max-width: "1240px"
     margin: "0 auto"
-    max-width: "1400px"
-    padding: "0"
+    mediaquery:
+      "(max-width: 900px)":
+        grid-template-columns: "minmax(0,1fr)"
+        grid-template-areas: "\"summary\" \"trend\" \"devices\""
+        grid-gap: "10px"
   cards:
     -
       type: "custom:button-card"
-      name: "Monat"
-      show_icon: false
-      show_name: true
-      show_state: false
-      tap_action:
-        action: "none"
-      styles:
-        card:
-          -
-            background: "transparent"
-          -
-            border: "none"
-          -
-            box-shadow: "none"
-          -
-            padding: "16px 2px 4px"
-          -
-            margin: "0"
-        name:
-          -
-            justify-self: "start"
-          -
-            font-size: "19px"
-          -
-            font-weight: "700"
-          -
-            color: "var(--primary-text-color)"
-          -
-            letter-spacing: "-.2px"
       view_layout:
-        grid-area: "monthTitle"
-    -
-      type: "custom:layout-card"
-      layout_type: "custom:grid-layout"
-      layout:
-        grid-template-columns: "repeat(2,minmax(0,1fr))"
-        grid-gap: "12px"
-        margin: "0"
-        padding: "0"
-        mediaquery:
-          "(max-width: 520px)":
-            grid-template-columns: "repeat(2,minmax(0,1fr))"
-            grid-gap: "8px"
-      cards:
-        -
-          type: "custom:button-card"
-          show_icon: false
-          show_name: false
-          show_state: false
-          show_label: false
-          entity: "$total_energy_month$"
-          triggers_update: "$total_energy_month$"
-          tap_action:
-            action: "more-info"
-          custom_fields:
-            content: "[[[\n const s=states['$total_energy_month$'];\n const n=Number(s?.state);\n const valid=!!s && !['unknown','unavailable'].includes(s.state) && Number.isFinite(n);\n const unit=s?.attributes?.unit_of_measurement || 'kWh';\n const value=valid ? n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit : '–';\n return '<div style=\"box-sizing:border-box;padding:19px 20px;min-height:116px;min-width:0\">'+\n '<div style=\"display:flex;align-items:center;gap:11px;min-width:0\">'+\n '<div style=\"width:34px;height:34px;flex:0 0 34px;border-radius:11px;background:#559FD420;color:#559FD4;display:grid;place-items:center\">'+\n '<ha-icon icon=\"mdi:lightning-bolt\" style=\"--mdc-icon-size:19px\"></ha-icon></div>'+\n '<div style=\"font-size:13px;font-weight:550;color:var(--secondary-text-color)\">Verbrauch</div></div>'+\n '<div style=\"font-size:clamp(22px,2.5vw,31px);font-weight:750;letter-spacing:-.5px;margin-top:17px;font-variant-numeric:tabular-nums;color:var(--primary-text-color)\">'+value+'</div></div>';\n]]]"
-          styles:
-            card:
-              -
-                border: "1px solid var(--divider-color)"
-              -
-                border-radius: "18px"
-              -
-                box-shadow: "none"
-              -
-                padding: "0"
-              -
-                overflow: "hidden"
-              -
-                background: "var(--ha-card-background,var(--card-background-color))"
-            grid:
-              -
-                grid-template-areas: "\"content\""
-              -
-                grid-template-columns: "1fr"
-              -
-                grid-template-rows: "1fr"
-            custom_fields:
-              content:
-                -
-                  width: "100%"
-                -
-                  height: "100%"
-                -
-                  min-width: "0"
-          requires_input: "total_energy_month"
-        -
-          type: "custom:button-card"
-          show_icon: false
-          show_name: false
-          show_state: false
-          show_label: false
-          entity: "$total_cost_month$"
-          triggers_update: "$total_cost_month$"
-          tap_action:
-            action: "more-info"
-          custom_fields:
-            content: "[[[\n const s=states['$total_cost_month$'];\n const n=Number(s?.state);\n const valid=!!s && !['unknown','unavailable'].includes(s.state) && Number.isFinite(n);\n const unit=s?.attributes?.unit_of_measurement || '€';\n const value=valid ? n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit : '–';\n return '<div style=\"box-sizing:border-box;padding:19px 20px;min-height:116px;min-width:0\">'+\n '<div style=\"display:flex;align-items:center;gap:11px;min-width:0\">'+\n '<div style=\"width:34px;height:34px;flex:0 0 34px;border-radius:11px;background:#DDA65B20;color:#DDA65B;display:grid;place-items:center\">'+\n '<ha-icon icon=\"mdi:currency-eur\" style=\"--mdc-icon-size:19px\"></ha-icon></div>'+\n '<div style=\"font-size:13px;font-weight:550;color:var(--secondary-text-color)\">Kosten</div></div>'+\n '<div style=\"font-size:clamp(22px,2.5vw,31px);font-weight:750;letter-spacing:-.5px;margin-top:17px;font-variant-numeric:tabular-nums;color:var(--primary-text-color)\">'+value+'</div></div>';\n]]]"
-          styles:
-            card:
-              -
-                border: "1px solid var(--divider-color)"
-              -
-                border-radius: "18px"
-              -
-                box-shadow: "none"
-              -
-                padding: "0"
-              -
-                overflow: "hidden"
-              -
-                background: "var(--ha-card-background,var(--card-background-color))"
-            grid:
-              -
-                grid-template-areas: "\"content\""
-              -
-                grid-template-columns: "1fr"
-              -
-                grid-template-rows: "1fr"
-            custom_fields:
-              content:
-                -
-                  width: "100%"
-                -
-                  height: "100%"
-                -
-                  min-width: "0"
-          requires_input: "total_cost_month"
-      view_layout:
-        grid-area: "monthKpis"
-    -
-      type: "custom:button-card"
+        grid-area: "summary"
       show_icon: false
       show_name: false
       show_state: false
       show_label: false
-      triggers_update: "$entities.monthly_consumption$"
       tap_action:
         action: "none"
+      triggers_update:
+        - "$total_energy_month$"
+        - "$total_cost_month$"
+        - "$total_energy_year$"
+        - "$total_cost_year$"
       custom_fields:
-        content: "[[[\n const energy=$json.monthly_consumption$;\n const costs=$json.monthly_costs$;\n const norm=x=>String(x||'').toLocaleLowerCase('de-DE').replace(/[^a-z0-9äöüß]/g,'');\n const escape=x=>String(x??'').replace(/[&<>\"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[ch]));\n const read=id=>{const s=states[id];const n=Number(s?.state);return !s||['unknown','unavailable'].includes(s.state)||!Number.isFinite(n)||n<0?null:n};\n const price=new Map(costs.map(r=>[norm(r.name),read(r.entity)]));\n const rows=energy.map((r,i)=>({name:r.name||states[r.entity]?.attributes?.friendly_name||r.entity,icon:r.icon||'mdi:flash',v:read(r.entity),cost:price.get(norm(r.name)),index:i})).sort((a,b)=>(b.v??-1)-(a.v??-1));\n const top=Math.max(0,...rows.map(x=>x.v??0));\n const fmt=n=>n==null?'–':n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});\n const narrow=window.innerWidth<650;\n const cols=narrow?'minmax(0,1fr) 89px 72px':'minmax(0,1fr) 150px 126px';\n const head='<div style=\"display:grid;grid-template-columns:'+cols+';gap:10px;padding:0 0 12px;border-bottom:1px solid var(--divider-color);align-items:end\">'+\n '<span style=\"font-size:15px;font-weight:700;color:var(--primary-text-color)\">Geräte im Vergleich</span>'+\n '<span style=\"font-size:11px;font-weight:600;color:var(--secondary-text-color);text-align:right\">Verbrauch</span>'+\n '<span style=\"font-size:11px;font-weight:600;color:var(--secondary-text-color);text-align:right\">Kosten</span></div>';\n const body=rows.map((r,i)=>{\n   const width=top>0&&r.v!=null?Math.max(0,Math.min(100,100*r.v/top)):0;\n   const pv=r.cost==null?'–':fmt(r.cost)+' €';\n   const ev=r.v==null?'–':fmt(r.v)+' kWh';\n   return '<div style=\"padding:'+(narrow?'13':'14')+'px 0;border-bottom:'+(i===rows.length-1?'0':'1px solid var(--divider-color)')+'\">'+\n     '<div style=\"display:grid;grid-template-columns:'+cols+';gap:10px;align-items:center;min-width:0\">'+\n     '<div style=\"display:flex;align-items:center;gap:9px;min-width:0\">'+\n     '<span style=\"flex:0 0 30px;width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:rgba(85,159,212,.12);color:#559FD4\"><ha-icon icon=\"'+escape(r.icon)+'\" style=\"--mdc-icon-size:19px\"></ha-icon></span>'+\n     '<span style=\"min-width:0;overflow-wrap:anywhere;font-size:13px;font-weight:570;color:var(--primary-text-color)\">'+escape(r.name)+'</span></div>'+\n     '<span style=\"font-size:'+(narrow?'11':'13')+'px;font-weight:670;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums;color:var(--primary-text-color)\">'+ev+'</span>'+\n     '<span style=\"font-size:'+(narrow?'11':'13')+'px;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums;color:'+(r.cost==null?'var(--secondary-text-color)':'var(--primary-text-color)')+'\">'+pv+'</span></div>'+\n     '<div style=\"margin-top:10px;margin-left:'+(narrow?'39':'39')+'px;height:5px;background:var(--divider-color);border-radius:99px;overflow:hidden\">'+\n     '<div style=\"background:#559FD4;height:100%;width:'+width.toFixed(2)+'%;border-radius:99px\"></div></div></div>';\n }).join('');\n return '<div style=\"padding:22px 20px 13px;box-sizing:border-box;min-width:0\">'+head+body+'</div>';\n]]]"
+        body: "[[[\n const src=[\n {label:'Monat · Verbrauch',id:'$total_energy_month$',unit:'kWh'},\n {label:'Monat · Kosten',id:'$total_cost_month$',unit:'€'},\n {label:'Jahr · Verbrauch',id:'$total_energy_year$',unit:'kWh'},\n {label:'Jahr · Kosten',id:'$total_cost_year$',unit:'€'}\n ];\n const fmt=n=>n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});\n const html=src.map((item,i)=>{\n const s=states[item.id];\n const n=Number(s?.state);\n const value=s&&!['unknown','unavailable'].includes(s.state)&&Number.isFinite(n)?fmt(n):'–';\n return '<div style=\"min-width:0;padding:17px 19px;box-sizing:border-box;border-right:'+(i===3?'none':'1px solid var(--divider-color)')+'\">'+\n '<div style=\"font-size:11px;letter-spacing:.1px;color:var(--secondary-text-color);white-space:nowrap\">'+item.label+'</div>'+\n '<div style=\"margin-top:6px;display:flex;align-items:baseline;gap:5px;white-space:nowrap;color:var(--primary-text-color)\">'+\n '<span style=\"font-size:clamp(19px,2vw,24px);font-weight:720;letter-spacing:-.3px;font-variant-numeric:tabular-nums\">'+value+'</span>'+\n '<span style=\"font-size:12px;font-weight:500;color:var(--secondary-text-color)\">'+item.unit+'</span></div></div>';\n }).join('');\n return '<div style=\"display:grid;grid-template-columns:repeat(4,minmax(0,1fr));min-width:0\" class=\"ec-stats\">'+html+\n '<style>@media(max-width:690px){.ec-stats{grid-template-columns:repeat(2,minmax(0,1fr)) !important}.ec-stats>div:nth-child(2){border-right:0 !important}.ec-stats>div:nth-child(-n+2){border-bottom:1px solid var(--divider-color)}}@media(max-width:370px){.ec-stats>div{padding:14px 11px !important}.ec-stats>div span{font-size:18px}}</style></div>';\n]]]"
       styles:
         card:
           -
+            background: "var(--ha-card-background,var(--card-background-color))"
+          -
             border: "1px solid var(--divider-color)"
           -
-            border-radius: "18px"
+            border-radius: "14px"
           -
             box-shadow: "none"
           -
             padding: "0"
           -
             overflow: "hidden"
-          -
-            background: "var(--ha-card-background,var(--card-background-color))"
         grid:
           -
-            grid-template-areas: "\"content\""
+            grid-template-areas: "\"body\""
           -
             grid-template-columns: "1fr"
           -
-            grid-template-rows: "1fr"
+            grid-template-rows: "auto"
         custom_fields:
-          content:
+          body:
             -
               width: "100%"
             -
-              height: "100%"
-            -
               min-width: "0"
-      requires_input: "monthly_consumption"
-      view_layout:
-        grid-area: "monthly"
-    -
-      type: "custom:button-card"
-      name: "Jahr"
-      show_icon: false
-      show_name: true
-      show_state: false
-      tap_action:
-        action: "none"
-      styles:
-        card:
-          -
-            background: "transparent"
-          -
-            border: "none"
-          -
-            box-shadow: "none"
-          -
-            padding: "16px 2px 4px"
-          -
-            margin: "0"
-        name:
-          -
-            justify-self: "start"
-          -
-            font-size: "19px"
-          -
-            font-weight: "700"
-          -
-            color: "var(--primary-text-color)"
-          -
-            letter-spacing: "-.2px"
-      view_layout:
-        grid-area: "yearTitle"
-    -
-      type: "custom:layout-card"
-      layout_type: "custom:grid-layout"
-      layout:
-        grid-template-columns: "repeat(2,minmax(0,1fr))"
-        grid-gap: "12px"
-        margin: "0"
-        padding: "0"
-        mediaquery:
-          "(max-width: 520px)":
-            grid-template-columns: "repeat(2,minmax(0,1fr))"
-            grid-gap: "8px"
-      cards:
-        -
-          type: "custom:button-card"
-          show_icon: false
-          show_name: false
-          show_state: false
-          show_label: false
-          entity: "$total_energy_year$"
-          triggers_update: "$total_energy_year$"
-          tap_action:
-            action: "more-info"
-          custom_fields:
-            content: "[[[\n const s=states['$total_energy_year$'];\n const n=Number(s?.state);\n const valid=!!s && !['unknown','unavailable'].includes(s.state) && Number.isFinite(n);\n const unit=s?.attributes?.unit_of_measurement || 'kWh';\n const value=valid ? n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit : '–';\n return '<div style=\"box-sizing:border-box;padding:19px 20px;min-height:116px;min-width:0\">'+\n '<div style=\"display:flex;align-items:center;gap:11px;min-width:0\">'+\n '<div style=\"width:34px;height:34px;flex:0 0 34px;border-radius:11px;background:#65BBA620;color:#65BBA6;display:grid;place-items:center\">'+\n '<ha-icon icon=\"mdi:chart-bar\" style=\"--mdc-icon-size:19px\"></ha-icon></div>'+\n '<div style=\"font-size:13px;font-weight:550;color:var(--secondary-text-color)\">Verbrauch</div></div>'+\n '<div style=\"font-size:clamp(22px,2.5vw,31px);font-weight:750;letter-spacing:-.5px;margin-top:17px;font-variant-numeric:tabular-nums;color:var(--primary-text-color)\">'+value+'</div></div>';\n]]]"
-          styles:
-            card:
-              -
-                border: "1px solid var(--divider-color)"
-              -
-                border-radius: "18px"
-              -
-                box-shadow: "none"
-              -
-                padding: "0"
-              -
-                overflow: "hidden"
-              -
-                background: "var(--ha-card-background,var(--card-background-color))"
-            grid:
-              -
-                grid-template-areas: "\"content\""
-              -
-                grid-template-columns: "1fr"
-              -
-                grid-template-rows: "1fr"
-            custom_fields:
-              content:
-                -
-                  width: "100%"
-                -
-                  height: "100%"
-                -
-                  min-width: "0"
-          requires_input: "total_energy_year"
-        -
-          type: "custom:button-card"
-          show_icon: false
-          show_name: false
-          show_state: false
-          show_label: false
-          entity: "$total_cost_year$"
-          triggers_update: "$total_cost_year$"
-          tap_action:
-            action: "more-info"
-          custom_fields:
-            content: "[[[\n const s=states['$total_cost_year$'];\n const n=Number(s?.state);\n const valid=!!s && !['unknown','unavailable'].includes(s.state) && Number.isFinite(n);\n const unit=s?.attributes?.unit_of_measurement || '€';\n const value=valid ? n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit : '–';\n return '<div style=\"box-sizing:border-box;padding:19px 20px;min-height:116px;min-width:0\">'+\n '<div style=\"display:flex;align-items:center;gap:11px;min-width:0\">'+\n '<div style=\"width:34px;height:34px;flex:0 0 34px;border-radius:11px;background:#9889CF20;color:#9889CF;display:grid;place-items:center\">'+\n '<ha-icon icon=\"mdi:wallet-outline\" style=\"--mdc-icon-size:19px\"></ha-icon></div>'+\n '<div style=\"font-size:13px;font-weight:550;color:var(--secondary-text-color)\">Kosten</div></div>'+\n '<div style=\"font-size:clamp(22px,2.5vw,31px);font-weight:750;letter-spacing:-.5px;margin-top:17px;font-variant-numeric:tabular-nums;color:var(--primary-text-color)\">'+value+'</div></div>';\n]]]"
-          styles:
-            card:
-              -
-                border: "1px solid var(--divider-color)"
-              -
-                border-radius: "18px"
-              -
-                box-shadow: "none"
-              -
-                padding: "0"
-              -
-                overflow: "hidden"
-              -
-                background: "var(--ha-card-background,var(--card-background-color))"
-            grid:
-              -
-                grid-template-areas: "\"content\""
-              -
-                grid-template-columns: "1fr"
-              -
-                grid-template-rows: "1fr"
-            custom_fields:
-              content:
-                -
-                  width: "100%"
-                -
-                  height: "100%"
-                -
-                  min-width: "0"
-          requires_input: "total_cost_year"
-      view_layout:
-        grid-area: "yearKpis"
     -
       type: "custom:apexcharts-card"
+      view_layout:
+        grid-area: "trend"
       requires_input: "cumulative_meters"
       header:
         show: true
-        title: "Monatsverlauf"
+        title: "Verbrauch · 12 Monate"
         show_states: false
-        colorize_states: false
       graph_span: "365d"
-      span:
-        end: "month"
       now:
         show: false
+      locale: "de"
       stacked: true
       color_list:
         - "#559FD4"
@@ -406,7 +140,6 @@ card:
         - "#69B8C7"
         - "#D19ABB"
         - "#A9B6C6"
-      locale: "de"
       yaxis:
         -
           min: 0
@@ -425,36 +158,33 @@ card:
               type: "change"
               period: "month"
               align: "start"
-            transform: "return x == null || !Number.isFinite(Number(x)) || Number(x)<0 ? null : Number(x);"
             fill_raw: "null"
+            transform: "return x == null || !Number.isFinite(Number(x)) || Number(x) < 0 ? null : Number(x);"
             show:
               legend_value: false
       apex_config:
         chart:
-          height: 315
+          height: 300
+          stacked: true
           toolbar:
             show: false
-          stacked: true
         xaxis:
           type: "datetime"
-          tickAmount: 12
           labels:
             format: "MMM yy"
             datetimeUTC: false
-            rotate: 0
             hideOverlappingLabels: true
+          tickAmount: 12
         tooltip:
           x:
             format: "MMMM yyyy"
+          shared: true
         plotOptions:
           bar:
-            columnWidth: "58%"
+            columnWidth: "60%"
             borderRadius: 2
         legend:
-          position: "bottom"
-          fontSize: "11px"
-          onItemClick:
-            toggleDataSeries: true
+          show: false
         dataLabels:
           enabled: false
         grid:
@@ -462,48 +192,44 @@ card:
           strokeDashArray: 3
         stroke:
           width: 0
-      view_layout:
-        grid-area: "history"
     -
       type: "custom:button-card"
+      view_layout:
+        grid-area: "devices"
+      requires_input: "monthly_consumption"
       show_icon: false
       show_name: false
       show_state: false
       show_label: false
-      triggers_update: "$entities.yearly_costs$"
       tap_action:
         action: "none"
+      triggers_update: "[[[ return $json.monthly_consumption$.concat($json.monthly_costs$).map(r=>r.entity); ]]]"
       custom_fields:
-        content: "[[[\n const selected=$json.yearly_costs$;\n const read=id=>{const s=states[id],n=Number(s?.state);return !s||['unknown','unavailable'].includes(s.state)||!Number.isFinite(n)||n<0?null:n};\n const esc=x=>String(x??'').replace(/[&<>\"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[ch]));\n const rows=selected.map(x=>({name:x.name||x.entity,cost:read(x.entity)})).sort((a,b)=>(b.cost??-1)-(a.cost??-1));\n const top=Math.max(0,...rows.map(x=>x.cost??0));\n const fmt=n=>n==null?'–':n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';\n const body=rows.map(x=>{\n   const width=top>0&&x.cost!=null?100*x.cost/top:0;\n   return '<div style=\"padding:12px 0\"><div style=\"display:flex;justify-content:space-between;align-items:baseline;gap:8px\">'+\n   '<span style=\"font-size:13px;font-weight:550;color:var(--primary-text-color)\">'+esc(x.name)+'</span>'+\n   '<span style=\"font-size:13px;font-weight:690;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--primary-text-color)\">'+fmt(x.cost)+'</span></div>'+\n   '<div style=\"height:7px;background:var(--divider-color);border-radius:99px;overflow:hidden;margin-top:10px\"><div style=\"height:100%;width:'+width.toFixed(2)+'%;border-radius:99px;background:#DDA65B\"></div></div></div>';\n }).join('');\n return '<div style=\"padding:21px 22px;box-sizing:border-box\">'+\n '<div style=\"font-size:16px;font-weight:700;color:var(--primary-text-color);margin-bottom:12px\">Jahreskosten nach Gerät</div>'+body+'</div>';\n]]]"
+        body: "[[[\n const rows=$json.monthly_consumption$;\n const costRows=$json.monthly_costs$;\n const palette=[\"#559FD4\",\"#65BBA6\",\"#F2B570\",\"#9685D0\",\"#DE8982\",\"#69B8C7\",\"#D19ABB\",\"#A9B6C6\"];\n const normalize=x=>String(x||'').toLocaleLowerCase('de-DE').replace(/[^a-z0-9äöüß]/g,'');\n const escape=x=>String(x??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c]));\n const get=id=>{const s=states[id],n=Number(s?.state);return !s||['unknown','unavailable'].includes(s.state)||!Number.isFinite(n)||n<0?null:n;};\n const prices=new Map(costRows.map(r=>[normalize(r.name),get(r.entity)]));\n const data=rows.map((r,i)=>({name:r.name||states[r.entity]?.attributes?.friendly_name||r.entity,energy:get(r.entity),cost:prices.get(normalize(r.name)),color:palette[i%palette.length]}))\n .sort((a,b)=>(b.energy??-1)-(a.energy??-1));\n const max=Math.max(0,...data.map(x=>x.energy??0));\n const fmt=n=>n===null||n===undefined?'–':n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});\n const narrow=window.innerWidth<650;\n const cols=narrow?'minmax(0,1fr) 76px 66px':'minmax(0,1fr) 110px 93px';\n const header='<div style=\"display:grid;grid-template-columns:'+cols+';align-items:center;gap:9px;padding:0 0 12px;border-bottom:1px solid var(--divider-color)\">'+\n '<span style=\"font-size:14px;font-weight:680;color:var(--primary-text-color)\">Geräte · Monat</span>'+\n '<span style=\"font-size:11px;color:var(--secondary-text-color);text-align:right\">kWh</span>'+\n '<span style=\"font-size:11px;color:var(--secondary-text-color);text-align:right\">€</span></div>';\n const html=data.map((row,i)=>{\n   const pct=max>0&&row.energy!==null?100*row.energy/max:0;\n   return '<div style=\"padding:10px 0;border-bottom:'+(i===data.length-1?'0':'1px solid var(--divider-color)')+'\">'+\n    '<div style=\"display:grid;grid-template-columns:'+cols+';gap:9px;align-items:center;min-width:0\">'+\n    '<div style=\"display:flex;gap:8px;align-items:center;min-width:0\">'+\n    '<span style=\"width:8px;height:8px;flex:0 0 8px;border-radius:3px;background:'+row.color+'\"></span>'+\n    '<span title=\"'+escape(row.name)+'\" style=\"min-width:0;font-size:12px;font-weight:500;color:var(--primary-text-color);overflow-wrap:anywhere;line-height:1.3\">'+escape(row.name)+'</span></div>'+\n    '<span style=\"text-align:right;white-space:nowrap;color:var(--primary-text-color);font-size:12px;font-variant-numeric:tabular-nums\">'+fmt(row.energy)+'</span>'+\n    '<span style=\"text-align:right;white-space:nowrap;color:'+(row.cost==null?'var(--secondary-text-color)':'var(--primary-text-color)')+';font-size:12px;font-variant-numeric:tabular-nums\">'+fmt(row.cost)+'</span></div>'+\n    '<div style=\"height:3px;margin-top:7px;border-radius:3px;background:var(--divider-color);overflow:hidden;margin-left:16px\">'+\n    '<div style=\"width:'+pct.toFixed(2)+'%;height:100%;background:'+row.color+'\"></div></div></div>';\n }).join('');\n return '<div style=\"box-sizing:border-box;padding:17px 18px 12px;min-width:0\">'+header+\n (html||'<div style=\"padding:15px 0;color:var(--secondary-text-color)\">Keine Daten</div>')+'</div>';\n]]]"
       styles:
         card:
           -
+            background: "var(--ha-card-background,var(--card-background-color))"
+          -
             border: "1px solid var(--divider-color)"
           -
-            border-radius: "18px"
+            border-radius: "14px"
           -
             box-shadow: "none"
           -
             padding: "0"
           -
             overflow: "hidden"
-          -
-            background: "var(--ha-card-background,var(--card-background-color))"
         grid:
           -
-            grid-template-areas: "\"content\""
+            grid-template-areas: "\"body\""
           -
             grid-template-columns: "1fr"
           -
-            grid-template-rows: "1fr"
+            grid-template-rows: "auto"
         custom_fields:
-          content:
+          body:
             -
               width: "100%"
             -
-              height: "100%"
-            -
               min-width: "0"
-      requires_input: "yearly_costs"
-      view_layout:
-        grid-area: "yearcost"
