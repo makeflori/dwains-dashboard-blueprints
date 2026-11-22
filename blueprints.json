@@ -138,14 +138,15 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Live power distribution and area-grouped energy consumption and costs, inspired by Madelena's energy view.",
+      "description": "Live power-flow visualization, dark summary panels, device shares and area-grouped costs.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
       "custom_cards": [
         "mushroom-template-card",
         "layout-card",
-        "apexcharts-card"
+        "apexcharts-card",
+        "button-card"
       ]
     },
     {
