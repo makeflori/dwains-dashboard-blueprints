@@ -1,8 +1,8 @@
 blueprint:
   name: "Energy & Costs"
   name_de: "Energie & Kosten"
-  description: "Compact and consistent energy and costs dashboard with native interactive charts."
-  description_de: "Kompakte Energie- und Kostenübersicht mit einheitlichen, interaktiven Diagrammen."
+  description: "Balanced energy KPIs, grouped monthly consumption and interactive cost donut with detailed distribution table."
+  description_de: "Konsistente Energie-Kennzahlen, Monatsgruppen und interaktive Kostenverteilung mit vollständiger Tabelle."
   icon: "mdi:lightning-bolt-circle"
   type: "page"
   author: "makeflori"
@@ -84,20 +84,28 @@ card:
           repeat: "monthly_consumption"
           template: "$item.entity$"
       custom_fields:
-        panel: "[[[\nconst rd=id=>{const o=states[id];const v=Number(o?.state);return o&&![\"unavailable\",\"unknown\"].includes(o.state)&&Number.isFinite(v)?v:null;};\nconst num=x=>x===null?\"–\":x.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2});\nconst meters=$json.monthly_consumption$;\nconst total=rd(\"$total_energy_month$\");\nconst data=[\n{title:\"Verbrauch · Monat\",val:total===null?meters.reduce((s,m)=>s+(rd(m.entity)??0),0):total,unit:\"kWh\",icon:\"energy\"},\n{title:\"Verbrauch · Jahr\",val:rd(\"$total_energy_year$\"),unit:\"kWh\",icon:\"energy\"},\n{title:\"Kosten · Monat\",val:rd(\"$total_cost_month$\"),unit:\"€\",icon:\"cost\"},\n{title:\"Kosten · Jahr\",val:rd(\"$total_cost_year$\"),unit:\"€\",icon:\"cost\"}\n];\nconst icons={\n energy:'<svg viewBox=\"0 0 24 24\" width=\"23\" height=\"23\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 2 4.5 13H11l-1 9L19.5 10H13V2Z\"/></svg>',\n cost:'<svg viewBox=\"0 0 24 24\" width=\"23\" height=\"23\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"3\"/><path d=\"M16 12h5\"/><circle cx=\"16\" cy=\"12\" r=\"1\"/></svg>'\n};\nconst tile=x=>'<section style=\"box-sizing:border-box;min-width:0;min-height:102px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 17px;background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;color:var(--primary-text-color);font-family:inherit\"><div style=\"display:flex;align-items:center;gap:9px;min-width:0\"><span aria-hidden=\"true\" style=\"color:'+(x.icon===\"cost\"?\"#c9952b\":\"var(--primary-color)\")+';flex-shrink:0\">'+icons[x.icon]+'</span><span style=\"font-size:12px;line-height:1.3;font-weight:650;color:var(--secondary-text-color);overflow-wrap:normal\">'+x.title+'</span></div><div style=\"display:flex;align-items:baseline;gap:4px;flex-shrink:0;text-align:right\"><strong style=\"font-size:clamp(21px,1.9vw,28px);line-height:1.1;font-weight:700;font-variant-numeric:tabular-nums\">'+num(x.val)+'</strong><span style=\"font-size:11px;color:var(--secondary-text-color)\">'+x.unit+'</span></div></section>';\nreturn '<div style=\"box-sizing:border-box;padding:0 9px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px\">'+data.map(tile).join(\"\")+'</div>';\n]]]"
+        panel: "[[[\nconst read=id=>{const st=states[id];const v=Number(st?.state);return st&&![\"unknown\",\"unavailable\"].includes(st.state)&&Number.isFinite(v)?v:null;};\nconst fmt=n=>n===null?\"–\":n.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2});\nconst meters=$json.monthly_consumption$,measured=read(\"$total_energy_month$\");\nconst data=[\n{title:\"Verbrauch · Monat\",value:measured===null?meters.reduce((s,a)=>s+(read(a.entity)??0),0):measured,unit:\"kWh\",kind:\"energy\"},\n{title:\"Verbrauch · Jahr\",value:read(\"$total_energy_year$\"),unit:\"kWh\",kind:\"energy\"},\n{title:\"Kosten · Monat\",value:read(\"$total_cost_month$\"),unit:\"€\",kind:\"cost\"},\n{title:\"Kosten · Jahr\",value:read(\"$total_cost_year$\"),unit:\"€\",kind:\"cost\"}\n];\nconst symbols={\nenergy:'<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 2 4.5 13H11l-1 9L19.5 10H13V2Z\"/></svg>',\ncost:'<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"3\"/><path d=\"M16 12h5\"/><circle cx=\"16\" cy=\"12\" r=\"1\"/></svg>'\n};\nconst tile=r=>'<section style=\"box-sizing:border-box;min-width:0;height:112px;display:flex;flex-direction:column;justify-content:space-between;gap:7px;padding:14px 17px 15px;background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;color:var(--primary-text-color)\"><div style=\"display:flex;align-items:center;gap:10px\"><span aria-hidden=\"true\" style=\"width:26px;flex-shrink:0;display:flex;color:'+(r.kind===\"cost\"?\"#c9952b\":\"var(--primary-color)\")+'\">'+symbols[r.kind]+'</span><span style=\"font-size:13px;font-weight:650;line-height:1.3;white-space:nowrap\">'+r.title+'</span></div><div style=\"display:flex;justify-content:flex-end;align-items:baseline;gap:5px;min-width:0\"><strong style=\"font-size:clamp(24px,2.4vw,32px);font-weight:700;line-height:1.1;letter-spacing:-.4px;font-variant-numeric:tabular-nums\">'+fmt(r.value)+'</strong><span style=\"font-size:12px;white-space:nowrap;color:var(--secondary-text-color)\">'+r.unit+'</span></div></section>';\nreturn '<div style=\"box-sizing:border-box;padding:0 9px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px;font-family:inherit\">'+data.map(tile).join(\"\")+'</div>';\n]]]"
       styles:
         card:
-          - border: "none"
-          - box-shadow: "none"
-          - padding: "0"
-          - background: "transparent"
+          -
+            border: "none"
+          -
+            box-shadow: "none"
+          -
+            padding: "0"
+          -
+            background: "transparent"
         grid:
-          - grid-template-areas: '"panel"'
-          - grid-template-columns: "minmax(0,1fr)"
+          -
+            grid-template-areas: "\"panel\""
+          -
+            grid-template-columns: "minmax(0,1fr)"
         custom_fields:
           panel:
-            - width: "100%"
-            - min-width: "0"
+            -
+              width: "100%"
+            -
+              min-width: "0"
     -
       type: "custom:layout-card"
       layout_type: "custom:grid-layout"
@@ -107,63 +115,512 @@ card:
         align-items: "stretch"
       cards:
         -
-          type: "custom:apexcharts-card"
-          requires_input: "historical_consumption_meters"
-          graph_span: "184d"
-          span:
-            end: "month"
-          update_interval: "10min"
-          cache: true
-          experimental:
-            hidden_by_default: true
-          header: {"show":true,"title":"Verbrauch · Monatsverlauf","standard_format":true,"show_states":false}
-          color_list: ["#ca2b76","#388cce","#dfaa22","#43ad93","#9674c6","#db7950","#6c86a6","#ad62a0"]
-          yaxis: [{"min":0,"max":"auto","decimals":0,"apex_config":{"tickAmount":4,"title":{"text":"kWh","style":{"fontSize":"11px","fontWeight":400}},"labels":{"style":{"fontSize":"11px","fontWeight":400}}}}]
-          all_series_config: {"type":"column","statistics":{"type":"change","period":"month","align":"middle"},"transform":"return x === null || !Number.isFinite(Number(x)) || Number(x) < 0 ? null : Number(x);"}
-          apex_config: {"chart":{"height":268,"fontFamily":"inherit","toolbar":{"show":false},"animations":{"enabled":false}},"legend":{"show":true,"position":"bottom","fontSize":"11px","itemMargin":{"horizontal":8,"vertical":4}},"plotOptions":{"bar":{"columnWidth":"65%","borderRadius":2}},"tooltip":{"shared":false,"intersect":true,"x":{"format":"MMMM yyyy"}},"xaxis":{"type":"datetime","tickAmount":6,"labels":{"show":true,"datetimeUTC":false,"format":"MMM yy","rotate":0,"hideOverlappingLabels":true,"style":{"fontSize":"11px"}},"axisTicks":{"show":false}},"grid":{"padding":{"top":8,"bottom":4,"left":4,"right":6}},"dataLabels":{"enabled":false}}
-          card_mod: {"style":"ha-card {box-sizing:border-box;min-width:0;min-height:370px;height:100%;background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;} ha-card .card-header {font-size:16px;font-weight:650;}"}
-          series:
+          type: "custom:vertical-stack-in-card"
+          cards:
             -
-              repeat: "historical_consumption_meters"
-              template:
-                entity: "$item.entity$"
-                name: "$item.name$"
-                unit: "kWh"
-                float_precision: 1
-                show:
-                  legend_value: false
-                  in_legend: true
-                  hidden_by_default: "$item.hidden_by_default$"
+              type: "custom:button-card"
+              name: "Verbrauch · Monatsverlauf"
+              show_icon: false
+              show_name: true
+              show_state: false
+              tap_action:
+                action: "none"
+              styles:
+                card:
+                  -
+                    border: "none"
+                  -
+                    box-shadow: "none"
+                  -
+                    background: "transparent"
+                  -
+                    padding: "15px 18px 7px"
+                  -
+                    borderRadius: "0px"
+                name:
+                  -
+                    fontSize: "16px"
+                  -
+                    fontWeight: "650"
+                  -
+                    color: "var(--primary-text-color)"
+                  -
+                    textAlign: "left"
+            -
+              type: "custom:apexcharts-card"
+              graph_span: "215d"
+              span:
+                end: "month"
+              update_interval: "10min"
+              cache: true
+              header:
+                show: false
+              color_list:
+                - "#ca2b76"
+                - "#388cce"
+                - "#dfaa22"
+                - "#43ad93"
+                - "#9674c6"
+                - "#db7950"
+                - "#6c86a6"
+                - "#ad62a0"
+              yaxis:
+                -
+                  min: 0
+                  max: "auto"
+                  decimals: 0
+                  apex_config:
+                    tickAmount: 4
+                    title:
+                      text: "kWh"
+                      style:
+                        fontSize: "11px"
+                        fontWeight: 400
+                    labels:
+                      style:
+                        fontSize: "11px"
+                        fontWeight: 400
+              all_series_config:
+                type: "column"
+                statistics:
+                  type: "change"
+                  period: "month"
+                  align: "middle"
+                transform: "return x === null || !Number.isFinite(Number(x)) || Number(x) < 0 ? null : Number(x);"
+              apex_config:
+                chart:
+                  height: 325
+                  fontFamily: "inherit"
+                  toolbar:
+                    show: false
+                  animations:
+                    enabled: false
+                legend:
+                  show: true
+                  position: "bottom"
+                  fontSize: "11px"
+                  itemMargin:
+                    horizontal: 8
+                    vertical: 6
+                plotOptions:
+                  bar:
+                    columnWidth: "66%"
+                    borderRadius: 2
+                tooltip:
+                  enabled: true
+                  shared: false
+                  intersect: true
+                  x:
+                    format: "MMMM yyyy"
+                xaxis:
+                  type: "datetime"
+                  labels:
+                    show: false
+                  axisTicks:
+                    show: false
+                  crosshairs:
+                    show: false
+                  tooltip:
+                    enabled: false
+                grid:
+                  padding:
+                    top: 4
+                    bottom: 25
+                    left: 6
+                    right: 10
+                dataLabels:
+                  enabled: false
+                annotations:
+                  xaxis:
+                    -
+                      x: "EVAL:(()=>{const t=new Date();const a=new Date(t.getFullYear(),t.getMonth()+-6,1);const b=new Date(t.getFullYear(),t.getMonth()+-5,1);return Math.round((a.getTime()+b.getTime())/2)})()"
+                      borderColor: "transparent"
+                      strokeDashArray: 0
+                      label:
+                        text: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-6,1).toLocaleDateString(\"de-DE\",{month:\"short\",year:\"2-digit\"})})()"
+                        position: "bottom"
+                        orientation: "horizontal"
+                        offsetY: 17
+                        borderColor: "transparent"
+                        style:
+                          background: "transparent"
+                          color: "var(--secondary-text-color)"
+                          fontSize: "11px"
+                          fontWeight: 500
+                          padding:
+                            left: 1
+                            right: 1
+                            top: 2
+                            bottom: 1
+                    -
+                      x: "EVAL:(()=>{const t=new Date();const a=new Date(t.getFullYear(),t.getMonth()+-5,1);const b=new Date(t.getFullYear(),t.getMonth()+-4,1);return Math.round((a.getTime()+b.getTime())/2)})()"
+                      borderColor: "transparent"
+                      strokeDashArray: 0
+                      label:
+                        text: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-5,1).toLocaleDateString(\"de-DE\",{month:\"short\",year:\"2-digit\"})})()"
+                        position: "bottom"
+                        orientation: "horizontal"
+                        offsetY: 17
+                        borderColor: "transparent"
+                        style:
+                          background: "transparent"
+                          color: "var(--secondary-text-color)"
+                          fontSize: "11px"
+                          fontWeight: 500
+                          padding:
+                            left: 1
+                            right: 1
+                            top: 2
+                            bottom: 1
+                    -
+                      x: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-5,1).getTime()})()"
+                      borderColor: "var(--divider-color)"
+                      strokeDashArray: 3
+                      opacity: 0.55
+                      label:
+                        text: ""
+                        borderColor: "transparent"
+                        style:
+                          background: "transparent"
+                    -
+                      x: "EVAL:(()=>{const t=new Date();const a=new Date(t.getFullYear(),t.getMonth()+-4,1);const b=new Date(t.getFullYear(),t.getMonth()+-3,1);return Math.round((a.getTime()+b.getTime())/2)})()"
+                      borderColor: "transparent"
+                      strokeDashArray: 0
+                      label:
+                        text: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-4,1).toLocaleDateString(\"de-DE\",{month:\"short\",year:\"2-digit\"})})()"
+                        position: "bottom"
+                        orientation: "horizontal"
+                        offsetY: 17
+                        borderColor: "transparent"
+                        style:
+                          background: "transparent"
+                          color: "var(--secondary-text-color)"
+                          fontSize: "11px"
+                          fontWeight: 500
+                          padding:
+                            left: 1
+                            right: 1
+                            top: 2
+                            bottom: 1
+                    -
+                      x: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-4,1).getTime()})()"
+                      borderColor: "var(--divider-color)"
+                      strokeDashArray: 3
+                      opacity: 0.55
+                      label:
+                        text: ""
+                        borderColor: "transparent"
+                        style:
+                          background: "transparent"
+                    -
+                      x: "EVAL:(()=>{const t=new Date();const a=new Date(t.getFullYear(),t.getMonth()+-3,1);const b=new Date(t.getFullYear(),t.getMonth()+-2,1);return Math.round((a.getTime()+b.getTime())/2)})()"
+                      borderColor: "transparent"
+                      strokeDashArray: 0
+                      label:
+                        text: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-3,1).toLocaleDateString(\"de-DE\",{month:\"short\",year:\"2-digit\"})})()"
+                        position: "bottom"
+                        orientation: "horizontal"
+                        offsetY: 17
+                        borderColor: "transparent"
+                        style:
+                          background: "transparent"
+                          color: "var(--secondary-text-color)"
+                          fontSize: "11px"
+                          fontWeight: 500
+                          padding:
+                            left: 1
+                            right: 1
+                            top: 2
+                            bottom: 1
+                    -
+                      x: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-3,1).getTime()})()"
+                      borderColor: "var(--divider-color)"
+                      strokeDashArray: 3
+                      opacity: 0.55
+                      label:
+                        text: ""
+                        borderColor: "transparent"
+                        style:
+                          background: "transparent"
+                    -
+                      x: "EVAL:(()=>{const t=new Date();const a=new Date(t.getFullYear(),t.getMonth()+-2,1);const b=new Date(t.getFullYear(),t.getMonth()+-1,1);return Math.round((a.getTime()+b.getTime())/2)})()"
+                      borderColor: "transparent"
+                      strokeDashArray: 0
+                      label:
+                        text: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-2,1).toLocaleDateString(\"de-DE\",{month:\"short\",year:\"2-digit\"})})()"
+                        position: "bottom"
+                        orientation: "horizontal"
+                        offsetY: 17
+                        borderColor: "transparent"
+                        style:
+                          background: "transparent"
+                          color: "var(--secondary-text-color)"
+                          fontSize: "11px"
+                          fontWeight: 500
+                          padding:
+                            left: 1
+                            right: 1
+                            top: 2
+                            bottom: 1
+                    -
+                      x: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-2,1).getTime()})()"
+                      borderColor: "var(--divider-color)"
+                      strokeDashArray: 3
+                      opacity: 0.55
+                      label:
+                        text: ""
+                        borderColor: "transparent"
+                        style:
+                          background: "transparent"
+                    -
+                      x: "EVAL:(()=>{const t=new Date();const a=new Date(t.getFullYear(),t.getMonth()+-1,1);const b=new Date(t.getFullYear(),t.getMonth()+0,1);return Math.round((a.getTime()+b.getTime())/2)})()"
+                      borderColor: "transparent"
+                      strokeDashArray: 0
+                      label:
+                        text: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-1,1).toLocaleDateString(\"de-DE\",{month:\"short\",year:\"2-digit\"})})()"
+                        position: "bottom"
+                        orientation: "horizontal"
+                        offsetY: 17
+                        borderColor: "transparent"
+                        style:
+                          background: "transparent"
+                          color: "var(--secondary-text-color)"
+                          fontSize: "11px"
+                          fontWeight: 500
+                          padding:
+                            left: 1
+                            right: 1
+                            top: 2
+                            bottom: 1
+                    -
+                      x: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+-1,1).getTime()})()"
+                      borderColor: "var(--divider-color)"
+                      strokeDashArray: 3
+                      opacity: 0.55
+                      label:
+                        text: ""
+                        borderColor: "transparent"
+                        style:
+                          background: "transparent"
+                    -
+                      x: "EVAL:(()=>{const t=new Date();const a=new Date(t.getFullYear(),t.getMonth()+0,1);const b=new Date(t.getFullYear(),t.getMonth()+1,1);return Math.round((a.getTime()+b.getTime())/2)})()"
+                      borderColor: "transparent"
+                      strokeDashArray: 0
+                      label:
+                        text: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+0,1).toLocaleDateString(\"de-DE\",{month:\"short\",year:\"2-digit\"})})()"
+                        position: "bottom"
+                        orientation: "horizontal"
+                        offsetY: 17
+                        borderColor: "transparent"
+                        style:
+                          background: "transparent"
+                          color: "var(--secondary-text-color)"
+                          fontSize: "11px"
+                          fontWeight: 500
+                          padding:
+                            left: 1
+                            right: 1
+                            top: 2
+                            bottom: 1
+                    -
+                      x: "EVAL:(()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth()+0,1).getTime()})()"
+                      borderColor: "var(--divider-color)"
+                      strokeDashArray: 3
+                      opacity: 0.55
+                      label:
+                        text: ""
+                        borderColor: "transparent"
+                        style:
+                          background: "transparent"
+              series:
+                -
+                  repeat: "historical_consumption_meters"
+                  template:
+                    entity: "$item.entity$"
+                    name: "$item.name$"
+                    unit: "kWh"
+                    float_precision: 1
+                    show:
+                      hidden_by_default: "$item.hidden_by_default$"
+                      legend_value: false
+                      in_legend: true
+              experimental:
+                hidden_by_default: true
+              card_mod:
+                style: "ha-card {background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;} .apexcharts-xaxistooltip {display:none!important;} .apexcharts-tooltip {background:var(--ha-card-background,var(--card-background-color))!important;opacity:1!important;color:var(--primary-text-color)!important;border:1px solid var(--divider-color)!important;box-shadow:0 4px 14px rgba(0,0,0,.16)!important;}"
+          card_mod:
+            style: "ha-card {border:1px solid var(--divider-color);border-radius:12px;background:var(--ha-card-background,var(--card-background-color));box-shadow:none;overflow:hidden;min-height:420px;}"
         -
-          type: "custom:apexcharts-card"
-          chart_type: "donut"
-          update_interval: "1min"
-          cache: true
-          header: {"show":true,"title":"Kostenverteilung · aktueller Monat","standard_format":true,"show_states":false}
-          color_list: ["#ca2b76","#388cce","#dfaa22","#43ad93","#9674c6","#db7950","#6c86a6","#ad62a0","#9ea4ac"]
-          apex_config: {"chart":{"height":310,"fontFamily":"inherit","toolbar":{"show":false},"animations":{"enabled":true,"speed":240}},"legend":{"show":true,"position":"right","horizontalAlign":"left","fontSize":"12px","itemMargin":{"horizontal":3,"vertical":7},"markers":{"width":10,"height":10,"radius":2}},"dataLabels":{"enabled":false},"plotOptions":{"pie":{"expandOnClick":true,"offsetY":0,"donut":{"size":"67%","labels":{"show":true,"name":{"show":false},"value":{"show":false},"total":{"show":true,"showAlways":true,"label":"€ / Monat","fontSize":"13px","fontWeight":500,"formatter":"EVAL:function(w){const n=w.globals.seriesTotals.reduce((a,b)=>a+(Number(b)||0),0);return n.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2});}"}}}}},"states":{"hover":{"filter":{"type":"lighten","value":0.12}},"active":{"filter":{"type":"darken","value":0.05}}},"tooltip":{"enabled":true,"fillSeriesColor":false,"theme":"auto"},"stroke":{"width":1,"colors":["var(--card-background-color)"]}}
-          card_mod: {"style":"ha-card {box-sizing:border-box;min-width:0;min-height:370px;height:100%;background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;} ha-card .card-header {font-size:16px;font-weight:650;}"}
-          series:
+          type: "custom:vertical-stack-in-card"
+          cards:
             -
-              repeat: "monthly_costs"
-              template:
-                entity: "$item.entity$"
-                name: "$item.name$"
-                unit: "€"
-                float_precision: 2
-                show:
-                  legend_value: true
-                  in_legend: true
-                  datalabels: false
+              type: "custom:button-card"
+              name: "Verbrauch & Kosten · aktueller Monat"
+              show_icon: false
+              show_name: true
+              show_state: false
+              tap_action:
+                action: "none"
+              styles:
+                card:
+                  -
+                    border: "none"
+                  -
+                    box-shadow: "none"
+                  -
+                    background: "transparent"
+                  -
+                    padding: "15px 18px 7px"
+                  -
+                    borderRadius: "0px"
+                name:
+                  -
+                    fontSize: "16px"
+                  -
+                    fontWeight: "650"
+                  -
+                    color: "var(--primary-text-color)"
+                  -
+                    textAlign: "left"
             -
-              entity: "$base_fee_month$"
-              name: "Grundpreis"
-              unit: "€"
-              float_precision: 2
-              show:
-                legend_value: true
-                in_legend: true
-                datalabels: false
+              type: "custom:layout-card"
+              layout_type: "custom:grid-layout"
+              layout:
+                grid-template-columns: "repeat(auto-fit,minmax(min(100%,260px),1fr))"
+                grid-gap: "0px"
+                align-items: "center"
+              cards:
+                -
+                  type: "custom:apexcharts-card"
+                  chart_type: "donut"
+                  update_interval: "1min"
+                  cache: true
+                  header:
+                    show: false
+                  color_list:
+                    - "#ca2b76"
+                    - "#388cce"
+                    - "#dfaa22"
+                    - "#43ad93"
+                    - "#9674c6"
+                    - "#db7950"
+                    - "#6c86a6"
+                    - "#ad62a0"
+                    - "#9ea4ac"
+                  series:
+                    -
+                      repeat: "monthly_costs"
+                      template:
+                        entity: "$item.entity$"
+                        name: "$item.name$"
+                        unit: "€"
+                        float_precision: 2
+                        show:
+                          in_legend: false
+                          legend_value: false
+                          datalabels: false
+                    -
+                      entity: "$base_fee_month$"
+                      name: "Grundpreis"
+                      unit: "€"
+                      float_precision: 2
+                      show:
+                        in_legend: false
+                        legend_value: false
+                        datalabels: false
+                  apex_config:
+                    chart:
+                      height: 300
+                      fontFamily: "inherit"
+                      toolbar:
+                        show: false
+                      animations:
+                        enabled: true
+                        speed: 240
+                    legend:
+                      show: false
+                    dataLabels:
+                      enabled: false
+                    plotOptions:
+                      pie:
+                        expandOnClick: true
+                        donut:
+                          size: "66%"
+                          labels:
+                            show: true
+                            name:
+                              show: false
+                            value:
+                              show: false
+                            total:
+                              show: true
+                              showAlways: true
+                              label: "€ / Monat"
+                              fontSize: "12px"
+                              fontWeight: 500
+                              formatter: "EVAL:function(w){const n=w.globals.seriesTotals.reduce((a,b)=>a+(Number(b)||0),0);return n.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2});}"
+                    states:
+                      hover:
+                        filter:
+                          type: "lighten"
+                          value: 0.09
+                      active:
+                        filter:
+                          type: "none"
+                    tooltip:
+                      enabled: true
+                      fillSeriesColor: false
+                      custom: "EVAL:function({series,seriesIndex,w}){const n=w.globals.labels[seriesIndex]||\"\";const v=Number(series[seriesIndex])||0;const t=series.reduce((a,b)=>a+(Number(b)||0),0);const p=t>0?100*v/t:0;return '<div style=\"background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:8px;padding:10px 12px;box-shadow:0 4px 15px rgba(0,0,0,.18);color:var(--primary-text-color);opacity:1;font-family:inherit;font-size:12px\"><div style=\"font-weight:650;margin-bottom:4px\">'+n+'</div><div>'+v.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2})+' € · '+p.toLocaleString(\"de-DE\",{maximumFractionDigits:1})+' %</div></div>';}"
+                    stroke:
+                      width: 1
+                      colors:
+                        - "var(--card-background-color)"
+                  card_mod:
+                    style: "ha-card {background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;} .apexcharts-tooltip {opacity:1!important;background:var(--ha-card-background,var(--card-background-color))!important;box-shadow:0 4px 15px rgba(0,0,0,.18)!important;}"
+                -
+                  type: "custom:button-card"
+                  show_name: false
+                  show_icon: false
+                  show_state: false
+                  show_label: false
+                  tap_action:
+                    action: "none"
+                  triggers_update:
+                    -
+                      repeat: "monthly_costs"
+                      template: "$item.entity$"
+                    -
+                      repeat: "monthly_consumption"
+                      template: "$item.entity$"
+                    - "$base_fee_month$"
+                    - "$total_cost_month$"
+                  custom_fields:
+                    panel: "[[[\nconst read=id=>{const st=states[id];const v=Number(st?.state);return st&&![\"unknown\",\"unavailable\"].includes(st.state)&&Number.isFinite(v)?v:null;};\nconst fmt=n=>n===null?\"–\":n.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2});\nconst esc=s=>String(s??\"\").replace(/&/g,\"&amp;\").replace(/</g,\"&lt;\").replace(/>/g,\"&gt;\").replace(/\"/g,\"&quot;\");\nconst usage=$json.monthly_consumption$,costs=$json.monthly_costs$,history=$json.historical_consumption_meters$;\nconst palette=[\"#ca2b76\",\"#388cce\",\"#dfaa22\",\"#43ad93\",\"#9674c6\",\"#db7950\",\"#6c86a6\",\"#ad62a0\",\"#9ea4ac\"],fixed=read(\"$base_fee_month$\"),sum=read(\"$total_cost_month$\");\nconst items=costs.map(c=>{const i=history.findIndex(h=>h.name===c.name),u=usage.find(x=>x.name===c.name);return {name:c.name,kwh:u?read(u.entity):null,cost:read(c.entity),color:palette[Math.max(0,i)%palette.length]};});\nconst deviceCosts=items.reduce((n,r)=>n+(r.cost??0),0);\nif(fixed!==null)items.push({name:\"Grundpreis\",kwh:null,cost:fixed,color:palette[8]});\nconst assigned=items.reduce((n,r)=>n+(r.cost??0),0);\nif(sum!==null&&sum>assigned+.06)items.push({name:\"Weitere Kosten\",kwh:null,cost:sum-assigned,color:\"#727b88\"});\nconst total=items.reduce((s,r)=>s+(r.cost??0),0);\nconst layout=\"10px minmax(0,1fr) 55px 56px 44px\";\nconst line=(x,head)=>'<div style=\"display:grid;grid-template-columns:'+layout+';gap:6px;align-items:center;padding:'+(head?\"0 0 8px\":\"6px 0\")+';border-bottom:1px solid var(--divider-color);font-size:11px;line-height:1.3\"><span>'+(head?'':'<span style=\"display:block;height:8px;width:8px;border-radius:3px;background:'+x.color+'\"></span>')+'</span><span style=\"text-align:left;min-width:0;overflow-wrap:anywhere\">'+(head?\"Gerät\":esc(x.name))+'</span><span style=\"text-align:right;font-variant-numeric:tabular-nums\">'+(head?\"Verbrauch\":x.kwh===null?\"–\":x.kwh.toLocaleString(\"de-DE\",{maximumFractionDigits:1})+' kWh')+'</span><span style=\"text-align:right;font-variant-numeric:tabular-nums\">'+(head?\"Kosten\":fmt(x.cost)+' €')+'</span><span style=\"text-align:right;font-variant-numeric:tabular-nums\">'+(head?\"Anteil\":x.cost===null||total<=0?\"–\":(100*x.cost/total).toLocaleString(\"de-DE\",{maximumFractionDigits:1})+' %')+'</span></div>';\nreturn '<div style=\"box-sizing:border-box;padding:0 14px 14px 0;font-family:inherit;color:var(--primary-text-color);width:100%;min-width:0\"><div style=\"font-weight:650;color:var(--secondary-text-color)\">'+line({},true)+'</div>'+items.map(x=>line(x,false)).join(\"\")+'</div>';\n]]]"
+                  styles:
+                    card:
+                      -
+                        border: "none"
+                      -
+                        box-shadow: "none"
+                      -
+                        background: "transparent"
+                      -
+                        padding: "0"
+                      -
+                        borderRadius: "0px"
+                    grid:
+                      -
+                        grid-template-areas: "\"panel\""
+                      -
+                        grid-template-columns: "minmax(0,1fr)"
+                    custom_fields:
+                      panel:
+                        -
+                          width: "100%"
+                        -
+                          min-width: "0"
+          card_mod:
+            style: "ha-card {border:1px solid var(--divider-color);border-radius:12px;background:var(--ha-card-background,var(--card-background-color));box-shadow:none;overflow:hidden;min-height:420px;}"
     -
       type: "conditional"
       conditions:
