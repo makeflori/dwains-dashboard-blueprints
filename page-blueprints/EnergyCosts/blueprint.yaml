@@ -1,236 +1,495 @@
 blueprint:
-  name: Energy & Costs
-  name_de: Energie & Kosten
-  description: Energy consumption, device costs and long-term trends without requiring a grid meter.
-  description_de: Geräteverbräuche, Stromkosten und Monatsverläufe ohne Netzstromzähler.
-  icon: mdi:lightning-bolt-circle
-  author: makeflori
-  version: "1.0.0"
-  type: page
+  name: "Energy & Costs"
+  name_de: "Energie & Kosten"
+  description: "Responsive energy overview with comparison charts and carefully selected long-term data."
+  description_de: "Übersicht über Stromverbrauch, Kosten, Geräteanteile und geprüfte Langzeitverläufe."
+  icon: "mdi:lightning-bolt-circle"
+  author: "makeflori"
+  version: "1.1.0"
+  type: "page"
   custom_cards:
-    - button-card
+    - "button-card"
+    - "layout-card"
+    - "apexcharts-card"
   input:
     title:
-      name: Page title
-      name_de: Seitentitel
-      type: text-field
-      default: Energie & Kosten
+      name: "Page title"
+      name_de: "Seitentitel"
+      type: "text-field"
+      default: "Energie & Kosten"
     total_energy_month:
-      name: Total consumption this month (optional)
-      name_de: Verbrauch dieses Monats gesamt (optional)
-      type: entity-picker
-      entity_domain: sensor
+      name: "Monthly device energy total"
+      name_de: "Verbrauch Monat gesamt"
+      type: "entity-picker"
+      entity_domain: "sensor"
       default: ""
     total_cost_month:
-      name: Total cost this month (optional)
-      name_de: Kosten dieses Monats gesamt (optional)
-      type: entity-picker
-      entity_domain: sensor
+      name: "Monthly device costs including base fee"
+      name_de: "Kosten Monat inkl. Grundpreis"
+      type: "entity-picker"
+      entity_domain: "sensor"
       default: ""
     total_energy_year:
-      name: Total consumption this year (optional)
-      name_de: Verbrauch dieses Jahres gesamt (optional)
-      type: entity-picker
-      entity_domain: sensor
+      name: "Yearly device energy total"
+      name_de: "Verbrauch Jahr gesamt"
+      type: "entity-picker"
+      entity_domain: "sensor"
       default: ""
     total_cost_year:
-      name: Total cost this year (optional)
-      name_de: Kosten dieses Jahres gesamt (optional)
-      type: entity-picker
-      entity_domain: sensor
+      name: "Yearly device costs including base fee"
+      name_de: "Kosten Jahr inkl. Grundpreis"
+      type: "entity-picker"
+      entity_domain: "sensor"
       default: ""
     monthly_consumption:
-      name: Monthly consumption by device
-      name_de: Monatsverbrauch je Gerät
-      description: Select monthly kWh sensors. Add as many as required.
-      description_de: Monatliche kWh-Sensoren auswählen; beliebig viele Geräte.
-      type: entity-list
-      entity_domain: sensor
-      default_icon: mdi:flash
+      name: "Current monthly energy by device"
+      name_de: "Monatsverbrauch nach Gerät"
+      type: "entity-list"
+      entity_domain: "sensor"
+      default_icon: "mdi:lightning-bolt"
       default: []
     monthly_costs:
-      name: Monthly costs by device
-      name_de: Monatskosten je Gerät
-      description: Select existing monetary sensors. No current-price back-calculation.
-      description_de: Vorhandene Kostensensoren auswählen; keine rückwirkende Neuberechnung.
-      type: entity-list
-      entity_domain: sensor
-      default_icon: mdi:currency-eur
-      default: []
-    yearly_costs:
-      name: Yearly costs by device
-      name_de: Jahreskosten je Gerät
-      type: entity-list
-      entity_domain: sensor
-      default_icon: mdi:calendar
+      name: "Current monthly cost by device"
+      name_de: "Monatliche Gerätekosten"
+      type: "entity-list"
+      entity_domain: "sensor"
+      default_icon: "mdi:currency-eur"
       default: []
     cumulative_meters:
-      name: Cumulative energy meters for monthly history
-      name_de: Gesamtverbrauchszähler für den Monatsverlauf
-      description: Choose cumulative kWh sensors with long-term statistics (not monthly utility meters).
-      description_de: Gesamtverbrauchszähler mit Langzeitstatistik auswählen, keine zurückgesetzten Monatszähler.
-      type: entity-list
-      entity_domain: sensor
-      default_icon: mdi:chart-bar
+      name: "Verified cumulative energy meters for history"
+      name_de: "Geprüfte Gesamtverbrauchszähler für Verlauf"
+      description: "Only include meters with verified nonnegative monthly long-term statistics."
+      description_de: "Nur Zähler mit geprüften, nichtnegativen Monatsstatistiken auswählen."
+      type: "entity-list"
+      entity_domain: "sensor"
+      default_icon: "mdi:chart-timeline-variant"
       default: []
-
 card:
-  type: vertical-stack
+  type: "custom:layout-card"
+  layout_type: "custom:grid-layout"
+  layout:
+    grid-template-columns: "minmax(0,1fr) minmax(0,1fr)"
+    grid-template-areas: "\"hero hero\" \"summary summary\" \"energy costs\" \"history history\" \"note note\""
+    grid-gap: "14px"
+    align-items: "start"
+    max-width: "1540px"
+    margin: "0 auto"
+    mediaquery:
+      "(max-width: 950px)":
+        grid-template-columns: "minmax(0,1fr)"
+        grid-template-areas: "\"hero\" \"summary\" \"energy\" \"costs\" \"history\" \"note\""
+        grid-gap: "11px"
   cards:
-    - type: markdown
-      content: |
-        # $title$
-        Geräteverbräuche und Kosten unabhängig von einem Netzstromzähler.
-      card_mod:
-        style: |
-          ha-card { background: transparent; border: 0; box-shadow: none; padding: 0; }
-    - type: grid
-      columns: 2
-      square: false
+    -
+      type: "custom:button-card"
+      show_icon: false
+      show_name: false
+      show_state: false
+      show_label: false
+      tap_action:
+        action: "none"
+      triggers_update: "$entities.monthly_consumption$"
+      custom_fields:
+        content: "[[[\n const count=$json.monthly_consumption$.length;\n return '<div style=\"box-sizing:border-box;padding:clamp(22px,4vw,34px);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;background:linear-gradient(125deg,rgba(62,145,218,.15),rgba(98,192,175,.07) 65%,transparent)\">'+\n '<div style=\"min-width:0\"><div style=\"font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--secondary-text-color);font-weight:700;margin-bottom:9px\">HOME ASSISTANT · ENERGIE</div>'+\n '<div style=\"font-size:clamp(26px,4vw,39px);line-height:1.15;letter-spacing:-.8px;font-weight:750;color:var(--primary-text-color)\">Energie im Blick</div>'+\n '<div style=\"font-size:14px;line-height:1.6;color:var(--secondary-text-color);margin-top:10px\">Verbrauch, Kosten und die größten Stromverbraucher an einem Ort.</div></div>'+\n '<div style=\"display:flex;align-items:center;gap:10px;background:rgba(77,159,233,.12);padding:12px 16px;border-radius:14px;color:var(--primary-text-color)\"><ha-icon icon=\"mdi:lightning-bolt\" style=\"color:#4E9FE9;--mdc-icon-size:26px\"></ha-icon>'+\n '<div style=\"font-size:12px;line-height:1.35\"><strong style=\"font-size:18px\">'+count+'</strong><br><span style=\"color:var(--secondary-text-color)\">erfasste Verbraucher</span></div></div></div>';\n]]]"
+      styles:
+        card:
+          -
+            background: "var(--ha-card-background,var(--card-background-color))"
+          -
+            border: "1px solid var(--divider-color)"
+          -
+            border-radius: "20px"
+          -
+            box-shadow: "none"
+          -
+            padding: "0"
+          -
+            overflow: "hidden"
+          -
+            color: "var(--primary-text-color)"
+        grid:
+          -
+            grid-template-areas: "\"content\""
+          -
+            grid-template-columns: "1fr"
+          -
+            grid-template-rows: "1fr"
+        custom_fields:
+          content:
+            -
+              width: "100%"
+            -
+              height: "100%"
+      view_layout:
+        grid-area: "hero"
+    -
+      type: "custom:layout-card"
+      layout_type: "custom:grid-layout"
+      view_layout:
+        grid-area: "summary"
+      layout:
+        grid-template-columns: "repeat(4,minmax(0,1fr))"
+        grid-gap: "12px"
+        mediaquery:
+          "(max-width: 800px)":
+            grid-template-columns: "repeat(2,minmax(0,1fr))"
+            grid-gap: "9px"
       cards:
-        - type: custom:button-card
-          requires_input: total_energy_month
-          entity: $total_energy_month$
-          name: Verbrauch · Monat
-          icon: mdi:lightning-bolt
-          show_state: true
-          tap_action: {action: more-info}
+        -
+          type: "custom:button-card"
+          show_icon: false
+          show_name: false
+          show_state: false
+          show_label: false
+          tap_action:
+            action: "more-info"
+          triggers_update: "$total_energy_month$"
+          custom_fields:
+            content: "[[[\n const src=states['$total_energy_month$'];\n const val=Number(src?.state);\n const valid=src&&src.state!=='unknown'&&src.state!=='unavailable'&&Number.isFinite(val);\n const unit=src?.attributes?.unit_of_measurement || \"kWh\";\n const text=valid?val.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit:'–';\n return '<div style=\"padding:20px 18px 18px;box-sizing:border-box;min-height:142px\">'+\n '<div style=\"display:flex;align-items:center;justify-content:space-between;gap:8px\"><div style=\"font-size:12px;font-weight:600;color:var(--secondary-text-color)\">Verbrauch · Monat</div>'+\n '<div style=\"width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:#4E9FE922;color:#4E9FE9\"><ha-icon icon=\"mdi:lightning-bolt\" style=\"--mdc-icon-size:21px\"></ha-icon></div></div>'+\n '<div style=\"font-size:clamp(23px,2.4vw,30px);font-weight:760;letter-spacing:-.7px;margin-top:17px;white-space:nowrap;color:var(--primary-text-color)\">'+text+'</div>'+\n '<div style=\"font-size:11px;color:var(--secondary-text-color);margin-top:5px\">Erfasste Geräte</div></div>';\n]]]"
           styles:
-            card: [ "border-radius: 16px", "padding: 18px", "box-shadow: none" ]
-            icon: [ "width: 28px", "color: var(--primary-color)" ]
-            name: [ "font-size: 13px", "color: var(--secondary-text-color)", "font-weight: 500" ]
-            state: [ "font-size: 26px", "font-weight: 700", "padding-top: 6px" ]
-        - type: custom:button-card
-          requires_input: total_cost_month
-          entity: $total_cost_month$
-          name: Kosten · Monat
-          icon: mdi:currency-eur
-          show_state: true
-          tap_action: {action: more-info}
-          styles:
-            card: [ "border-radius: 16px", "padding: 18px", "box-shadow: none" ]
-            icon: [ "width: 28px", "color: var(--warning-color)" ]
-            name: [ "font-size: 13px", "color: var(--secondary-text-color)", "font-weight: 500" ]
-            state: [ "font-size: 26px", "font-weight: 700", "padding-top: 6px" ]
-        - type: custom:button-card
-          requires_input: total_energy_year
-          entity: $total_energy_year$
-          name: Verbrauch · Jahr
-          icon: mdi:calendar
-          show_state: true
-          tap_action: {action: more-info}
-          styles:
-            card: [ "border-radius: 16px", "padding: 18px", "box-shadow: none" ]
-            icon: [ "width: 28px", "color: var(--primary-color)" ]
-            name: [ "font-size: 13px", "color: var(--secondary-text-color)", "font-weight: 500" ]
-            state: [ "font-size: 26px", "font-weight: 700", "padding-top: 6px" ]
-        - type: custom:button-card
-          requires_input: total_cost_year
-          entity: $total_cost_year$
-          name: Kosten · Jahr
-          icon: mdi:cash
-          show_state: true
-          tap_action: {action: more-info}
-          styles:
-            card: [ "border-radius: 16px", "padding: 18px", "box-shadow: none" ]
-            icon: [ "width: 28px", "color: var(--warning-color)" ]
-            name: [ "font-size: 13px", "color: var(--secondary-text-color)", "font-weight: 500" ]
-            state: [ "font-size: 26px", "font-weight: 700", "padding-top: 6px" ]
-    - type: markdown
-      requires_input: monthly_consumption
-      content: "### Verbrauch je Gerät · aktueller Monat"
-    - type: grid
-      requires_input: monthly_consumption
-      columns: 2
-      square: false
-      cards:
-        - repeat: monthly_consumption
-          template:
-            type: custom:button-card
-            entity: $item.entity$
-            name: $item.name$
-            icon: $item.icon$
-            show_state: true
-            show_label: false
-            tap_action: {action: more-info}
-            styles:
-              card: [ "border-radius: 14px", "padding: 16px", "box-shadow: none" ]
-              grid: [ "grid-template-areas: 'i n' 's s'", "grid-template-columns: 38px 1fr" ]
-              icon: [ "width: 24px", "color: var(--primary-color)" ]
-              name: [ "justify-self: start", "font-weight: 600", "font-size: 14px", "white-space: normal" ]
-              state: [ "justify-self: start", "font-size: 22px", "font-weight: 700", "padding-top: 8px" ]
-    - type: markdown
-      requires_input: monthly_costs
-      content: |
-        ### Kosten je Gerät · aktueller Monat
-        Die Balken vergleichen die ausgewählten Geräte miteinander; 100 % entspricht dem höchsten Monatsbetrag.
-    - type: grid
-      requires_input: monthly_costs
-      columns: 2
-      square: false
-      cards:
-        - repeat: monthly_costs
-          template:
-            type: custom:button-card
-            entity: $item.entity$
-            name: $item.name$
-            icon: $item.icon$
-            show_state: true
-            tap_action: {action: more-info}
+            card:
+              -
+                background: "var(--ha-card-background,var(--card-background-color))"
+              -
+                border: "1px solid var(--divider-color)"
+              -
+                border-radius: "20px"
+              -
+                box-shadow: "none"
+              -
+                padding: "0"
+              -
+                overflow: "hidden"
+              -
+                color: "var(--primary-text-color)"
+            grid:
+              -
+                grid-template-areas: "\"content\""
+              -
+                grid-template-columns: "1fr"
+              -
+                grid-template-rows: "1fr"
             custom_fields:
-              bar: |
-                [[[
-                  const rows = $json.monthly_costs$;
-                  const numbers = rows.map(row => Number(states[row.entity]?.state)).filter(Number.isFinite);
-                  const maxValue = Math.max(0, ...numbers);
-                  const current = Number(entity?.state);
-                  const percent = maxValue > 0 && Number.isFinite(current)
-                    ? Math.max(0, Math.min(100, current / maxValue * 100)) : 0;
-                  return '<div title="' + percent.toFixed(0) + '% of the highest selected device cost" style="height:7px;border-radius:99px;background:var(--divider-color);overflow:hidden;margin-top:12px">' +
-                    '<div style="height:100%;width:' + percent + '%;background:var(--warning-color);border-radius:99px"></div></div>';
-                ]]]
-            styles:
-              card: [ "border-radius: 14px", "padding: 16px", "box-shadow: none" ]
-              grid: [ "grid-template-areas: 'i n' 's s' 'bar bar'", "grid-template-columns: 38px 1fr" ]
-              icon: [ "width: 24px", "color: var(--warning-color)" ]
-              name: [ "justify-self: start", "font-weight: 600", "font-size: 14px", "white-space: normal" ]
-              state: [ "justify-self: start", "font-size: 22px", "font-weight: 700", "padding-top: 8px" ]
-              custom_fields:
-                bar: [ "width: 100%" ]
-    - type: markdown
-      requires_input: cumulative_meters
-      content: "### Verbrauchsverlauf · letzte 12 Monate"
-    - type: statistics-graph
-      requires_input: cumulative_meters
-      entities: $entities.cumulative_meters$
-      chart_type: bar
-      period: month
-      stat_types:
-        - change
-      days_to_show: 365
-      hide_legend: false
-    - type: markdown
-      requires_input: yearly_costs
-      content: "### Kosten je Gerät · laufendes Jahr"
-    - type: grid
-      requires_input: yearly_costs
-      columns: 2
-      square: false
+              content:
+                -
+                  width: "100%"
+                -
+                  height: "100%"
+          requires_input: "total_energy_month"
+          entity: "$total_energy_month$"
+        -
+          type: "custom:button-card"
+          show_icon: false
+          show_name: false
+          show_state: false
+          show_label: false
+          tap_action:
+            action: "more-info"
+          triggers_update: "$total_cost_month$"
+          custom_fields:
+            content: "[[[\n const src=states['$total_cost_month$'];\n const val=Number(src?.state);\n const valid=src&&src.state!=='unknown'&&src.state!=='unavailable'&&Number.isFinite(val);\n const unit=src?.attributes?.unit_of_measurement || \"€\";\n const text=valid?val.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit:'–';\n return '<div style=\"padding:20px 18px 18px;box-sizing:border-box;min-height:142px\">'+\n '<div style=\"display:flex;align-items:center;justify-content:space-between;gap:8px\"><div style=\"font-size:12px;font-weight:600;color:var(--secondary-text-color)\">Kosten · Monat</div>'+\n '<div style=\"width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:#E4A95122;color:#E4A951\"><ha-icon icon=\"mdi:cash-multiple\" style=\"--mdc-icon-size:21px\"></ha-icon></div></div>'+\n '<div style=\"font-size:clamp(23px,2.4vw,30px);font-weight:760;letter-spacing:-.7px;margin-top:17px;white-space:nowrap;color:var(--primary-text-color)\">'+text+'</div>'+\n '<div style=\"font-size:11px;color:var(--secondary-text-color);margin-top:5px\">Inklusive Grundpreis</div></div>';\n]]]"
+          styles:
+            card:
+              -
+                background: "var(--ha-card-background,var(--card-background-color))"
+              -
+                border: "1px solid var(--divider-color)"
+              -
+                border-radius: "20px"
+              -
+                box-shadow: "none"
+              -
+                padding: "0"
+              -
+                overflow: "hidden"
+              -
+                color: "var(--primary-text-color)"
+            grid:
+              -
+                grid-template-areas: "\"content\""
+              -
+                grid-template-columns: "1fr"
+              -
+                grid-template-rows: "1fr"
+            custom_fields:
+              content:
+                -
+                  width: "100%"
+                -
+                  height: "100%"
+          requires_input: "total_cost_month"
+          entity: "$total_cost_month$"
+        -
+          type: "custom:button-card"
+          show_icon: false
+          show_name: false
+          show_state: false
+          show_label: false
+          tap_action:
+            action: "more-info"
+          triggers_update: "$total_energy_year$"
+          custom_fields:
+            content: "[[[\n const src=states['$total_energy_year$'];\n const val=Number(src?.state);\n const valid=src&&src.state!=='unknown'&&src.state!=='unavailable'&&Number.isFinite(val);\n const unit=src?.attributes?.unit_of_measurement || \"kWh\";\n const text=valid?val.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit:'–';\n return '<div style=\"padding:20px 18px 18px;box-sizing:border-box;min-height:142px\">'+\n '<div style=\"display:flex;align-items:center;justify-content:space-between;gap:8px\"><div style=\"font-size:12px;font-weight:600;color:var(--secondary-text-color)\">Verbrauch · Jahr</div>'+\n '<div style=\"width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:#6BC7AD22;color:#6BC7AD\"><ha-icon icon=\"mdi:calendar-blank\" style=\"--mdc-icon-size:21px\"></ha-icon></div></div>'+\n '<div style=\"font-size:clamp(23px,2.4vw,30px);font-weight:760;letter-spacing:-.7px;margin-top:17px;white-space:nowrap;color:var(--primary-text-color)\">'+text+'</div>'+\n '<div style=\"font-size:11px;color:var(--secondary-text-color);margin-top:5px\">Erfasste Geräte</div></div>';\n]]]"
+          styles:
+            card:
+              -
+                background: "var(--ha-card-background,var(--card-background-color))"
+              -
+                border: "1px solid var(--divider-color)"
+              -
+                border-radius: "20px"
+              -
+                box-shadow: "none"
+              -
+                padding: "0"
+              -
+                overflow: "hidden"
+              -
+                color: "var(--primary-text-color)"
+            grid:
+              -
+                grid-template-areas: "\"content\""
+              -
+                grid-template-columns: "1fr"
+              -
+                grid-template-rows: "1fr"
+            custom_fields:
+              content:
+                -
+                  width: "100%"
+                -
+                  height: "100%"
+          requires_input: "total_energy_year"
+          entity: "$total_energy_year$"
+        -
+          type: "custom:button-card"
+          show_icon: false
+          show_name: false
+          show_state: false
+          show_label: false
+          tap_action:
+            action: "more-info"
+          triggers_update: "$total_cost_year$"
+          custom_fields:
+            content: "[[[\n const src=states['$total_cost_year$'];\n const val=Number(src?.state);\n const valid=src&&src.state!=='unknown'&&src.state!=='unavailable'&&Number.isFinite(val);\n const unit=src?.attributes?.unit_of_measurement || \"€\";\n const text=valid?val.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit:'–';\n return '<div style=\"padding:20px 18px 18px;box-sizing:border-box;min-height:142px\">'+\n '<div style=\"display:flex;align-items:center;justify-content:space-between;gap:8px\"><div style=\"font-size:12px;font-weight:600;color:var(--secondary-text-color)\">Kosten · Jahr</div>'+\n '<div style=\"width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:#9C8CE622;color:#9C8CE6\"><ha-icon icon=\"mdi:calendar-month\" style=\"--mdc-icon-size:21px\"></ha-icon></div></div>'+\n '<div style=\"font-size:clamp(23px,2.4vw,30px);font-weight:760;letter-spacing:-.7px;margin-top:17px;white-space:nowrap;color:var(--primary-text-color)\">'+text+'</div>'+\n '<div style=\"font-size:11px;color:var(--secondary-text-color);margin-top:5px\">Inklusive Grundpreis</div></div>';\n]]]"
+          styles:
+            card:
+              -
+                background: "var(--ha-card-background,var(--card-background-color))"
+              -
+                border: "1px solid var(--divider-color)"
+              -
+                border-radius: "20px"
+              -
+                box-shadow: "none"
+              -
+                padding: "0"
+              -
+                overflow: "hidden"
+              -
+                color: "var(--primary-text-color)"
+            grid:
+              -
+                grid-template-areas: "\"content\""
+              -
+                grid-template-columns: "1fr"
+              -
+                grid-template-rows: "1fr"
+            custom_fields:
+              content:
+                -
+                  width: "100%"
+                -
+                  height: "100%"
+          requires_input: "total_cost_year"
+          entity: "$total_cost_year$"
+    -
+      type: "custom:button-card"
+      show_icon: false
+      show_name: false
+      show_state: false
+      show_label: false
+      tap_action:
+        action: "none"
+      triggers_update: "$entities.monthly_consumption$"
+      custom_fields:
+        content: "[[[\n const rows=$json.monthly_consumption$;\n const colors=[\"#4E9FE9\",\"#6BC7AD\",\"#F0B66B\",\"#9C8CE6\",\"#E78584\",\"#62B8D5\",\"#D6A0CB\",\"#9EACB6\"];\n const valid=rows.map((r,i)=>{const s=states[r.entity]; const num=Number(s?.state);return {name:r.name||s?.attributes?.friendly_name||r.entity,v:s&&!['unknown','unavailable'].includes(s.state)&&Number.isFinite(num)&&num>=0?num:null,color:colors[i%colors.length],entity:r.entity};}).filter(r=>r.v!==null);\n const data=[...valid].sort((a,b)=>b.v-a.v);\n const sum=data.reduce((a,r)=>a+r.v,0); const max=Math.max(0,...data.map(r=>r.v));\n const fmt=n=>n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});\n let position=0;\n const arcs=data.map(r=>{const p=sum>0?r.v/sum*100:0;const start=position;position+=p;return r.color+' '+start.toFixed(2)+'% '+position.toFixed(2)+'%';}).join(',');\n const ring=sum>0?'conic-gradient('+arcs+')':'var(--divider-color)';\n const donut='<div style=\"position:relative;width:155px;height:155px;border-radius:50%;background:'+ring+';flex-shrink:0;display:grid;place-items:center\">'+\n '<div style=\"width:107px;height:107px;background:var(--ha-card-background,var(--card-background-color));border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--primary-text-color)\">'+\n '<div style=\"font-weight:800;font-size:20px;line-height:1.15\">'+fmt(sum)+'</div><div style=\"font-size:12px;color:var(--secondary-text-color)\">kWh</div></div></div>';\n const items=data.map(r=>{const share=sum>0?100*r.v/sum:0;const width=max>0?100*r.v/max:0;return '<div style=\"margin-top:15px\">'+\n '<div style=\"display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px\"><div style=\"display:flex;align-items:center;gap:9px;min-width:0\">'+\n '<span style=\"width:8px;height:8px;border-radius:3px;flex-shrink:0;background:'+r.color+'\"></span><span style=\"font-size:13px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;color:var(--primary-text-color)\">'+r.name+'</span></div>'+\n '<span style=\"font-size:13px;font-weight:700;white-space:nowrap;color:var(--primary-text-color)\">'+fmt(r.v)+' kWh <span style=\"font-size:11px;font-weight:400;color:var(--secondary-text-color)\">('+Math.round(share)+' %)</span></span></div>'+\n '<div style=\"height:8px;background:var(--divider-color);border-radius:10px;overflow:hidden\"><div style=\"height:100%;width:'+width.toFixed(2)+'%;background:'+r.color+';border-radius:10px\"></div></div></div>';}).join('');\n return '<div style=\"padding:23px 22px 26px;box-sizing:border-box\">'+\n '<div style=\"display:flex;justify-content:space-between;gap:10px;align-items:flex-start\"><div><div style=\"font-size:18px;font-weight:750;letter-spacing:-.25px;color:var(--primary-text-color)\">Verbrauchsverteilung</div>'+\n '<div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:5px\">Monat · alle ausgewählten Verbraucher</div></div>'+\n '<ha-icon icon=\"mdi:chart-donut\" style=\"color:#4E9FE9;--mdc-icon-size:25px\"></ha-icon></div>'+\n '<div style=\"display:flex;justify-content:center;align-items:center;margin:25px 0 4px\">'+donut+'</div>'+\n '<div style=\"font-size:11px;text-align:center;color:var(--secondary-text-color);margin-bottom:13px\">Summe der ausgewählten Monatswerte</div>'+\n (items||'<div style=\"color:var(--secondary-text-color)\">Keine gültigen Daten vorhanden.</div>')+\n '</div>';\n]]]"
+      styles:
+        card:
+          -
+            background: "var(--ha-card-background,var(--card-background-color))"
+          -
+            border: "1px solid var(--divider-color)"
+          -
+            border-radius: "20px"
+          -
+            box-shadow: "none"
+          -
+            padding: "0"
+          -
+            overflow: "hidden"
+          -
+            color: "var(--primary-text-color)"
+        grid:
+          -
+            grid-template-areas: "\"content\""
+          -
+            grid-template-columns: "1fr"
+          -
+            grid-template-rows: "1fr"
+        custom_fields:
+          content:
+            -
+              width: "100%"
+            -
+              height: "100%"
+      requires_input: "monthly_consumption"
+      view_layout:
+        grid-area: "energy"
+    -
+      type: "custom:button-card"
+      show_icon: false
+      show_name: false
+      show_state: false
+      show_label: false
+      tap_action:
+        action: "none"
+      triggers_update: "$entities.monthly_costs$"
+      custom_fields:
+        content: "[[[\n const rows=$json.monthly_costs$;\n const colors=[\"#4E9FE9\",\"#6BC7AD\",\"#F0B66B\",\"#9C8CE6\",\"#E78584\",\"#62B8D5\",\"#D6A0CB\",\"#9EACB6\"];\n const valid=rows.map((r,i)=>{const s=states[r.entity]; const num=Number(s?.state);return {name:r.name||s?.attributes?.friendly_name||r.entity,v:s&&!['unknown','unavailable'].includes(s.state)&&Number.isFinite(num)&&num>=0?num:null,color:colors[i%colors.length],entity:r.entity};}).filter(r=>r.v!==null);\n const data=[...valid].sort((a,b)=>b.v-a.v);\n const sum=data.reduce((a,r)=>a+r.v,0); const max=Math.max(0,...data.map(r=>r.v));\n const fmt=n=>n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});\n let position=0;\n const arcs=data.map(r=>{const p=sum>0?r.v/sum*100:0;const start=position;position+=p;return r.color+' '+start.toFixed(2)+'% '+position.toFixed(2)+'%';}).join(',');\n const ring=sum>0?'conic-gradient('+arcs+')':'var(--divider-color)';\n const donut='<div style=\"position:relative;width:155px;height:155px;border-radius:50%;background:'+ring+';flex-shrink:0;display:grid;place-items:center\">'+\n '<div style=\"width:107px;height:107px;background:var(--ha-card-background,var(--card-background-color));border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--primary-text-color)\">'+\n '<div style=\"font-weight:800;font-size:20px;line-height:1.15\">'+fmt(sum)+'</div><div style=\"font-size:12px;color:var(--secondary-text-color)\">€</div></div></div>';\n const items=data.map(r=>{const share=sum>0?100*r.v/sum:0;const width=max>0?100*r.v/max:0;return '<div style=\"margin-top:15px\">'+\n '<div style=\"display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px\"><div style=\"display:flex;align-items:center;gap:9px;min-width:0\">'+\n '<span style=\"width:8px;height:8px;border-radius:3px;flex-shrink:0;background:'+r.color+'\"></span><span style=\"font-size:13px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;color:var(--primary-text-color)\">'+r.name+'</span></div>'+\n '<span style=\"font-size:13px;font-weight:700;white-space:nowrap;color:var(--primary-text-color)\">'+fmt(r.v)+' € <span style=\"font-size:11px;font-weight:400;color:var(--secondary-text-color)\">('+Math.round(share)+' %)</span></span></div>'+\n '<div style=\"height:8px;background:var(--divider-color);border-radius:10px;overflow:hidden\"><div style=\"height:100%;width:'+width.toFixed(2)+'%;background:'+r.color+';border-radius:10px\"></div></div></div>';}).join('');\n return '<div style=\"padding:23px 22px 26px;box-sizing:border-box\">'+\n '<div style=\"display:flex;justify-content:space-between;gap:10px;align-items:flex-start\"><div><div style=\"font-size:18px;font-weight:750;letter-spacing:-.25px;color:var(--primary-text-color)\">Gerätekosten</div>'+\n '<div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:5px\">Monat · nur Geräte mit Kostensensor</div></div>'+\n '<ha-icon icon=\"mdi:cash-multiple\" style=\"color:#E4A951;--mdc-icon-size:25px\"></ha-icon></div>'+\n '<div style=\"display:flex;justify-content:center;align-items:center;margin:25px 0 4px\">'+donut+'</div>'+\n '<div style=\"font-size:11px;text-align:center;color:var(--secondary-text-color);margin-bottom:13px\">Summe der ausgewählten Kostensensoren, ohne Grundpreis</div>'+\n (items||'<div style=\"color:var(--secondary-text-color)\">Keine gültigen Daten vorhanden.</div>')+\n '</div>';\n]]]"
+      styles:
+        card:
+          -
+            background: "var(--ha-card-background,var(--card-background-color))"
+          -
+            border: "1px solid var(--divider-color)"
+          -
+            border-radius: "20px"
+          -
+            box-shadow: "none"
+          -
+            padding: "0"
+          -
+            overflow: "hidden"
+          -
+            color: "var(--primary-text-color)"
+        grid:
+          -
+            grid-template-areas: "\"content\""
+          -
+            grid-template-columns: "1fr"
+          -
+            grid-template-rows: "1fr"
+        custom_fields:
+          content:
+            -
+              width: "100%"
+            -
+              height: "100%"
+      requires_input: "monthly_costs"
+      view_layout:
+        grid-area: "costs"
+    -
+      type: "vertical-stack"
+      requires_input: "cumulative_meters"
+      view_layout:
+        grid-area: "history"
       cards:
-        - repeat: yearly_costs
-          template:
-            type: custom:button-card
-            entity: $item.entity$
-            name: $item.name$
-            icon: $item.icon$
-            show_state: true
-            tap_action: {action: more-info}
-            styles:
-              card: [ "border-radius: 14px", "padding: 16px", "box-shadow: none" ]
-              grid: [ "grid-template-areas: 'i n' 's s'", "grid-template-columns: 38px 1fr" ]
-              icon: [ "width: 24px", "color: var(--warning-color)" ]
-              name: [ "justify-self: start", "font-weight: 600", "font-size: 14px", "white-space: normal" ]
-              state: [ "justify-self: start", "font-size: 22px", "font-weight: 700", "padding-top: 8px" ]
-    - type: markdown
-      content: |
-        *Hinweis: Kosten stammen ausschließlich aus den ausgewählten Kostensensoren. Historische Tarifänderungen können nur korrekt dargestellt werden, wenn diese Sensoren historische Kosten unverändert fortschreiben. Hue-Verbrauch kann geschätzt sein.*
+        -
+          type: "custom:apexcharts-card"
+          requires_input: "cumulative_meters"
+          header:
+            show: true
+            title: "Entwicklung · geprüfte Messreihen"
+            show_states: false
+            colorize_states: true
+          graph_span: "365d"
+          span:
+            end: "month"
+          now:
+            show: false
+          yaxis:
+            -
+              min: 0
+              decimals: 1
+              apex_config:
+                title:
+                  text: "kWh / Monat"
+          series:
+            -
+              repeat: "cumulative_meters"
+              template:
+                entity: "$item.entity$"
+                name: "$item.name$"
+                type: "column"
+                statistics:
+                  type: "change"
+                  period: "month"
+                  align: "start"
+                show:
+                  legend_value: false
+          apex_config:
+            chart:
+              height: 290
+              toolbar:
+                show: false
+            plotOptions:
+              bar:
+                columnWidth: "52%"
+                borderRadius: 3
+            legend:
+              position: "bottom"
+              fontSize: "12px"
+            dataLabels:
+              enabled: false
+            grid:
+              borderColor: "var(--divider-color)"
+              strokeDashArray: 3
+            stroke:
+              width: 0
+        -
+          type: "markdown"
+          content: "*Nur Messreihen mit überprüften, nichtnegativen Monatsstatistiken. Die Darstellung umfasst derzeit nicht alle Geräte.*"
+          card_mod:
+            style: "ha-card { box-shadow:none; border:0; background:transparent; color:var(--secondary-text-color); padding:4px 10px; }"
+    -
+      type: "custom:button-card"
+      show_icon: false
+      show_name: false
+      show_state: false
+      show_label: false
+      tap_action:
+        action: "none"
+      custom_fields:
+        content: "[[[\n return '<div style=\"padding:17px 19px;display:flex;align-items:flex-start;gap:12px;box-sizing:border-box\">'+\n '<ha-icon icon=\"mdi:information-outline\" style=\"color:var(--secondary-text-color);--mdc-icon-size:21px;flex-shrink:0\"></ha-icon>'+\n '<div style=\"font-size:12px;line-height:1.6;color:var(--secondary-text-color)\"><strong style=\"color:var(--primary-text-color)\">Datenhinweis.</strong> Gesamtkosten enthalten laut Kostensensor den Grundpreis. Die Geräte-Kostenübersicht zeigt nur Verbraucher mit eigenem Kostensensor. Die Jahresgrafik enthält ausschließlich Messreihen mit geprüften, nichtnegativen Monatsstatistiken; andere Zähler sind wegen historischer Zählerkorrekturen vorerst nicht enthalten. Hue-Verbrauch ist geschätzt.</div></div>';\n]]]"
+      styles:
+        card:
+          -
+            background: "var(--ha-card-background,var(--card-background-color))"
+          -
+            border: "1px solid var(--divider-color)"
+          -
+            border-radius: "20px"
+          -
+            box-shadow: "none"
+          -
+            padding: "0"
+          -
+            overflow: "hidden"
+          -
+            color: "var(--primary-text-color)"
+        grid:
+          -
+            grid-template-areas: "\"content\""
+          -
+            grid-template-columns: "1fr"
+          -
+            grid-template-rows: "1fr"
+        custom_fields:
+          content:
+            -
+              width: "100%"
+            -
+              height: "100%"
+      view_layout:
+        grid-area: "note"
