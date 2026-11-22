@@ -1,36 +1,32 @@
-# Energy & Costs — Dwains Dashboard Next
+# Energy & Costs — DDNext
 
-**Status: unreleased, blueprint version 1.0.**
+**Status:** Unreleased, blueprint version 1.0.
 
-The installed DDNext page is **Energie & Kosten**. Both its embedded YAML and the resolved page cards are persisted in the dashboard strategy. Editing the GitHub source alone does not update an already-installed page.
+The installed DDNext page is **Energie & Kosten**. The dashboard strategy stores both the blueprint YAML and the resolved cards; editing GitHub alone does not update an installed page.
 
-Source: https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml
+Blueprint: https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml
 
-## Dashboard design
+## Layout and rules
 
-- **Two columns, one consistent hierarchy:** *Verbrauch* on the left (Monat, Jahr), *Kosten* on the right (Monat, Jahr). The four KPIs have identical typography and neutral Home Assistant theme backgrounds, with no arbitrary accent colours.
-- **Monthly history:** Left chart uses the installed [ApexCharts Card](https://github.com/RomRider/apexcharts-card). It reads eight cumulative energy meters using the recorder's monthly `change` statistics. A **data-dependent y-axis** starts at zero and adapts to the positive values on display, with no fixed maximum. Older negative changes are not plotted as electricity consumption. Data is cached, with an update interval of ten minutes.
-- **Consumption shares and costs:** Right card has one large donut showing the month-to-date share of each recorded device. The full legend now includes each device's share and absolute **monthly EUR cost**. Total recorded device costs are labelled separately from the overall monthly costs KPI. There is no redundant second cost-share chart.
-- **One colour per device:** The eight chart series use a declared `color_list`; donut and device cards use the **same palette, keyed by the corresponding historical-series name**. Historical-series order determines the chart palette; keep the historic list's device names consistent with the current-month list when editing inputs.
-- **Compact grouped device cards:** The five user-configured groups now use responsive columns with a 215px minimum where space permits; cards show device name, kWh / Monat and EUR / Monat with a matching colour marker. The obsolete percentage bars are removed.
-- **Consistent titles:** The left chart uses the native ApexCharts standard header; the right card uses a similarly aligned, left-justified heading. Both follow the active Home Assistant light/dark theme.
-- **Mobile layout:** Consumption and cost groups reflow to one column, as do the two analysis cards. Grouped device columns adapt to available width.
+- **One unified layout:** Four matching, neutral theme-aware KPI cards in one row: **Verbrauch · Monat**, **Verbrauch · Jahr**, **Kosten · Monat**, **Kosten · Jahr**. No headings float above them.
+- **Two matching analysis cards:** **Monatsverlauf** at left and **Kostenverteilung** at right. Both use matching 12px radius/border and a minimum height of 410px. The layout stacks on narrow displays.
+- **Default five historical series:** The current top five monthly consumers are Multimedia, Kühlgefrierschrank, Hue-Beleuchtung, 3D-Drucker and Siebträger. The three remaining series stay in the chart legend with `show.hidden_by_default: true` and can be activated there. The historical input rows have an extra `hidden_by_default` boolean saved on the installed page. **Note:** this selection reflects the consumption ranking when the dashboard was last configured; it is not recalculated automatically every time a device changes rank.
+- **Chart caveat:** ApexCharts Card's `experimental.hidden_by_default` may affect auto-scaling or automatic bar width. It is enabled here to keep unchecked series available via the legend. The Y axis remains configured with `max: auto`, but its actual behavior needs visual checking.
+- **Month placement:** Monthly long-term statistics now use `align: end`, and the x-axis tick labels are transformed to refer to the corresponding preceding month, so ticks correspond to the monthly bars. This is only a display adjustment, not a change to underlying data.
+- **Cost allocation rather than duplicated kWh shares:** The right donut uses **monthly cost sensor values in EUR**. Its center shows **overall monthly costs** when the total cost sensor is consistent with the listed device costs. The difference between the overall total and those eight device costs is a neutral **Nicht zugeordnet** segment, which can include fixed charges or other unmonitored usage. It must not be attributed to the eight devices. The adjacent table shows each cost and its percentage of the total, with device names left-aligned.
+- **Five columns for grouped devices:** Küche, Büro, Wohnzimmer, Bad and Raumübergreifend remain the original five configured groupings, now in five side-by-side columns on desktop. Responsive breakpoints reduce the count to three, two, or one column. Device cards retain kWh / Monat and Kosten in EUR / Monat, using the same stable color per device as the chart.
+- All backgrounds, borders and text use active Home Assistant light/dark theme variables.
 
-## Data caveats
+## Data and limitations
 
-All eight historical sources are configured. Recorder statistics were checked on 2026-11-22. Historical coverage differs by source: 3D printer and desk have brief histories, while refrigerator, washing machine and test setup have older negative changes associated with resets or corrections. The graph excludes negative changes rather than inventing replacement values; it does **not** edit underlying recorder data.
+All eight cumulative energy sensors remain configured and all original monthly consumption/cost sensors are unchanged. Historic recorder coverage differs; negative historical consumption corrections are filtered from the visualization, without changing recorder data. The chart is a comparison of eight devices, **not a complete building energy balance**.
 
-Monthly consumption and monetary costs remain based on the existing user-selected Home Assistant sensors. The donut's total refers to the *eight recorded/estimated devices*, which is not necessarily the full home monthly consumption. The overall monthly amount and the sum of the eight individual costs can differ.
+The last verified monthly cost values (2026-11-22) were approximately **27,56 € total**, with **13,66 €** from the eight individual cost sensors and **13,90 €** not assigned to a device. This remainder is a mathematical difference, **not a determination of which physical sources incurred the charges**.
 
-## Dependencies
+Dependencies: [button-card](https://github.com/custom-cards/button-card), [layout-card](https://github.com/thomasloven/lovelace-layout-card), [ApexCharts Card](https://github.com/RomRider/apexcharts-card). Home Assistant long-term recorder statistics are required for the monthly graph.
 
-- [button-card](https://github.com/custom-cards/button-card)
-- [layout-card](https://github.com/thomasloven/lovelace-layout-card)
-- [apexcharts-card](https://github.com/RomRider/apexcharts-card)
-- Home Assistant recorder with compatible long-term energy statistics
+## Verification
 
-## Checks
+After the update, the installed DDNext blueprint YAML and GitHub blueprint were confirmed identical. Eight historical series (five visible, three hidden by default), five groups and eight cost sensors were preserved. The generated KPI, cost donut and device JavaScript templates compiled and executed with test state values.
 
-Updated GitHub YAML and the installed DDNext embedded Blueprint were read back and found identical. All eight original current-month sensors and their cost sensors remain bound; the historical chart retains eight series. The embedded JavaScript for the KPI, donut and grouped cards was independently compiled and executed using synthetic state values without syntax errors.
-
-**The final browser rendering has not been visually confirmed**, because the HA MCP screenshot feature is disabled. Especially verify the ApexCharts monthly history layout and its data-driven y-axis in the actual DDNext frontend.
+**A browser screenshot has not been verified.** The Home Assistant screenshot integration is currently disabled; the full frontend rendering, monthly tick alignment and experimental hidden-series behavior remain to be inspected visually.
