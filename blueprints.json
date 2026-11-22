@@ -138,12 +138,11 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Theme-aware energy page with current-power ranking, real room groups and monthly costs.",
+      "description": "Monthly energy and device-cost proportions, compact totals, and verified monthly historical consumption.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
       "custom_cards": [
-        "button-card",
         "mushroom-template-card",
         "layout-card"
       ]
