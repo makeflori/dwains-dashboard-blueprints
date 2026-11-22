@@ -138,11 +138,12 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Monthly energy and device-cost proportions, compact totals, and verified monthly historical consumption.",
+      "description": "Madelena-inspired monthly energy breakdown, theme-aware summary, device costs and selected monthly history.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
       "custom_cards": [
+        "button-card",
         "mushroom-template-card",
         "layout-card"
       ]
