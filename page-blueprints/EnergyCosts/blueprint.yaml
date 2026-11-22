@@ -2,10 +2,10 @@ blueprint:
   name: "Energy & Costs"
   name_de: "Energie & Kosten"
   description: "Responsive energy overview with comparison charts and carefully selected long-term data."
-  description_de: "Übersicht über Stromverbrauch, Kosten, Geräteanteile und geprüfte Langzeitverläufe."
+  description_de: "Übersicht über Stromverbrauch, Kosten und Monatsverläufe."
   icon: "mdi:lightning-bolt-circle"
   author: "makeflori"
-  version: "1.1.0"
+  version: "1.2.0"
   type: "page"
   custom_cards:
     - "button-card"
@@ -69,7 +69,7 @@ card:
   layout_type: "custom:grid-layout"
   layout:
     grid-template-columns: "minmax(0,1fr) minmax(0,1fr)"
-    grid-template-areas: "\"hero hero\" \"summary summary\" \"energy costs\" \"history history\" \"note note\""
+    grid-template-areas: "\"hero hero\" \"summary summary\" \"energy costs\" \"history history\""
     grid-gap: "14px"
     align-items: "start"
     max-width: "1540px"
@@ -77,7 +77,7 @@ card:
     mediaquery:
       "(max-width: 950px)":
         grid-template-columns: "minmax(0,1fr)"
-        grid-template-areas: "\"hero\" \"summary\" \"energy\" \"costs\" \"history\" \"note\""
+        grid-template-areas: "\"hero\" \"summary\" \"energy\" \"costs\" \"history\""
         grid-gap: "11px"
   cards:
     -
@@ -90,7 +90,7 @@ card:
         action: "none"
       triggers_update: "$entities.monthly_consumption$"
       custom_fields:
-        content: "[[[\n const count=$json.monthly_consumption$.length;\n return '<div style=\"box-sizing:border-box;padding:clamp(22px,4vw,34px);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;background:linear-gradient(125deg,rgba(62,145,218,.15),rgba(98,192,175,.07) 65%,transparent)\">'+\n '<div style=\"min-width:0\"><div style=\"font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--secondary-text-color);font-weight:700;margin-bottom:9px\">HOME ASSISTANT · ENERGIE</div>'+\n '<div style=\"font-size:clamp(26px,4vw,39px);line-height:1.15;letter-spacing:-.8px;font-weight:750;color:var(--primary-text-color)\">Energie im Blick</div>'+\n '<div style=\"font-size:14px;line-height:1.6;color:var(--secondary-text-color);margin-top:10px\">Verbrauch, Kosten und die größten Stromverbraucher an einem Ort.</div></div>'+\n '<div style=\"display:flex;align-items:center;gap:10px;background:rgba(77,159,233,.12);padding:12px 16px;border-radius:14px;color:var(--primary-text-color)\"><ha-icon icon=\"mdi:lightning-bolt\" style=\"color:#4E9FE9;--mdc-icon-size:26px\"></ha-icon>'+\n '<div style=\"font-size:12px;line-height:1.35\"><strong style=\"font-size:18px\">'+count+'</strong><br><span style=\"color:var(--secondary-text-color)\">erfasste Verbraucher</span></div></div></div>';\n]]]"
+        content: "[[[ return '<div style=\"padding:26px;box-sizing:border-box;white-space:normal;background:linear-gradient(125deg,rgba(62,145,218,.13),transparent);text-align:left\"><div style=\"font-size:32px;font-weight:740;line-height:1.2;color:var(--primary-text-color)\">Energie im Blick</div><div style=\"margin-top:8px;font-size:14px;color:var(--secondary-text-color)\">Verbrauch und Kosten nach Gerät</div></div>'; ]]]"
       styles:
         card:
           -
@@ -145,7 +145,7 @@ card:
             action: "more-info"
           triggers_update: "$total_energy_month$"
           custom_fields:
-            content: "[[[\n const src=states['$total_energy_month$'];\n const val=Number(src?.state);\n const valid=src&&src.state!=='unknown'&&src.state!=='unavailable'&&Number.isFinite(val);\n const unit=src?.attributes?.unit_of_measurement || \"kWh\";\n const text=valid?val.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit:'–';\n return '<div style=\"padding:20px 18px 18px;box-sizing:border-box;min-height:142px\">'+\n '<div style=\"display:flex;align-items:center;justify-content:space-between;gap:8px\"><div style=\"font-size:12px;font-weight:600;color:var(--secondary-text-color)\">Verbrauch · Monat</div>'+\n '<div style=\"width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:#4E9FE922;color:#4E9FE9\"><ha-icon icon=\"mdi:lightning-bolt\" style=\"--mdc-icon-size:21px\"></ha-icon></div></div>'+\n '<div style=\"font-size:clamp(23px,2.4vw,30px);font-weight:760;letter-spacing:-.7px;margin-top:17px;white-space:nowrap;color:var(--primary-text-color)\">'+text+'</div>'+\n '<div style=\"font-size:11px;color:var(--secondary-text-color);margin-top:5px\">Erfasste Geräte</div></div>';\n]]]"
+            content: "[[[\n const src=states['$total_energy_month$'];\n const val=Number(src?.state);\n const valid=src&&src.state!=='unknown'&&src.state!=='unavailable'&&Number.isFinite(val);\n const unit=src?.attributes?.unit_of_measurement || \"kWh\";\n const text=valid?val.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit:'–';\n return '<div style=\"padding:20px 18px 18px;box-sizing:border-box;min-height:142px\">'+\n '<div style=\"display:flex;align-items:center;gap:10px\"><div style=\"font-size:12px;font-weight:600;color:var(--secondary-text-color)\">Verbrauch · Monat</div>'+\n '<div style=\"width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:#4E9FE922;color:#4E9FE9\"><ha-icon icon=\"mdi:lightning-bolt\" style=\"--mdc-icon-size:21px\"></ha-icon></div></div>'+\n '<div style=\"font-size:clamp(23px,2.4vw,30px);font-weight:760;letter-spacing:-.7px;margin-top:17px;white-space:nowrap;color:var(--primary-text-color)\">'+text+'</div>'+\n '</div>';\n]]]"
           styles:
             card:
               -
@@ -187,7 +187,7 @@ card:
             action: "more-info"
           triggers_update: "$total_cost_month$"
           custom_fields:
-            content: "[[[\n const src=states['$total_cost_month$'];\n const val=Number(src?.state);\n const valid=src&&src.state!=='unknown'&&src.state!=='unavailable'&&Number.isFinite(val);\n const unit=src?.attributes?.unit_of_measurement || \"€\";\n const text=valid?val.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit:'–';\n return '<div style=\"padding:20px 18px 18px;box-sizing:border-box;min-height:142px\">'+\n '<div style=\"display:flex;align-items:center;justify-content:space-between;gap:8px\"><div style=\"font-size:12px;font-weight:600;color:var(--secondary-text-color)\">Kosten · Monat</div>'+\n '<div style=\"width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:#E4A95122;color:#E4A951\"><ha-icon icon=\"mdi:cash-multiple\" style=\"--mdc-icon-size:21px\"></ha-icon></div></div>'+\n '<div style=\"font-size:clamp(23px,2.4vw,30px);font-weight:760;letter-spacing:-.7px;margin-top:17px;white-space:nowrap;color:var(--primary-text-color)\">'+text+'</div>'+\n '<div style=\"font-size:11px;color:var(--secondary-text-color);margin-top:5px\">Inklusive Grundpreis</div></div>';\n]]]"
+            content: "[[[\n const src=states['$total_cost_month$'];\n const val=Number(src?.state);\n const valid=src&&src.state!=='unknown'&&src.state!=='unavailable'&&Number.isFinite(val);\n const unit=src?.attributes?.unit_of_measurement || \"€\";\n const text=valid?val.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit:'–';\n return '<div style=\"padding:20px 18px 18px;box-sizing:border-box;min-height:142px\">'+\n '<div style=\"display:flex;align-items:center;gap:10px\"><div style=\"font-size:12px;font-weight:600;color:var(--secondary-text-color)\">Kosten · Monat</div>'+\n '<div style=\"width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:#E4A95122;color:#E4A951\"><ha-icon icon=\"mdi:cash-multiple\" style=\"--mdc-icon-size:21px\"></ha-icon></div></div>'+\n '<div style=\"font-size:clamp(23px,2.4vw,30px);font-weight:760;letter-spacing:-.7px;margin-top:17px;white-space:nowrap;color:var(--primary-text-color)\">'+text+'</div>'+\n '</div>';\n]]]"
           styles:
             card:
               -
@@ -229,7 +229,7 @@ card:
             action: "more-info"
           triggers_update: "$total_energy_year$"
           custom_fields:
-            content: "[[[\n const src=states['$total_energy_year$'];\n const val=Number(src?.state);\n const valid=src&&src.state!=='unknown'&&src.state!=='unavailable'&&Number.isFinite(val);\n const unit=src?.attributes?.unit_of_measurement || \"kWh\";\n const text=valid?val.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit:'–';\n return '<div style=\"padding:20px 18px 18px;box-sizing:border-box;min-height:142px\">'+\n '<div style=\"display:flex;align-items:center;justify-content:space-between;gap:8px\"><div style=\"font-size:12px;font-weight:600;color:var(--secondary-text-color)\">Verbrauch · Jahr</div>'+\n '<div style=\"width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:#6BC7AD22;color:#6BC7AD\"><ha-icon icon=\"mdi:calendar-blank\" style=\"--mdc-icon-size:21px\"></ha-icon></div></div>'+\n '<div style=\"font-size:clamp(23px,2.4vw,30px);font-weight:760;letter-spacing:-.7px;margin-top:17px;white-space:nowrap;color:var(--primary-text-color)\">'+text+'</div>'+\n '<div style=\"font-size:11px;color:var(--secondary-text-color);margin-top:5px\">Erfasste Geräte</div></div>';\n]]]"
+            content: "[[[\n const src=states['$total_energy_year$'];\n const val=Number(src?.state);\n const valid=src&&src.state!=='unknown'&&src.state!=='unavailable'&&Number.isFinite(val);\n const unit=src?.attributes?.unit_of_measurement || \"kWh\";\n const text=valid?val.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit:'–';\n return '<div style=\"padding:20px 18px 18px;box-sizing:border-box;min-height:142px\">'+\n '<div style=\"display:flex;align-items:center;gap:10px\"><div style=\"font-size:12px;font-weight:600;color:var(--secondary-text-color)\">Verbrauch · Jahr</div>'+\n '<div style=\"width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:#6BC7AD22;color:#6BC7AD\"><ha-icon icon=\"mdi:calendar-blank\" style=\"--mdc-icon-size:21px\"></ha-icon></div></div>'+\n '<div style=\"font-size:clamp(23px,2.4vw,30px);font-weight:760;letter-spacing:-.7px;margin-top:17px;white-space:nowrap;color:var(--primary-text-color)\">'+text+'</div>'+\n '</div>';\n]]]"
           styles:
             card:
               -
@@ -271,7 +271,7 @@ card:
             action: "more-info"
           triggers_update: "$total_cost_year$"
           custom_fields:
-            content: "[[[\n const src=states['$total_cost_year$'];\n const val=Number(src?.state);\n const valid=src&&src.state!=='unknown'&&src.state!=='unavailable'&&Number.isFinite(val);\n const unit=src?.attributes?.unit_of_measurement || \"€\";\n const text=valid?val.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit:'–';\n return '<div style=\"padding:20px 18px 18px;box-sizing:border-box;min-height:142px\">'+\n '<div style=\"display:flex;align-items:center;justify-content:space-between;gap:8px\"><div style=\"font-size:12px;font-weight:600;color:var(--secondary-text-color)\">Kosten · Jahr</div>'+\n '<div style=\"width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:#9C8CE622;color:#9C8CE6\"><ha-icon icon=\"mdi:calendar-month\" style=\"--mdc-icon-size:21px\"></ha-icon></div></div>'+\n '<div style=\"font-size:clamp(23px,2.4vw,30px);font-weight:760;letter-spacing:-.7px;margin-top:17px;white-space:nowrap;color:var(--primary-text-color)\">'+text+'</div>'+\n '<div style=\"font-size:11px;color:var(--secondary-text-color);margin-top:5px\">Inklusive Grundpreis</div></div>';\n]]]"
+            content: "[[[\n const src=states['$total_cost_year$'];\n const val=Number(src?.state);\n const valid=src&&src.state!=='unknown'&&src.state!=='unavailable'&&Number.isFinite(val);\n const unit=src?.attributes?.unit_of_measurement || \"€\";\n const text=valid?val.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+unit:'–';\n return '<div style=\"padding:20px 18px 18px;box-sizing:border-box;min-height:142px\">'+\n '<div style=\"display:flex;align-items:center;gap:10px\"><div style=\"font-size:12px;font-weight:600;color:var(--secondary-text-color)\">Kosten · Jahr</div>'+\n '<div style=\"width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:#9C8CE622;color:#9C8CE6\"><ha-icon icon=\"mdi:calendar-month\" style=\"--mdc-icon-size:21px\"></ha-icon></div></div>'+\n '<div style=\"font-size:clamp(23px,2.4vw,30px);font-weight:760;letter-spacing:-.7px;margin-top:17px;white-space:nowrap;color:var(--primary-text-color)\">'+text+'</div>'+\n '</div>';\n]]]"
           styles:
             card:
               -
@@ -313,7 +313,7 @@ card:
         action: "none"
       triggers_update: "$entities.monthly_consumption$"
       custom_fields:
-        content: "[[[\n const rows=$json.monthly_consumption$;\n const colors=[\"#4E9FE9\",\"#6BC7AD\",\"#F0B66B\",\"#9C8CE6\",\"#E78584\",\"#62B8D5\",\"#D6A0CB\",\"#9EACB6\"];\n const valid=rows.map((r,i)=>{const s=states[r.entity]; const num=Number(s?.state);return {name:r.name||s?.attributes?.friendly_name||r.entity,v:s&&!['unknown','unavailable'].includes(s.state)&&Number.isFinite(num)&&num>=0?num:null,color:colors[i%colors.length],entity:r.entity};}).filter(r=>r.v!==null);\n const data=[...valid].sort((a,b)=>b.v-a.v);\n const sum=data.reduce((a,r)=>a+r.v,0); const max=Math.max(0,...data.map(r=>r.v));\n const fmt=n=>n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});\n let position=0;\n const arcs=data.map(r=>{const p=sum>0?r.v/sum*100:0;const start=position;position+=p;return r.color+' '+start.toFixed(2)+'% '+position.toFixed(2)+'%';}).join(',');\n const ring=sum>0?'conic-gradient('+arcs+')':'var(--divider-color)';\n const donut='<div style=\"position:relative;width:155px;height:155px;border-radius:50%;background:'+ring+';flex-shrink:0;display:grid;place-items:center\">'+\n '<div style=\"width:107px;height:107px;background:var(--ha-card-background,var(--card-background-color));border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--primary-text-color)\">'+\n '<div style=\"font-weight:800;font-size:20px;line-height:1.15\">'+fmt(sum)+'</div><div style=\"font-size:12px;color:var(--secondary-text-color)\">kWh</div></div></div>';\n const items=data.map(r=>{const share=sum>0?100*r.v/sum:0;const width=max>0?100*r.v/max:0;return '<div style=\"margin-top:15px\">'+\n '<div style=\"display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px\"><div style=\"display:flex;align-items:center;gap:9px;min-width:0\">'+\n '<span style=\"width:8px;height:8px;border-radius:3px;flex-shrink:0;background:'+r.color+'\"></span><span style=\"font-size:13px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;color:var(--primary-text-color)\">'+r.name+'</span></div>'+\n '<span style=\"font-size:13px;font-weight:700;white-space:nowrap;color:var(--primary-text-color)\">'+fmt(r.v)+' kWh <span style=\"font-size:11px;font-weight:400;color:var(--secondary-text-color)\">('+Math.round(share)+' %)</span></span></div>'+\n '<div style=\"height:8px;background:var(--divider-color);border-radius:10px;overflow:hidden\"><div style=\"height:100%;width:'+width.toFixed(2)+'%;background:'+r.color+';border-radius:10px\"></div></div></div>';}).join('');\n return '<div style=\"padding:23px 22px 26px;box-sizing:border-box\">'+\n '<div style=\"display:flex;justify-content:space-between;gap:10px;align-items:flex-start\"><div><div style=\"font-size:18px;font-weight:750;letter-spacing:-.25px;color:var(--primary-text-color)\">Verbrauchsverteilung</div>'+\n '<div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:5px\">Monat · alle ausgewählten Verbraucher</div></div>'+\n '<ha-icon icon=\"mdi:chart-donut\" style=\"color:#4E9FE9;--mdc-icon-size:25px\"></ha-icon></div>'+\n '<div style=\"display:flex;justify-content:center;align-items:center;margin:25px 0 4px\">'+donut+'</div>'+\n '<div style=\"font-size:11px;text-align:center;color:var(--secondary-text-color);margin-bottom:13px\">Summe der ausgewählten Monatswerte</div>'+\n (items||'<div style=\"color:var(--secondary-text-color)\">Keine gültigen Daten vorhanden.</div>')+\n '</div>';\n]]]"
+        content: "[[[\n const rows=$json.monthly_consumption$;\n const colors=[\"#4E9FE9\",\"#6BC7AD\",\"#F0B66B\",\"#9C8CE6\",\"#E78584\",\"#62B8D5\",\"#D6A0CB\",\"#9EACB6\"];\n const valid=rows.map((r,i)=>{const s=states[r.entity]; const num=Number(s?.state);return {name:r.name||s?.attributes?.friendly_name||r.entity,v:s&&!['unknown','unavailable'].includes(s.state)&&Number.isFinite(num)&&num>=0?num:null,color:colors[i%colors.length],entity:r.entity};}).filter(r=>r.v!==null);\n const data=[...valid].sort((a,b)=>b.v-a.v);\n const sum=data.reduce((a,r)=>a+r.v,0); const max=Math.max(0,...data.map(r=>r.v));\n const fmt=n=>n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});\n let position=0;\n const arcs=data.map(r=>{const p=sum>0?r.v/sum*100:0;const start=position;position+=p;return r.color+' '+start.toFixed(2)+'% '+position.toFixed(2)+'%';}).join(',');\n const ring=sum>0?'conic-gradient('+arcs+')':'var(--divider-color)';\n const donut='<div style=\"position:relative;width:155px;height:155px;border-radius:50%;background:'+ring+';flex-shrink:0;display:grid;place-items:center\">'+\n '<div style=\"width:107px;height:107px;background:var(--ha-card-background,var(--card-background-color));border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--primary-text-color)\">'+\n '<div style=\"font-weight:800;font-size:20px;line-height:1.15\">'+fmt(sum)+'</div><div style=\"font-size:12px;color:var(--secondary-text-color)\">kWh</div></div></div>';\n const items=data.map(r=>{const share=sum>0?100*r.v/sum:0;const width=max>0?100*r.v/max:0;return '<div style=\"margin-top:15px\">'+\n '<div style=\"display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px\"><div style=\"display:flex;align-items:center;gap:9px;min-width:0\">'+\n '<span style=\"width:8px;height:8px;border-radius:3px;flex-shrink:0;background:'+r.color+'\"></span><span style=\"font-size:13px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;color:var(--primary-text-color)\">'+r.name+'</span></div>'+\n '<span style=\"font-size:13px;font-weight:700;white-space:nowrap;color:var(--primary-text-color)\">'+fmt(r.v)+' kWh <span style=\"font-size:11px;font-weight:400;color:var(--secondary-text-color)\">('+Math.round(share)+' %)</span></span></div>'+\n '<div style=\"height:8px;background:var(--divider-color);border-radius:10px;overflow:hidden\"><div style=\"height:100%;width:'+width.toFixed(2)+'%;background:'+r.color+';border-radius:10px\"></div></div></div>';}).join('');\n return '<div style=\"padding:23px 22px 26px;box-sizing:border-box\">'+\n '<div style=\"display:flex;justify-content:space-between;gap:10px;align-items:flex-start\"><div><div style=\"font-size:18px;font-weight:750;letter-spacing:-.25px;color:var(--primary-text-color)\">Verbrauchsverteilung</div>'+\n '<div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:5px\">Monat</div></div>'+\n '<ha-icon icon=\"mdi:chart-donut\" style=\"color:#4E9FE9;--mdc-icon-size:25px\"></ha-icon></div>'+\n '<div style=\"display:flex;justify-content:center;align-items:center;margin:25px 0 4px\">'+donut+'</div>'+\n '<div style=\"font-size:11px;text-align:center;color:var(--secondary-text-color);margin-bottom:13px\">Summe der ausgewählten Monatswerte</div>'+\n (items||'<div style=\"color:var(--secondary-text-color)\">Keine gültigen Daten vorhanden.</div>')+\n '</div>';\n]]]"
       styles:
         card:
           -
@@ -356,7 +356,7 @@ card:
         action: "none"
       triggers_update: "$entities.monthly_costs$"
       custom_fields:
-        content: "[[[\n const rows=$json.monthly_costs$;\n const colors=[\"#4E9FE9\",\"#6BC7AD\",\"#F0B66B\",\"#9C8CE6\",\"#E78584\",\"#62B8D5\",\"#D6A0CB\",\"#9EACB6\"];\n const valid=rows.map((r,i)=>{const s=states[r.entity]; const num=Number(s?.state);return {name:r.name||s?.attributes?.friendly_name||r.entity,v:s&&!['unknown','unavailable'].includes(s.state)&&Number.isFinite(num)&&num>=0?num:null,color:colors[i%colors.length],entity:r.entity};}).filter(r=>r.v!==null);\n const data=[...valid].sort((a,b)=>b.v-a.v);\n const sum=data.reduce((a,r)=>a+r.v,0); const max=Math.max(0,...data.map(r=>r.v));\n const fmt=n=>n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});\n let position=0;\n const arcs=data.map(r=>{const p=sum>0?r.v/sum*100:0;const start=position;position+=p;return r.color+' '+start.toFixed(2)+'% '+position.toFixed(2)+'%';}).join(',');\n const ring=sum>0?'conic-gradient('+arcs+')':'var(--divider-color)';\n const donut='<div style=\"position:relative;width:155px;height:155px;border-radius:50%;background:'+ring+';flex-shrink:0;display:grid;place-items:center\">'+\n '<div style=\"width:107px;height:107px;background:var(--ha-card-background,var(--card-background-color));border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--primary-text-color)\">'+\n '<div style=\"font-weight:800;font-size:20px;line-height:1.15\">'+fmt(sum)+'</div><div style=\"font-size:12px;color:var(--secondary-text-color)\">€</div></div></div>';\n const items=data.map(r=>{const share=sum>0?100*r.v/sum:0;const width=max>0?100*r.v/max:0;return '<div style=\"margin-top:15px\">'+\n '<div style=\"display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px\"><div style=\"display:flex;align-items:center;gap:9px;min-width:0\">'+\n '<span style=\"width:8px;height:8px;border-radius:3px;flex-shrink:0;background:'+r.color+'\"></span><span style=\"font-size:13px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;color:var(--primary-text-color)\">'+r.name+'</span></div>'+\n '<span style=\"font-size:13px;font-weight:700;white-space:nowrap;color:var(--primary-text-color)\">'+fmt(r.v)+' € <span style=\"font-size:11px;font-weight:400;color:var(--secondary-text-color)\">('+Math.round(share)+' %)</span></span></div>'+\n '<div style=\"height:8px;background:var(--divider-color);border-radius:10px;overflow:hidden\"><div style=\"height:100%;width:'+width.toFixed(2)+'%;background:'+r.color+';border-radius:10px\"></div></div></div>';}).join('');\n return '<div style=\"padding:23px 22px 26px;box-sizing:border-box\">'+\n '<div style=\"display:flex;justify-content:space-between;gap:10px;align-items:flex-start\"><div><div style=\"font-size:18px;font-weight:750;letter-spacing:-.25px;color:var(--primary-text-color)\">Gerätekosten</div>'+\n '<div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:5px\">Monat · nur Geräte mit Kostensensor</div></div>'+\n '<ha-icon icon=\"mdi:cash-multiple\" style=\"color:#E4A951;--mdc-icon-size:25px\"></ha-icon></div>'+\n '<div style=\"display:flex;justify-content:center;align-items:center;margin:25px 0 4px\">'+donut+'</div>'+\n '<div style=\"font-size:11px;text-align:center;color:var(--secondary-text-color);margin-bottom:13px\">Summe der ausgewählten Kostensensoren, ohne Grundpreis</div>'+\n (items||'<div style=\"color:var(--secondary-text-color)\">Keine gültigen Daten vorhanden.</div>')+\n '</div>';\n]]]"
+        content: "[[[\n const rows=$json.monthly_costs$;\n const colors=[\"#4E9FE9\",\"#6BC7AD\",\"#F0B66B\",\"#9C8CE6\",\"#E78584\",\"#62B8D5\",\"#D6A0CB\",\"#9EACB6\"];\n const valid=rows.map((r,i)=>{const s=states[r.entity]; const num=Number(s?.state);return {name:r.name||s?.attributes?.friendly_name||r.entity,v:s&&!['unknown','unavailable'].includes(s.state)&&Number.isFinite(num)&&num>=0?num:null,color:colors[i%colors.length],entity:r.entity};}).filter(r=>r.v!==null);\n const data=[...valid].sort((a,b)=>b.v-a.v);\n const sum=data.reduce((a,r)=>a+r.v,0); const max=Math.max(0,...data.map(r=>r.v));\n const fmt=n=>n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});\n let position=0;\n const arcs=data.map(r=>{const p=sum>0?r.v/sum*100:0;const start=position;position+=p;return r.color+' '+start.toFixed(2)+'% '+position.toFixed(2)+'%';}).join(',');\n const ring=sum>0?'conic-gradient('+arcs+')':'var(--divider-color)';\n const donut='<div style=\"position:relative;width:155px;height:155px;border-radius:50%;background:'+ring+';flex-shrink:0;display:grid;place-items:center\">'+\n '<div style=\"width:107px;height:107px;background:var(--ha-card-background,var(--card-background-color));border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--primary-text-color)\">'+\n '<div style=\"font-weight:800;font-size:20px;line-height:1.15\">'+fmt(sum)+'</div><div style=\"font-size:12px;color:var(--secondary-text-color)\">€</div></div></div>';\n const items=data.map(r=>{const share=sum>0?100*r.v/sum:0;const width=max>0?100*r.v/max:0;return '<div style=\"margin-top:15px\">'+\n '<div style=\"display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px\"><div style=\"display:flex;align-items:center;gap:9px;min-width:0\">'+\n '<span style=\"width:8px;height:8px;border-radius:3px;flex-shrink:0;background:'+r.color+'\"></span><span style=\"font-size:13px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;color:var(--primary-text-color)\">'+r.name+'</span></div>'+\n '<span style=\"font-size:13px;font-weight:700;white-space:nowrap;color:var(--primary-text-color)\">'+fmt(r.v)+' € <span style=\"font-size:11px;font-weight:400;color:var(--secondary-text-color)\">('+Math.round(share)+' %)</span></span></div>'+\n '<div style=\"height:8px;background:var(--divider-color);border-radius:10px;overflow:hidden\"><div style=\"height:100%;width:'+width.toFixed(2)+'%;background:'+r.color+';border-radius:10px\"></div></div></div>';}).join('');\n return '<div style=\"padding:23px 22px 26px;box-sizing:border-box\">'+\n '<div style=\"display:flex;justify-content:space-between;gap:10px;align-items:flex-start\"><div><div style=\"font-size:18px;font-weight:750;letter-spacing:-.25px;color:var(--primary-text-color)\">Gerätekosten</div>'+\n '<div style=\"font-size:12px;color:var(--secondary-text-color);margin-top:5px\">Monat</div></div>'+\n '<ha-icon icon=\"mdi:cash-multiple\" style=\"color:#E4A951;--mdc-icon-size:25px\"></ha-icon></div>'+\n '<div style=\"display:flex;justify-content:center;align-items:center;margin:25px 0 4px\">'+donut+'</div>'+\n '<div style=\"font-size:11px;text-align:center;color:var(--secondary-text-color);margin-bottom:13px\">Summe der ausgewählten Kostensensoren, ohne Grundpreis</div>'+\n (items||'<div style=\"color:var(--secondary-text-color)\">Keine gültigen Daten vorhanden.</div>')+\n '</div>';\n]]]"
       styles:
         card:
           -
@@ -400,9 +400,10 @@ card:
           requires_input: "cumulative_meters"
           header:
             show: true
-            title: "Entwicklung · geprüfte Messreihen"
+            title: "Monatsverbrauch"
             show_states: false
             colorize_states: true
+          locale: "de"
           graph_span: "365d"
           span:
             end: "month"
@@ -426,6 +427,8 @@ card:
                   type: "change"
                   period: "month"
                   align: "start"
+                transform: "return x === null || !Number.isFinite(Number(x)) || Number(x) < 0 ? null : Number(x);"
+                fill_raw: "null"
                 show:
                   legend_value: false
           apex_config:
@@ -433,6 +436,13 @@ card:
               height: 290
               toolbar:
                 show: false
+            xaxis:
+              labels:
+                format: "MMM yy"
+                datetimeUTC: false
+            tooltip:
+              x:
+                format: "MMMM yy"
             plotOptions:
               bar:
                 columnWidth: "52%"
@@ -447,49 +457,3 @@ card:
               strokeDashArray: 3
             stroke:
               width: 0
-        -
-          type: "markdown"
-          content: "*Nur Messreihen mit überprüften, nichtnegativen Monatsstatistiken. Die Darstellung umfasst derzeit nicht alle Geräte.*"
-          card_mod:
-            style: "ha-card { box-shadow:none; border:0; background:transparent; color:var(--secondary-text-color); padding:4px 10px; }"
-    -
-      type: "custom:button-card"
-      show_icon: false
-      show_name: false
-      show_state: false
-      show_label: false
-      tap_action:
-        action: "none"
-      custom_fields:
-        content: "[[[\n return '<div style=\"padding:17px 19px;display:flex;align-items:flex-start;gap:12px;box-sizing:border-box\">'+\n '<ha-icon icon=\"mdi:information-outline\" style=\"color:var(--secondary-text-color);--mdc-icon-size:21px;flex-shrink:0\"></ha-icon>'+\n '<div style=\"font-size:12px;line-height:1.6;color:var(--secondary-text-color)\"><strong style=\"color:var(--primary-text-color)\">Datenhinweis.</strong> Gesamtkosten enthalten laut Kostensensor den Grundpreis. Die Geräte-Kostenübersicht zeigt nur Verbraucher mit eigenem Kostensensor. Die Jahresgrafik enthält ausschließlich Messreihen mit geprüften, nichtnegativen Monatsstatistiken; andere Zähler sind wegen historischer Zählerkorrekturen vorerst nicht enthalten. Hue-Verbrauch ist geschätzt.</div></div>';\n]]]"
-      styles:
-        card:
-          -
-            background: "var(--ha-card-background,var(--card-background-color))"
-          -
-            border: "1px solid var(--divider-color)"
-          -
-            border-radius: "20px"
-          -
-            box-shadow: "none"
-          -
-            padding: "0"
-          -
-            overflow: "hidden"
-          -
-            color: "var(--primary-text-color)"
-        grid:
-          -
-            grid-template-areas: "\"content\""
-          -
-            grid-template-columns: "1fr"
-          -
-            grid-template-rows: "1fr"
-        custom_fields:
-          content:
-            -
-              width: "100%"
-            -
-              height: "100%"
-      view_layout:
-        grid-area: "note"
