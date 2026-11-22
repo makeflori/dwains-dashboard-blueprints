@@ -1,70 +1,94 @@
 blueprint:
   name: "Energy & Costs"
   name_de: "Energie & Kosten"
-  description: "Device energy shares and monthly device costs without slow history queries."
-  description_de: "Verbrauchsanteile und Gerätekosten ohne langsame Historienabfragen."
+  description: "Live power distribution and device-group energy costs, inspired by Madelena's Home Assistant Energy view."
+  description_de: "Leistungsverteilung und nach Bereichen geordnete Verbrauchs- und Kostendaten, gestalterisch angelehnt an Madelenas Energieansicht."
+  icon: "mdi:lightning-bolt-circle"
   type: "page"
   author: "makeflori"
   version: "1.0"
-  icon: "mdi:lightning-bolt-circle"
   custom_cards:
     - "mushroom-template-card"
     - "layout-card"
     - "apexcharts-card"
   input:
     total_energy_month:
-      name: "Total monthly energy"
-      name_de: "Verbrauch Monat gesamt"
+      name: "Monthly energy total"
+      name_de: "Gesamtverbrauch Monat"
       type: "entity-picker"
       entity_domain: "sensor"
       default: ""
     total_cost_month:
-      name: "Total monthly cost"
-      name_de: "Kosten Monat gesamt"
-      type: "entity-picker"
-      entity_domain: "sensor"
-      default: ""
-    total_energy_year:
-      name: "Total yearly energy"
-      name_de: "Verbrauch Jahr gesamt"
+      name: "Monthly total cost"
+      name_de: "Gesamtkosten Monat"
       type: "entity-picker"
       entity_domain: "sensor"
       default: ""
     total_cost_year:
-      name: "Total yearly cost"
-      name_de: "Kosten Jahr gesamt"
+      name: "Yearly total cost"
+      name_de: "Gesamtkosten Jahr"
       type: "entity-picker"
       entity_domain: "sensor"
       default: ""
-    monthly_consumption:
-      name: "Monthly device consumption"
-      name_de: "Verbrauch je Gerät im Monat"
-      type: "entity-list"
-      entity_domain: "sensor"
-      default_icon: "mdi:lightning-bolt"
-      default: []
     monthly_costs:
-      name: "Monthly device costs"
-      name_de: "Kosten je Gerät im Monat"
+      name: "Monthly costs per device"
+      name_de: "Gerätekosten im Monat"
       type: "entity-list"
       entity_domain: "sensor"
       default_icon: "mdi:currency-eur"
+      default: []
+    current_power:
+      name: "Current power by device (W)"
+      name_de: "Momentanleistung je Gerät (W)"
+      type: "entity-list"
+      entity_domain: "sensor"
+      default_icon: "mdi:flash"
+      default: []
+    kitchen:
+      name: "Kitchen devices"
+      name_de: "Geräte Küche"
+      type: "entity-list"
+      entity_domain: "sensor"
+      default_icon: "mdi:fridge"
+      default: []
+    office:
+      name: "Office devices"
+      name_de: "Geräte Büro"
+      type: "entity-list"
+      entity_domain: "sensor"
+      default_icon: "mdi:desktop-classic"
+      default: []
+    living:
+      name: "Living room devices"
+      name_de: "Geräte Wohnbereich"
+      type: "entity-list"
+      entity_domain: "sensor"
+      default_icon: "mdi:sofa"
+      default: []
+    other:
+      name: "Other and multi-room devices"
+      name_de: "Weitere und raumübergreifende Geräte"
+      type: "entity-list"
+      entity_domain: "sensor"
+      default_icon: "mdi:lightbulb"
       default: []
 card:
   type: "custom:layout-card"
   layout_type: "custom:grid-layout"
   layout:
-    grid-template-columns: "minmax(0,0.92fr) minmax(0,1.08fr)"
-    grid-template-areas: "\"summary summary\" \"chart devices\""
-    grid-gap: "11px"
-    align-items: "start"
-    max-width: "1240px"
+    grid-template-columns: "repeat(4,minmax(0,1fr))"
+    grid-template-areas: "\"summary summary summary summary\" \"visual visual visual visual\" \"kitchen office living other\""
+    grid-gap: "12px"
+    max-width: "1370px"
     margin: "0 auto"
+    align-items: "start"
     mediaquery:
-      "(max-width: 860px)":
+      "(max-width: 1050px)":
+        grid-template-columns: "repeat(2,minmax(0,1fr))"
+        grid-template-areas: "\"summary summary\" \"visual visual\" \"kitchen office\" \"living other\""
+      "(max-width: 600px)":
         grid-template-columns: "minmax(0,1fr)"
-        grid-template-areas: "\"summary\" \"chart\" \"devices\""
-        grid-gap: "9px"
+        grid-template-areas: "\"summary\" \"visual\" \"kitchen\" \"office\" \"living\" \"other\""
   cards:
     -
       type: "custom:layout-card"
@@ -75,129 +99,247 @@ card:
         grid-template-columns: "repeat(4,minmax(0,1fr))"
         grid-gap: "9px"
         mediaquery:
-          "(max-width: 680px)":
+          "(max-width: 750px)":
             grid-template-columns: "repeat(2,minmax(0,1fr))"
-            grid-gap: "8px"
       cards:
         -
           type: "custom:mushroom-template-card"
-          entity: "sensor.energy_month_total"
-          primary: "Verbrauch · Monat"
-          secondary: "{% set s = states('sensor.energy_month_total') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' kWh' if is_number(s) else '–' }}"
-          icon: "mdi:lightning-bolt"
-          color: "blue"
+          primary: "Jetzt · Leistung"
+          secondary: "{% set ids=$json.current_power$ %}{% set ns=namespace(sum=0,seen=0) %}{% for p in ids %}{% if is_number(states(p.entity)) %}{% set ns.sum=ns.sum+(states(p.entity)|float) %}{% set ns.seen=ns.seen+1 %}{% endif %}{% endfor %}{{ ('%.0f'|format(ns.sum)) ~ ' W' if ns.seen>0 else '–' }}"
+          icon: "mdi:flash"
+          color: "pink"
           tap_action:
-            action: "more-info"
+            action: "none"
+          card_mod:
+            style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-top:2px solid #CB477D;border-radius:12px;box-shadow:none;}"
         -
           type: "custom:mushroom-template-card"
-          entity: "sensor.cost_month_total"
-          primary: "Kosten · Monat"
-          secondary: "{% set s = states('sensor.cost_month_total') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' €' if is_number(s) else '–' }}"
+          entity: "$total_energy_month$"
+          requires_input: "total_energy_month"
+          primary: "Monat · Verbrauch"
+          secondary: "{% set raw=states('$total_energy_month$') %}{{ (('%.2f'|format(raw|float))|replace('.', ',')) ~ ' kWh' if is_number(raw) else '–' }}"
+          icon: "mdi:lightning-bolt"
+          color: "teal"
+          tap_action:
+            action: "more-info"
+          card_mod:
+            style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-top:2px solid #57B7A0;border-radius:12px;box-shadow:none;}"
+        -
+          type: "custom:mushroom-template-card"
+          entity: "$total_cost_month$"
+          requires_input: "total_cost_month"
+          primary: "Monat · Kosten"
+          secondary: "{% set raw=states('$total_cost_month$') %}{{ (('%.2f'|format(raw|float))|replace('.', ',')) ~ ' €' if is_number(raw) else '–' }}"
           icon: "mdi:currency-eur"
           color: "amber"
           tap_action:
             action: "more-info"
+          card_mod:
+            style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-top:2px solid #D6A25C;border-radius:12px;box-shadow:none;}"
         -
           type: "custom:mushroom-template-card"
-          entity: "sensor.energy_year_total"
-          primary: "Verbrauch · Jahr"
-          secondary: "{% set s = states('sensor.energy_year_total') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' kWh' if is_number(s) else '–' }}"
-          icon: "mdi:calendar-month"
-          color: "teal"
-          tap_action:
-            action: "more-info"
-        -
-          type: "custom:mushroom-template-card"
-          entity: "sensor.cost_year_total"
-          primary: "Kosten · Jahr"
-          secondary: "{% set s = states('sensor.cost_year_total') %}{{ (('%.2f' | format(s|float)) | replace('.', ',')) ~ ' €' if is_number(s) else '–' }}"
-          icon: "mdi:wallet-outline"
+          entity: "$total_cost_year$"
+          requires_input: "total_cost_year"
+          primary: "Jahr · Kosten"
+          secondary: "{% set raw=states('$total_cost_year$') %}{{ (('%.2f'|format(raw|float))|replace('.', ',')) ~ ' €' if is_number(raw) else '–' }}"
+          icon: "mdi:calendar-check-outline"
           color: "purple"
           tap_action:
             action: "more-info"
+          card_mod:
+            style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-top:2px solid #977AC7;border-radius:12px;box-shadow:none;}"
     -
       type: "custom:apexcharts-card"
-      requires_input: "monthly_consumption"
+      requires_input: "current_power"
       chart_type: "donut"
       locale: "de"
       graph_span: "1h"
-      update_interval: "5min"
+      update_interval: "1min"
       header:
         show: true
-        title: "Verbrauchsanteile · Monat"
+        title: "Leistungsverteilung · jetzt"
         show_states: false
       color_list:
-        - "#559FD4"
-        - "#65BBA6"
-        - "#F2B570"
-        - "#9685D0"
-        - "#DE8982"
-        - "#69B8C7"
-        - "#D19ABB"
-        - "#A9B6C6"
+        - "#CB477D"
+        - "#E7A44D"
+        - "#63B5A8"
+        - "#7799DA"
+        - "#AA83C8"
+        - "#D17E83"
+        - "#65BEC9"
+        - "#9AB3B8"
       series:
         -
-          repeat: "monthly_consumption"
+          repeat: "current_power"
           template:
             entity: "$item.entity$"
             name: "$item.name$"
-            data_generator: "const n = Number(entity.state); return [[Date.now(), Number.isFinite(n) && n >= 0 ? n : 0]];"
+            data_generator: "const n=Number(entity.state);return [[Date.now(),Number.isFinite(n)&&n>0?n:0]];"
             show:
               legend_value: false
       apex_config:
         chart:
-          height: 330
+          height: 300
           toolbar:
             show: false
         legend:
           show: true
           position: "bottom"
           fontSize: "11px"
+          markers:
+            width: 8
+            height: 8
           itemMargin:
             horizontal: 7
-            vertical: 4
-        dataLabels:
-          enabled: false
+            vertical: 3
         plotOptions:
           pie:
             donut:
-              size: "64%"
+              size: "66%"
+              labels:
+                show: true
+                name:
+                  show: true
+                value:
+                  show: true
+                  formatter: "EVAL:function(v){return Number(v).toFixed(0)+' W';}"
+                total:
+                  show: true
+                  label: "Erfasste Leistung"
+                  formatter: "EVAL:function(w){return Math.round(w.globals.seriesTotals.reduce((a,b)=>a+b,0))+' W';}"
+        dataLabels:
+          enabled: false
         stroke:
           width: 0
-        tooltip:
-          x:
-            show: false
+      card_mod:
+        style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
       view_layout:
-        grid-area: "chart"
+        grid-area: "visual"
     -
       type: "vertical-stack"
       cards:
         -
           type: "heading"
-          heading: "Geräte · Monat"
+          heading: "Küche"
+          heading_style: "subtitle"
+          icon: "mdi:chef-hat"
         -
           type: "custom:layout-card"
           layout_type: "custom:grid-layout"
-          requires_input: "monthly_consumption"
+          requires_input: "kitchen"
           layout:
-            grid-template-columns: "repeat(2,minmax(0,1fr))"
-            grid-gap: "8px"
-            mediaquery:
-              "(max-width: 510px)":
-                grid-template-columns: "minmax(0,1fr)"
+            grid-template-columns: "minmax(0,1fr)"
+            grid-gap: "7px"
           cards:
             -
-              repeat: "monthly_consumption"
+              repeat: "kitchen"
               template:
                 type: "custom:mushroom-template-card"
                 entity: "$item.entity$"
                 primary: "$item.name$"
-                secondary: "{% set value = states('$item.entity$') %}\n{% set prices = $json.monthly_costs$ %}\n{% set result = namespace(cost='–') %}\n{% for c in prices %}\n  {% if c.name == '$item.name$' and is_number(states(c.entity)) %}\n    {% set result.cost = (('%.2f' | format(states(c.entity)|float)) | replace('.', ',')) %}\n  {% endif %}\n{% endfor %}\n{{ (('%.2f' | format(value|float)) | replace('.', ',')) if is_number(value) else '–' }} kWh · {{ result.cost }} €"
+                secondary: "{% set energy=states('$item.entity$') %}{% set costItems=$json.monthly_costs$ %}{% set powerItems=$json.current_power$ %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == '$item.name$' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == '$item.name$' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
                 icon: "$item.icon$"
-                color: "blue"
+                color: "teal"
+                multiline_secondary: true
                 tap_action:
                   action: "more-info"
                 card_mod:
-                  style: "ha-card {border-radius:13px; border:1px solid var(--divider-color);box-shadow:none;}"
+                  style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
       view_layout:
-        grid-area: "devices"
+        grid-area: "kitchen"
+    -
+      type: "vertical-stack"
+      cards:
+        -
+          type: "heading"
+          heading: "Büro"
+          heading_style: "subtitle"
+          icon: "mdi:desk"
+        -
+          type: "custom:layout-card"
+          layout_type: "custom:grid-layout"
+          requires_input: "office"
+          layout:
+            grid-template-columns: "minmax(0,1fr)"
+            grid-gap: "7px"
+          cards:
+            -
+              repeat: "office"
+              template:
+                type: "custom:mushroom-template-card"
+                entity: "$item.entity$"
+                primary: "$item.name$"
+                secondary: "{% set energy=states('$item.entity$') %}{% set costItems=$json.monthly_costs$ %}{% set powerItems=$json.current_power$ %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == '$item.name$' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == '$item.name$' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
+                icon: "$item.icon$"
+                color: "pink"
+                multiline_secondary: true
+                tap_action:
+                  action: "more-info"
+                card_mod:
+                  style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
+      view_layout:
+        grid-area: "office"
+    -
+      type: "vertical-stack"
+      cards:
+        -
+          type: "heading"
+          heading: "Wohnbereich"
+          heading_style: "subtitle"
+          icon: "mdi:sofa"
+        -
+          type: "custom:layout-card"
+          layout_type: "custom:grid-layout"
+          requires_input: "living"
+          layout:
+            grid-template-columns: "minmax(0,1fr)"
+            grid-gap: "7px"
+          cards:
+            -
+              repeat: "living"
+              template:
+                type: "custom:mushroom-template-card"
+                entity: "$item.entity$"
+                primary: "$item.name$"
+                secondary: "{% set energy=states('$item.entity$') %}{% set costItems=$json.monthly_costs$ %}{% set powerItems=$json.current_power$ %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == '$item.name$' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == '$item.name$' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
+                icon: "$item.icon$"
+                color: "purple"
+                multiline_secondary: true
+                tap_action:
+                  action: "more-info"
+                card_mod:
+                  style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
+      view_layout:
+        grid-area: "living"
+    -
+      type: "vertical-stack"
+      cards:
+        -
+          type: "heading"
+          heading: "Weitere Geräte"
+          heading_style: "subtitle"
+          icon: "mdi:home-lightning-bolt-outline"
+        -
+          type: "custom:layout-card"
+          layout_type: "custom:grid-layout"
+          requires_input: "other"
+          layout:
+            grid-template-columns: "minmax(0,1fr)"
+            grid-gap: "7px"
+          cards:
+            -
+              repeat: "other"
+              template:
+                type: "custom:mushroom-template-card"
+                entity: "$item.entity$"
+                primary: "$item.name$"
+                secondary: "{% set energy=states('$item.entity$') %}{% set costItems=$json.monthly_costs$ %}{% set powerItems=$json.current_power$ %}{% set ns=namespace(cost='–',power='–') %}{% for c in costItems %}{% if c.name == '$item.name$' and is_number(states(c.entity)) %}{% set ns.cost=('%.2f'|format(states(c.entity)|float))|replace('.',',') %}{% endif %}{% endfor %}{% for p in powerItems %}{% if p.name == '$item.name$' and is_number(states(p.entity)) %}{% set ns.power=('%.0f'|format(states(p.entity)|float)) %}{% endif %}{% endfor %}{{ ns.power }} W jetzt · {{ (('%.2f'|format(energy|float))|replace('.',',')) if is_number(energy) else '–' }} kWh / {{ ns.cost }} € im Monat"
+                icon: "$item.icon$"
+                color: "amber"
+                multiline_secondary: true
+                tap_action:
+                  action: "more-info"
+                card_mod:
+                  style: "ha-card {background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;box-shadow:none;overflow:hidden;}"
+      view_layout:
+        grid-area: "other"
