@@ -138,7 +138,7 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Madelena-inspired monthly energy breakdown, theme-aware summary, device costs and selected monthly history.",
+      "description": "Compact energy flow and a concise monthly history/summary row, with device costs by area.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
