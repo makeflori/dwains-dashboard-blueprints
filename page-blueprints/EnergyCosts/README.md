@@ -1,39 +1,35 @@
-# Energy & Costs — Dwains Dashboard Next
+# Energy & Costs for Dwains Dashboard Next
 
-**Status: unreleased. Blueprint version stays 1.0 until its first approved release.**
+**Unreleased version 1.0 — do not increment until the initial release is approved.**
 
-## Installation
+This blueprint is a reworking inspired by the visual hierarchy of [Madelena's Home Assistant Energy View](https://github.com/Madelena/hass-config-public/blob/main/ui/views/energy.yaml): prominent live power distribution, restrained summary panels, and groups of devices by location. It is **not** a copy of Madelena's Sankey configuration: the Home Assistant instance does not have separate circuit and renewable/grid-origin measurements sufficient for a truthful energy-flow diagram.
 
-Existing installation: DDNext page **Energie & Kosten**. Elsewhere, import directly from:
+## Install
+
+The page is already installed in the target Dwains Dashboard Next instance as **Energie & Kosten**. To install in another dashboard use:
 
 https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml
 
-The stock DDNext gallery loads the upstream blueprint repository. This fork has its own catalog entry, but the installed page also stores the complete blueprint.
+The default DDNext gallery loads the upstream repository rather than this fork.
 
-## Layout
+## Presentation
 
-The DDNext page supplies the title and icon. There is no additional hero.
+- Four theme-aware slim summary cards: current measured power, current month's energy and costs, and current year's costs.
+- A central **current power** donut comparing eight W sensor states, with legend and a central total. The ApexCharts `data_generator` is fed only current values, not 12 months of history. Values are measured/estimated at the device level and must **not** be confused with the household grid draw.
+- Four named device regions: Kitchen, Office, Living, and Other. The user configures which monthly energy sensors appear in each region. Each device card shows **W now**, **kWh this month**, and **€ this month**, using matching cost sensor names.
+- No large redundant hero; the DDNext page supplies its title and icon.
+- Responsive: four regional columns on wide displays, two on mid-size displays, one on mobile.
+- Subtle magenta, teal, and amber accents, while preserving native light/dark theme variables.
 
-- **Four compact overview tiles:** monthly kWh, monthly €, annual kWh, annual €.
-- **Monthly device shares:** an ApexCharts donut based only on current monthly energy sensor states, with a device legend. It uses `data_generator` for each series instead of querying 12 months of recorder long-term statistics. This is a month distribution, **not a historical timeline**.
-- **Eight device cards:** a two-column grid of Mushroom Template cards (single column on narrow screens), each with a device icon, monthly consumption and monthly monetary costs.
+## Configurable inputs
 
-The recorded historical energy statistics are not deleted or changed; they are simply not loaded on this overview page. Individual sensor history remains accessible through Home Assistant.
+`total_energy_month`, `total_cost_month`, `total_cost_year` are total sensor selectors.
 
-## Data sources
+`current_power` is an entity list of each device's live power sensors measured in watts; it drives the donut and the live device figure. Use the same device names as in the monthly energy lists.
 
-Select an energy sensor for each entry in `monthly_consumption`. Add corresponding monetary sensors to `monthly_costs` using the same device name (for example, `Multimedia`). The blueprint matches costs by name and never invents a monetary value where no sensor exists.
+`monthly_costs` is a list of monetary sensors, matched by **name** to the devices in regional lists.
 
-The reference Home Assistant installation now contains monthly cost sensors for all eight devices. Four were added alongside tariff correction helpers:
-
-- Kühlgefrierschrank: `sensor.cost_month_kuehlgefrierschrank`
-- Waschmaschine: `sensor.cost_month_waschmaschine`
-- Siebträger: `sensor.cost_month_siebtraeger`
-- Testaufbau: `sensor.cost_month_testaufbau`
-
-Existing cost sensors cover Multimedia, Hue, 3D-Drucker and Schreibtisch-Technik. The newly created monthly cost sensors use the same rate-change correction logic as the existing sensors. The underlying Home Assistant automation also resets and updates their correction helpers.
-
-The main monthly/annual cost tiles use the existing total-cost entities; those totals can include a standing fee and need not equal the sum of device-only costs.
+`kitchen`, `office`, `living`, and `other` are separate region-specific lists of monthly **kWh** sensors with icons and names. A device should appear in only one region to avoid duplicate display. A multi-room Hue total is best placed in Other.
 
 ## Dependencies
 
@@ -41,6 +37,10 @@ The main monthly/annual cost tiles use the existing total-cost entities; those t
 - layout-card
 - apexcharts-card
 
-The chart uses ApexCharts `chart_type: donut` with `data_generator`, so the main page avoids recorder requests. The user should check browser rendering after deployment; live screenshot access is not enabled in this installation.
+All were installed in the target Home Assistant instance when this version was built.
 
-No firmware, equipment, recorder data or energy source preferences are changed by the blueprint.
+## Data integrity
+
+The central visualization is of **current power (W)**, not a measured grid import. The monetary totals may include standing charges and are not expected to equal the sum of a subset of device costs. Hue consumption and power estimates are not physical-meter readings. The blueprint does not edit sensors, recorder, tariff logic or energy preferences.
+
+Twelve Jinja templates were validated against the live Home Assistant sensor states prior to saving. No rendered browser screenshot of the resulting page was available.
