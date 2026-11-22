@@ -138,11 +138,12 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Consumption and costs by device, with monthly comparisons and yearly trends.",
+      "description": "Compact energy dashboard with KPIs, monthly history and device consumption and costs.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
       "custom_cards": [
+        "mushroom-template-card",
         "layout-card",
         "apexcharts-card"
       ]
