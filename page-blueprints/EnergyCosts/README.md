@@ -1,43 +1,51 @@
 # Energy & Costs — DDNext
 
-**Status: unreleased, version 1.0.** The initial release/version bump is still pending approval.
+**Status: unreleased, version 1.0.** Do not bump until the initial release is approved.
 
-This page is informed by [Madelena's Home Assistant Energy View](https://github.com/Madelena/hass-config-public/blob/main/ui/views/energy.yaml). It adapts the denser, more data-focused layout to available energy and cost sensors. It is **not** a grid/source/circuit electricity Sankey: those quantities are not provided by this installation.
+The page is installed as **Energie & Kosten** in Dwains Dashboard Next. Its live DDNext strategy contains both an embedded blueprint source and a resolved card configuration. Both need to be updated together.
 
-## Install and source
-
-The page is installed as **Energie & Kosten** in the target Dwains Dashboard Next dashboard. Reusable source:
-
+Blueprint URL:
 https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml
-
-Updating the GitHub YAML alone does **not** update an existing page. DDNext stores both the blueprint YAML and the resolved card configuration in its dashboard strategy's `pages`. Both were updated together for the installed page.
 
 ## Layout
 
-1. **Recorded device flow (month-to-date):** compact, filled SVG ribbons for measured/estimated device consumption → configured groups → devices. Group and device positions are sorted by month-to-date kWh. Widths represent measured quantities; the diagram is not a simulation of physical power flow. The phone layout switches to ranked expandable group bars with device details. Background, borders and text use Home Assistant theme tokens; category colors are accents.
-2. **Overview:** four numerical KPIs for current month's overall kWh and EUR plus annual kWh and EUR. The total-month sensor is optional for new installations; if unavailable, the current sum of listed devices is shown. The accompanying donut displays **device shares of the recorded device total** once, in kWh; no duplicate price-share chart is drawn.
-3. **History:** one native `statistics-graph` showing monthly `change` for configured *cumulative* energy meters over the last 180 days. This is a selected-device comparison, not a complete household history. It requires recorder long-term statistics and may load after the instant cards.
-4. **Devices:** grouped device cards show month-to-date kWh, EUR cost, and a bar labeled with that device's percentage of the **recorded devices**. Device cards open the underlying consumption entity on tap. No fabricated history sparklines or live-W values are shown.
-5. **Performance:** the Sankey and overview compute from current HA states without recorder requests. Device cards subscribe only to the configured consumption and cost sensors; the overview likewise listens to its actual dependencies. Only the history graph queries long-term recorder data.
+1. **Overview:** Four theme-aware KPIs (month kWh, month EUR, year kWh, year EUR). The overall month sensor is used when configured; otherwise the sum of selected device sensors is used.
+2. **One shared analysis row:** A native monthly `statistics-graph` on the left and a significantly larger consumption donut with a complete legend on the right. The responsive `layout-card` stacks them on narrow displays.
+3. **Monthly history:** Eight configured cumulative energy sensors, one for every listed device, over the last 180 days. `statistics-graph` uses `stat_types: [change]` and `period: month`; these represent recorder's historical changes in kWh and **not** the currently calculated monthly costs. Missing early-month statistics are left missing.
+4. **Device groups:** Kitchen, Office, Living Room, Bathroom and cross-room lighting, retaining the original grouping. Each tile now shows the monthly kWh prominently and the corresponding EUR cost underneath. Percentage text and redundant share bars have been removed.
+5. **Consumption shares:** The donut shows percentage shares of **recorded devices**, not unmetered household electricity. All available positive-consumption devices are listed, and zero/unavailable values do not generate misleading positive slices.
+6. **Theme and responsiveness:** All card surfaces, borders and labels follow Home Assistant theme variables; no forced black backgrounds.
 
-The optional `total_energy_month` input refers to the whole monthly energy counter, so its figure can differ slightly from the sum of the eight selected devices visualized in the flow and donut.
+The large Sankey was intentionally removed: it mostly repeated information now provided by the donut and device cards.
 
-## Existing HA bindings
+## Historical sources and quality caveats
 
-The installed page preserves its 8 device consumption entities, 8 device cost entities, 5 configured groups and 3 cumulative historical source meters (Multimedia, Hue, Siebträger). All existing entity IDs and associations are retained.
+The following cumulative sensors are configured in the installed DDNext page:
 
-The historical comparison should have data: in Home Assistant, the three configured source sensors returned monthly `change` statistics for the preceding six months on 2026-11-22. The former graph occupied excessive space in the actual dashboard screenshot; this revision removes the nested layout wrappers and shortens the window.
+| Device | Cumulative sensor |
+| --- | --- |
+| Multimedia | `sensor.energy_total_multimedia_calculated` |
+| Kühlgefrierschrank | `sensor.verbrauch_gesamt_kuehlgefrierschrank` |
+| Hue-Beleuchtung | `sensor.energy_total_hue_estimated` |
+| 3D-Drucker | `sensor.verbrauch_gesamt_3d_drucker_fortgefuhrt` |
+| Siebträger | `sensor.verbrauch_gesamt_siebtraeger` |
+| Schreibtisch-Technik | `sensor.verbrauch_gesamt_schreibtisch_fortgefuhrt` |
+| Waschmaschine | `sensor.verbrauch_gesamt_waschmaschine` |
+| Testaufbau | `sensor.verbrauch_gesamt_testaufbau` |
+
+**Data caveat, checked 2026-11-22:** All eight expose recorder long-term `change` statistics, but coverage differs. Negative monthly changes occur in older data for the refrigerator, washing machine, and test setup, likely caused by meter resets or corrections. The 3D printer and desk sources have only a short history. This release does **not** fabricate the missing historical months or rewrite the recorder. Native statistics graph behaviour with these historical anomalies needs checking on the actual DDNext frontend.
+
+The entire dashboard remains a comparison of the eight metered/estimated devices, **not a complete building electricity balance**. Costs are not extrapolated backwards using today's tariff.
 
 ## Dependencies
 
-- [button-card](https://github.com/custom-cards/button-card): dynamic flow, overview and device layouts
-- [layout-card](https://github.com/thomasloven/lovelace-layout-card): responsive grouping
-- Home Assistant native `statistics-graph`: historical monthly aggregates
+- [button-card](https://github.com/custom-cards/button-card): dynamic KPI tiles, donut and device cards
+- [layout-card](https://github.com/thomasloven/lovelace-layout-card): responsive analysis row and device groups
+- [card-mod](https://github.com/thomasloven/lovelace-card-mod): styling the native Home Assistant statistics card
+- Home Assistant native `statistics-graph`: historical monthly changes
 
-## Validation and limitations
+## Verification
 
-The installed page's stored source was read before editing. After the rewrite, its complete source was read back and confirmed byte-for-byte identical to the GitHub blueprint. The resolved card configuration includes the new flow, overview, historical graph and eight device cards, and the same entity bindings were preserved.
+After the update, the GitHub YAML and the installed DDNext page's embedded blueprint were confirmed identical. The generated configuration carries all eight historical sensor IDs and the original eight current-consumption and eight cost sensor assignments. DDNext saved the modified strategy successfully.
 
-**Browser rendering has not yet been visually verified.** In particular, the native statistics graph should be inspected in the real DDNext frontend after it finishes loading; availability of long-term statistics alone does not guarantee a correct frontend render.
-
-The page uses light/dark theme variables, no hard-coded black card backgrounds, and no historical cost series derived from applying today's rate to old electricity consumption.
+Browser screenshot verification is unavailable via the current HA MCP connection (dashboard screenshot mode disabled), so exact appearance and the native history rendering remain to be checked in the real browser.
