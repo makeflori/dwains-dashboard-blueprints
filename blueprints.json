@@ -138,7 +138,7 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Unified consumption/cost KPI cards, compact history, enlarged cost donut with verified standing charge and five device columns.",
+      "description": "Aligned KPI cards, monthly energy bar chart and interactive device cost/consumption breakdown; no redundant room section.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
