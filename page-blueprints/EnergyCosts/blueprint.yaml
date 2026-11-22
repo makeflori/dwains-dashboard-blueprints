@@ -120,7 +120,7 @@ card:
           - padding: "0"
           - background: "transparent"
         grid:
-          - grid-template-areas: '\"panel\"'
+          - grid-template-areas: '"panel"'
           - grid-template-columns: "minmax(0,1fr)"
         custom_fields:
           panel:
@@ -179,7 +179,7 @@ card:
               - padding: "0"
               - background: "transparent"
             grid:
-              - grid-template-areas: '\"panel\"'
+              - grid-template-areas: '"panel"'
               - grid-template-columns: "minmax(0,1fr)"
             custom_fields:
               panel:
