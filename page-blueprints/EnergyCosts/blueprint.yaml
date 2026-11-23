@@ -1,8 +1,8 @@
 blueprint:
   name: "Energy & Costs"
   name_de: "Energie & Kosten"
-  description: "Responsive KPIs, uncluttered monthly consumption chart and selectable cost pie with highlighted table rows."
-  description_de: "Responsive Kennzahlen, klare Monatsbeschriftung und interaktive Kostenanteile mit markierten Tabellenzeilen."
+  description: "Responsive energy dashboard with device links and a properly sized cost pie and table."
+  description_de: "Responsive Energieübersicht mit anklickbaren Gerätewerten und angepasster Kreisdiagramm-/Tabellenbreite."
   icon: "mdi:lightning-bolt-circle"
   type: "page"
   author: "makeflori"
@@ -84,7 +84,7 @@ card:
           repeat: "monthly_consumption"
           template: "$item.entity$"
       custom_fields:
-        panel: "[[[\nconst read=id=>{const st=states[id];const v=Number(st?.state);return st&&![\"unknown\",\"unavailable\"].includes(st.state)&&Number.isFinite(v)?v:null;};\nconst fmt=n=>n===null?\"–\":n.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2});\nconst meters=$json.monthly_consumption$,measured=read(\"$total_energy_month$\");\nconst data=[\n{title:\"Verbrauch · Monat\",value:measured===null?meters.reduce((s,a)=>s+(read(a.entity)??0),0):measured,unit:\"kWh\",kind:\"energy\"},\n{title:\"Verbrauch · Jahr\",value:read(\"$total_energy_year$\"),unit:\"kWh\",kind:\"energy\"},\n{title:\"Kosten · Monat\",value:read(\"$total_cost_month$\"),unit:\"€\",kind:\"cost\"},\n{title:\"Kosten · Jahr\",value:read(\"$total_cost_year$\"),unit:\"€\",kind:\"cost\"}\n];\nconst symbols={\nenergy:'<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 2 4.5 13H11l-1 9L19.5 10H13V2Z\"/></svg>',\ncost:'<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"3\"/><path d=\"M16 12h5\"/><circle cx=\"16\" cy=\"12\" r=\"1\"/></svg>'\n};\nconst tile=r=>'<section style=\"box-sizing:border-box;min-width:0;height:112px;display:flex;flex-direction:column;justify-content:space-between;gap:7px;padding:14px 17px 15px;background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;color:var(--primary-text-color)\"><div style=\"display:flex;align-items:center;gap:10px\"><span aria-hidden=\"true\" style=\"width:26px;flex-shrink:0;display:flex;color:'+(r.kind===\"cost\"?\"#c9952b\":\"var(--primary-color)\")+'\">'+symbols[r.kind]+'</span><span style=\"font-size:13px;font-weight:650;line-height:1.3;white-space:nowrap\">'+r.title+'</span></div><div style=\"display:flex;justify-content:flex-end;align-items:baseline;gap:5px;min-width:0\"><strong style=\"font-size:clamp(24px,2.4vw,32px);font-weight:700;line-height:1.1;letter-spacing:-.4px;font-variant-numeric:tabular-nums\">'+fmt(r.value)+'</strong><span style=\"font-size:12px;white-space:nowrap;color:var(--secondary-text-color)\">'+r.unit+'</span></div></section>';\nreturn '<style>.ec-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;box-sizing:border-box;padding:0 9px}@media(max-width:770px){.ec-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0 3px}.ec-summary section{height:100px!important;padding:11px 12px!important}.ec-summary strong{font-size:clamp(19px,5.5vw,26px)!important}.ec-summary span{font-size:11px}}</style><div class=\"ec-summary\" style=\"font-family:inherit\">'+data.map(tile).join(\"\")+'</div>';\n]]]"
+        panel: "[[[\nconst read=id=>{const st=states[id];const v=Number(st?.state);return st&&![\"unknown\",\"unavailable\"].includes(st.state)&&Number.isFinite(v)?v:null;};\nconst fmt=n=>n===null?\"–\":n.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2});\nconst meters=$json.monthly_consumption$,measured=read(\"$total_energy_month$\");\nconst data=[\n{title:\"Verbrauch · Monat\",value:measured===null?meters.reduce((s,a)=>s+(read(a.entity)??0),0):measured,unit:\"kWh\",kind:\"energy\",entity:\"$total_energy_month$\"},\n{title:\"Verbrauch · Jahr\",value:read(\"$total_energy_year$\"),unit:\"kWh\",kind:\"energy\",entity:\"$total_energy_year$\"},\n{title:\"Kosten · Monat\",value:read(\"$total_cost_month$\"),unit:\"€\",kind:\"cost\",entity:\"$total_cost_month$\"},\n{title:\"Kosten · Jahr\",value:read(\"$total_cost_year$\"),unit:\"€\",kind:\"cost\",entity:\"$total_cost_year$\"}\n];\nconst symbols={\nenergy:'<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 2 4.5 13H11l-1 9L19.5 10H13V2Z\"/></svg>',\ncost:'<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"3\"/><path d=\"M16 12h5\"/><circle cx=\"16\" cy=\"12\" r=\"1\"/></svg>'\n};\nconst link=id=>{const safe=encodeURIComponent(id);return 'href=\"?more-info-entity-id='+safe+'\" onclick=\"event.stopPropagation();this.dispatchEvent(new CustomEvent(&quot;hass-more-info&quot;,{bubbles:true,composed:true,detail:{entityId:&quot;'+id+'&quot;}}));return false;\"';};\nconst tile=r=>'<a '+link(r.entity)+' style=\"display:block;color:inherit;text-decoration:none;min-width:0\"><section style=\"box-sizing:border-box;min-width:0;height:112px;display:flex;flex-direction:column;justify-content:space-between;gap:7px;padding:14px 17px 15px;background:var(--ha-card-background,var(--card-background-color));border:1px solid var(--divider-color);border-radius:12px;color:var(--primary-text-color)\"><div style=\"display:flex;align-items:center;gap:10px\"><span aria-hidden=\"true\" style=\"width:26px;flex-shrink:0;display:flex;color:'+(r.kind===\"cost\"?\"#c9952b\":\"var(--primary-color)\")+'\">'+symbols[r.kind]+'</span><span style=\"font-size:13px;font-weight:650;line-height:1.3;white-space:nowrap\">'+r.title+'</span></div><div style=\"display:flex;justify-content:flex-end;align-items:baseline;gap:5px;min-width:0\"><strong style=\"font-size:clamp(24px,2.4vw,32px);font-weight:700;line-height:1.1;letter-spacing:-.4px;font-variant-numeric:tabular-nums\">'+fmt(r.value)+'</strong><span style=\"font-size:12px;white-space:nowrap;color:var(--secondary-text-color)\">'+r.unit+'</span></div></section></a>';\nreturn '<style>.ec-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;box-sizing:border-box;padding:0 9px}@media(max-width:770px){.ec-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0 3px}.ec-summary section{height:100px!important;padding:11px 12px!important}.ec-summary strong{font-size:clamp(19px,5.5vw,26px)!important}.ec-summary span{font-size:11px}}</style><div class=\"ec-summary\" style=\"font-family:inherit\">'+data.map(tile).join(\"\")+'</div>';\n]]]"
       styles:
         card:
           -
@@ -319,9 +319,12 @@ card:
               type: "custom:layout-card"
               layout_type: "custom:grid-layout"
               layout:
-                grid-template-columns: "repeat(auto-fit,minmax(min(100%,260px),1fr))"
-                grid-gap: "0px"
+                grid-template-columns: "minmax(0, 1fr) minmax(0, 1.5fr)"
+                grid-gap: "8px"
                 align-items: "center"
+                mediaquery:
+                  (max-width: 1000px):
+                    grid-template-columns: "minmax(0,1fr)"
               cards:
                 -
                   type: "custom:apexcharts-card"
@@ -363,7 +366,7 @@ card:
                         datalabels: false
                   apex_config:
                     chart:
-                      height: 250
+                      height: 220
                       fontFamily: "inherit"
                       toolbar:
                         show: false
@@ -379,7 +382,7 @@ card:
                     plotOptions:
                       pie:
                         expandOnClick: false
-                        customScale: 0.92
+                        customScale: 0.81
                     states:
                       hover:
                         filter:
@@ -395,7 +398,7 @@ card:
                       colors:
                         - "var(--card-background-color)"
                   card_mod:
-                    style: "ha-card {background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;} .apexcharts-tooltip {opacity:1!important;background:var(--ha-card-background,var(--card-background-color))!important;}"
+                    style: "ha-card {box-sizing:border-box;min-width:0;max-width:100%;width:100%;overflow:hidden;background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;} .apexcharts-canvas,.apexcharts-svg {max-width:100%!important;}"
                 -
                   type: "custom:button-card"
                   show_name: false
@@ -414,7 +417,7 @@ card:
                     - "$base_fee_month$"
                     - "$total_cost_month$"
                   custom_fields:
-                    panel: "[[[\nconst read=id=>{const st=states[id];const v=Number(st?.state);return st&&![\"unknown\",\"unavailable\"].includes(st.state)&&Number.isFinite(v)?v:null;};\nconst fmt=n=>n===null?\"–\":n.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2});\nconst esc=s=>String(s??\"\").replace(/&/g,\"&amp;\").replace(/</g,\"&lt;\").replace(/>/g,\"&gt;\").replace(/\"/g,\"&quot;\");\nconst usage=$json.monthly_consumption$,costs=$json.monthly_costs$,history=$json.historical_consumption_meters$;\nconst palette=[\"#ca2b76\",\"#388cce\",\"#dfaa22\",\"#43ad93\",\"#9674c6\",\"#db7950\",\"#6c86a6\",\"#ad62a0\",\"#9ea4ac\"],fixed=read(\"$base_fee_month$\"),sum=read(\"$total_cost_month$\");\nconst items=costs.map(c=>{const i=history.findIndex(h=>h.name===c.name),u=usage.find(x=>x.name===c.name);return {name:c.name,kwh:u?read(u.entity):null,cost:read(c.entity),color:palette[Math.max(0,i)%palette.length]};});\nconst deviceCosts=items.reduce((n,r)=>n+(r.cost??0),0);\nif(fixed!==null)items.push({name:\"Grundpreis\",kwh:null,cost:fixed,color:palette[8]});\nconst assigned=items.reduce((n,r)=>n+(r.cost??0),0);\nif(sum!==null&&sum>assigned+.06)items.push({name:\"Weitere Kosten\",kwh:null,cost:sum-assigned,color:\"#727b88\"});\nconst total=items.reduce((s,r)=>s+(r.cost??0),0);\nconst layout=\"10px minmax(0,1fr) 55px 56px 44px\";\nconst line=(x,head,i)=>'<div class=\"ec-cost-row\" data-ec-cost-index=\"'+(head?\"header\":i)+'\" style=\"display:grid;grid-template-columns:'+layout+';gap:6px;align-items:center;padding:'+(head?\"0 0 8px\":\"6px 0\")+';border-bottom:1px solid var(--divider-color);font-size:11px;line-height:1.3\"><span>'+(head?'':'<span style=\"display:block;height:8px;width:8px;border-radius:3px;background:'+x.color+'\"></span>')+'</span><span style=\"text-align:left;min-width:0;overflow-wrap:anywhere\">'+(head?\"Gerät\":esc(x.name))+'</span><span style=\"text-align:right;font-variant-numeric:tabular-nums\">'+(head?\"Verbrauch\":x.kwh===null?\"–\":x.kwh.toLocaleString(\"de-DE\",{maximumFractionDigits:1})+' kWh')+'</span><span style=\"text-align:right;font-variant-numeric:tabular-nums\">'+(head?\"Kosten\":fmt(x.cost)+' €')+'</span><span style=\"text-align:right;font-variant-numeric:tabular-nums\">'+(head?\"Anteil\":x.cost===null||total<=0?\"–\":(100*x.cost/total).toLocaleString(\"de-DE\",{maximumFractionDigits:1})+' %')+'</span></div>';\nreturn '<style>.ec-cost-row[data-ec-selected=\"true\"]{background:var(--secondary-background-color);border-left:3px solid var(--primary-color);padding-left:6px!important;transition:background .2s ease}.ec-cost-row{transition:background .2s ease}</style><div style=\"box-sizing:border-box;padding:0 14px 14px 0;font-family:inherit;color:var(--primary-text-color);width:100%;min-width:0\"><div style=\"font-weight:650;color:var(--secondary-text-color)\">'+line({},true)+'</div>'+items.map((x,i)=>line(x,false,i)).join(\"\")+'</div>';\n]]]"
+                    panel: "[[[\nconst read=id=>{const st=states[id];const v=Number(st?.state);return st&&![\"unknown\",\"unavailable\"].includes(st.state)&&Number.isFinite(v)?v:null;};\nconst fmt=n=>n===null?\"–\":n.toLocaleString(\"de-DE\",{minimumFractionDigits:2,maximumFractionDigits:2});\nconst esc=s=>String(s??\"\").replace(/&/g,\"&amp;\").replace(/</g,\"&lt;\").replace(/>/g,\"&gt;\").replace(/\"/g,\"&quot;\");\nconst usage=$json.monthly_consumption$,costs=$json.monthly_costs$,history=$json.historical_consumption_meters$;\nconst palette=[\"#ca2b76\",\"#388cce\",\"#dfaa22\",\"#43ad93\",\"#9674c6\",\"#db7950\",\"#6c86a6\",\"#ad62a0\",\"#9ea4ac\"],fixed=read(\"$base_fee_month$\"),sum=read(\"$total_cost_month$\");\nconst items=costs.map(c=>{const i=history.findIndex(h=>h.name===c.name),u=usage.find(x=>x.name===c.name);return {name:c.name,kwh:u?read(u.entity):null,cost:read(c.entity),color:palette[Math.max(0,i)%palette.length]};});\nconst deviceCosts=items.reduce((n,r)=>n+(r.cost??0),0);\nif(fixed!==null)items.push({name:\"Grundpreis\",kwh:null,cost:fixed,color:palette[8]});\nconst assigned=items.reduce((n,r)=>n+(r.cost??0),0);\nif(sum!==null&&sum>assigned+.06)items.push({name:\"Weitere Kosten\",kwh:null,cost:sum-assigned,color:\"#727b88\"});\nconst total=items.reduce((s,r)=>s+(r.cost??0),0);\nconst layout=\"9px minmax(0,1fr) 44px 49px 40px\";\nconst deviceIds={\"Kühlgefrierschrank\":\"55d1136b273b5d831bb3cc4476ed21a0\",\"Siebträger\":\"5baa28caa466cdb67756fc6d857165a3\",\"Waschmaschine\":\"0470cae8a3670e99add34ff68e0ddcaa\",\"Testaufbau\":\"cb63fa4eded9b3f52c6127b4b7d15b9a\"};\nconst linked=x=>{const d=deviceIds[x.name];const source=usage.find(u=>u.name===x.name);if(d)return '<a href=\"/config/devices/device/'+d+'\" style=\"color:inherit;text-decoration:none;font-weight:600;cursor:pointer\">'+esc(x.name)+'</a>';if(source){const id=source.entity;return '<a href=\"?more-info-entity-id='+encodeURIComponent(id)+'\" onclick=\"event.stopPropagation();this.dispatchEvent(new CustomEvent(&quot;hass-more-info&quot;,{bubbles:true,composed:true,detail:{entityId:&quot;'+id+'&quot;}}));return false;\" style=\"color:inherit;text-decoration:none;font-weight:600;cursor:pointer\">'+esc(x.name)+'</a>';}return esc(x.name);};\nconst line=(x,head,i)=>'<div class=\"ec-cost-row\" data-ec-cost-index=\"'+(head?\"header\":i)+'\" style=\"display:grid;grid-template-columns:'+layout+';gap:6px;align-items:center;padding:'+(head?\"0 0 8px\":\"6px 0\")+';border-bottom:1px solid var(--divider-color);font-size:11px;line-height:1.3\"><span>'+(head?'':'<span style=\"display:block;height:8px;width:8px;border-radius:3px;background:'+x.color+'\"></span>')+'</span><span style=\"text-align:left;min-width:0;overflow-wrap:anywhere\">'+(head?\"Gerät\":linked(x))+'</span><span style=\"text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums\">'+(head?\"kWh\":x.kwh===null?\"–\":x.kwh.toLocaleString(\"de-DE\",{maximumFractionDigits:1}))+'</span><span style=\"text-align:right;font-variant-numeric:tabular-nums\">'+(head?\"€\":fmt(x.cost)+' €')+'</span><span style=\"text-align:right;font-variant-numeric:tabular-nums\">'+(head?\"%\":x.cost===null||total<=0?\"–\":(100*x.cost/total).toLocaleString(\"de-DE\",{maximumFractionDigits:1})+' %')+'</span></div>';\nreturn '<style>.ec-cost-row[data-ec-selected=\"true\"]{background:var(--secondary-background-color);border-radius:6px;transition:background .2s ease}.ec-cost-row{transition:background .2s ease}</style><div style=\"box-sizing:border-box;padding:0 14px 14px 0;font-family:inherit;color:var(--primary-text-color);width:100%;min-width:0\"><div style=\"font-weight:650;color:var(--secondary-text-color)\">'+line({},true)+'</div>'+items.map((x,i)=>line(x,false,i)).join(\"\")+'</div>';\n]]]"
                   styles:
                     card:
                       -
@@ -427,6 +430,10 @@ card:
                         padding: "0"
                       -
                         borderRadius: "0px"
+                      -
+                        overflow: "hidden"
+                      -
+                        min-width: "0"
                     grid:
                       -
                         grid-template-areas: "\"panel\""
@@ -438,6 +445,8 @@ card:
                           width: "100%"
                         -
                           min-width: "0"
+                        -
+                          overflow: "hidden"
           card_mod:
             style: "ha-card {border:1px solid var(--divider-color);border-radius:12px;background:var(--ha-card-background,var(--card-background-color));box-shadow:none;overflow:hidden;min-height:420px;}"
     -
