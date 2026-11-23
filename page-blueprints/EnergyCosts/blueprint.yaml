@@ -415,7 +415,7 @@ card:
                 transform: "return x === null || !Number.isFinite(Number(x)) || Number(x) < 0 ? null : Number(x);"
               apex_config:
                 chart:
-                  height: 290
+                  height: 340
                   fontFamily: "inherit"
                   toolbar:
                     show: false
@@ -448,6 +448,8 @@ card:
                     format: "MMMM yyyy"
                 xaxis:
                   type: "datetime"
+                  min: "EVAL:(()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth()-5,1).getTime()})()"
+                  max: "EVAL:(()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth()+1,1).getTime()})()"
                   tickAmount: 5
                   labels:
                     show: true
@@ -537,7 +539,15 @@ card:
                   -
                     textAlign: "left"
             -
-              type: "vertical-stack"
+              type: "custom:layout-card"
+              layout_type: "custom:grid-layout"
+              layout:
+                grid-template-columns: "minmax(0, 200px) minmax(0, 1fr)"
+                grid-gap: "8px"
+                align-items: "start"
+                mediaquery:
+                  (max-width: 1250px):
+                    grid-template-columns: "minmax(0,1fr)"
               cards:
                 -
                   type: "custom:apexcharts-card"
@@ -612,7 +622,12 @@ card:
                   card_mod:
                     style: "ha-card{border:0!important;box-shadow:none!important;background:transparent!important;min-width:0!important;} .apexcharts-canvas{margin-inline:auto!important;}"
                 -
-                  type: "vertical-stack"
+                  type: "custom:layout-card"
+                  layout_type: "custom:grid-layout"
+                  layout:
+                    grid-template-columns: "minmax(0,1fr)"
+                    grid-gap: "0px"
+                    align-items: "start"
                   cards:
                     -
                       type: "custom:button-card"
