@@ -623,13 +623,13 @@ card:
                       width: 1
                       colors:
                         - "var(--card-background-color)"
-                  responsive:
-                    -
-                      breakpoint: 980
-                      options:
-                        chart:
-                          width: 262
-                          height: 270
+                    responsive:
+                      -
+                        breakpoint: 980
+                        options:
+                          chart:
+                            width: 262
+                            height: 270
                   card_mod:
                     style: "ha-card{box-sizing:border-box;min-width:0!important;max-width:100%!important;overflow:hidden!important;border:0!important;box-shadow:none!important;background:transparent!important}.apexcharts-canvas{margin-left:auto!important;margin-right:auto!important;max-width:100%!important;}"
                 -
