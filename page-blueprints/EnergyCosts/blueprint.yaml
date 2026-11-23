@@ -392,9 +392,7 @@ card:
                     textAlign: "left"
             -
               type: "custom:apexcharts-card"
-              graph_span: "6month"
-              span:
-                end: "month"
+              graph_span: "170d"
               update_interval: "10min"
               cache: true
               header:
@@ -539,15 +537,7 @@ card:
                   -
                     textAlign: "left"
             -
-              type: "custom:layout-card"
-              layout_type: "custom:grid-layout"
-              layout:
-                grid-template-columns: "minmax(0, 240px) minmax(0, 1fr)"
-                grid-gap: "14px"
-                align-items: "center"
-                mediaquery:
-                  (max-width: 980px):
-                    grid-template-columns: "minmax(0,1fr)"
+              type: "vertical-stack"
               cards:
                 -
                   type: "custom:apexcharts-card"
@@ -589,7 +579,7 @@ card:
                         datalabels: false
                   apex_config:
                     chart:
-                      height: 245
+                      height: 170
                       fontFamily: "inherit"
                       toolbar:
                         show: false
