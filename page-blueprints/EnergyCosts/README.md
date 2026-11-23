@@ -55,3 +55,13 @@ The blueprint now uses the **standard ApexCharts chart width/height and responsi
 These are deliberately bounded responsive sizes rather than a fully container-observed proportional circle: the latter could not be verified reliably in the installed nested DDNext layout. The corrected GitHub blueprint has `apex_config.responsive` nested at the correct level. The live installed DDNext page was updated with matching `card` settings, but a later synchronization attempt for the embedded YAML source encountered a temporarily unavailable Home Assistant connector. **Before claiming the installed blueprint and GitHub source are identical, rerun the read-back synchronization.**
 
 The KPI and table rows retain native Home Assistant `more-info` tap actions. Chart configuration still uses the third-party ApexCharts Card. No usage sensors, tariffs, or other HA entities were changed.
+
+## 2026-11-23: chart rendering correction
+
+The original two-column nested layout for the pie and table caused the ApexCharts pie to be clipped at the table edge, irrespective of manually specified chart widths. This matches a known ApexCharts Card upstream issue: [RomRider/apexcharts-card#1089](https://github.com/RomRider/apexcharts-card/pull/1089) (wrong initial width and no parent resize observer; upstream pull request open when checked).
+
+The current configuration **does not attempt to resize or draw the pie via custom HTML/CSS**. Instead it uses a native `custom:apexcharts-card` with `chart_type: pie` in an ordinary **single-column vertical stack above the full-width table**, still inside the same right-hand analysis panel. The pie uses `apex_config.chart.height: 170` with automatic width, no `chart.width`, `responsive` width overrides or `customScale`. The nine data series, no-tooltip click selection, and entity history modal links remain unchanged.
+
+The historical monthly ApexCharts column chart now has a **170-day rolling window without `span.end: month`**. This aims to avoid a spurious next-month tick and the large empty plotting margins caused by the previous calendar-end anchoring. It retains monthly long-term statistics (`change`, `period: month`, `align: middle`) and the native datetime labels. Because it is a rolling-day window, it is not an exact six-whole-calendar-month calendar view; the earliest month may be partially outside the range near month boundaries.
+
+The GitHub YAML and the installed DDNext embedded source/cards were read back and confirmed identical after the update. Browser rendering of the resulting chart remains **unverified**, because the Home Assistant screenshot beta mode is disabled. Do not infer a visual pass solely from configuration matching.
