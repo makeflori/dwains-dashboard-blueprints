@@ -45,3 +45,13 @@ The current-month cost, consumption and base-charge entities were preserved. The
 The installed DDNext source was read back and confirmed byte-for-byte identical to the GitHub YAML. All four KPI cards and nine entity rows have `more-info` native actions and valid resolved entity IDs. The cost chart is limited in width, and all device row CSS areas have been checked for consistency.
 
 **Browser rendering and actual tap/hover behavior cannot be verified through the connected HA MCP screenshot capability**, which is disabled in this setup. In particular, the exact native monthly tick positions, tooltip exit behavior, and overlay-free pie sizing still need a real-device visual check.
+
+## Native pie layout correction — November 23, 2026
+
+The cost pie was visibly clipped by the adjacent table on desktop. The pie initially used `apex_config.chart.width: "100%"` with a heavily reduced `customScale`, but the nested layout and chart SVG sizing produced a graphic wider than the actual left grid cell. Simply assigning a smaller percentage to its column did not constrain the rendered ApexCharts canvas.
+
+The blueprint now uses the **standard ApexCharts chart width/height and responsive options** (not a custom pie renderer): **188 × 202px** on desktop, **262 × 270px** on screen widths at or below 980px. The chart is centered inside a 210px desktop grid column, with the remaining width allocated to the table. The 980px layout breakpoint stacks pie and table on mobile. `chart.redrawOnParentResize` remains enabled. The cost table uses a **28px header and 33px rows** instead of height-auto native button-cards, preventing it from expanding disproportionately.
+
+These are deliberately bounded responsive sizes rather than a fully container-observed proportional circle: the latter could not be verified reliably in the installed nested DDNext layout. The corrected GitHub blueprint has `apex_config.responsive` nested at the correct level. The live installed DDNext page was updated with matching `card` settings, but a later synchronization attempt for the embedded YAML source encountered a temporarily unavailable Home Assistant connector. **Before claiming the installed blueprint and GitHub source are identical, rerun the read-back synchronization.**
+
+The KPI and table rows retain native Home Assistant `more-info` tap actions. Chart configuration still uses the third-party ApexCharts Card. No usage sensors, tariffs, or other HA entities were changed.
