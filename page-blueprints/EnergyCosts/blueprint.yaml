@@ -543,7 +543,7 @@ card:
               type: "custom:layout-card"
               layout_type: "custom:grid-layout"
               layout:
-                grid-template-columns: "minmax(0, 34%) minmax(0, 1fr)"
+                grid-template-columns: "minmax(0, 210px) minmax(0, 1fr)"
                 grid-gap: "14px"
                 align-items: "center"
                 mediaquery:
@@ -590,7 +590,7 @@ card:
                         datalabels: false
                   apex_config:
                     chart:
-                      height: 185
+                      height: 202
                       fontFamily: "inherit"
                       toolbar:
                         show: false
@@ -599,7 +599,8 @@ card:
                         speed: 200
                       events:
                         dataPointSelection: "EVAL:function(event,chartContext,config){const index=config&&Number.isInteger(config.dataPointIndex)?config.dataPointIndex:-1;if(index<0)return;const matched=[];const visited=new WeakSet();function crawl(root){if(!root||visited.has(root))return;visited.add(root);if(typeof root.querySelectorAll!==\"function\")return;root.querySelectorAll('[data-ec-cost-index]').forEach(el=>matched.push(el));root.querySelectorAll('*').forEach(el=>{if(el.shadowRoot)crawl(el.shadowRoot);});}crawl(document);for(const el of matched){el.dataset.ecSelected=String(Number(el.dataset.ecCostIndex)===index);}const chosen=matched.find(el=>el.dataset?.ecCostIndex===String(index));if(chosen&&typeof chosen.scrollIntoView===\"function\")chosen.scrollIntoView({behavior:\"smooth\",block:\"nearest\"});}"
-                      width: "100%"
+                      width: 188
+                      redrawOnParentResize: true
                     legend:
                       show: false
                     dataLabels:
@@ -607,7 +608,7 @@ card:
                     plotOptions:
                       pie:
                         expandOnClick: false
-                        customScale: 0.72
+                        customScale: 1
                     states:
                       hover:
                         filter:
@@ -622,8 +623,15 @@ card:
                       width: 1
                       colors:
                         - "var(--card-background-color)"
+                  responsive:
+                    -
+                      breakpoint: 980
+                      options:
+                        chart:
+                          width: 262
+                          height: 270
                   card_mod:
-                    style: "ha-card{width:100%!important;max-width:100%!important;min-width:0!important;overflow:hidden!important;border:0!important;box-shadow:none!important;background:transparent!important}.apexcharts-canvas,.apexcharts-svg{max-width:100%!important;}"
+                    style: "ha-card{box-sizing:border-box;min-width:0!important;max-width:100%!important;overflow:hidden!important;border:0!important;box-shadow:none!important;background:transparent!important}.apexcharts-canvas{margin-left:auto!important;margin-right:auto!important;max-width:100%!important;}"
                 -
                   type: "vertical-stack"
                   cards:
@@ -653,16 +661,16 @@ card:
                           -
                             box-shadow: "none"
                           -
-                            padding: "5px 0 8px"
+                            padding: "0 2px"
                           -
-                            height: "auto"
+                            height: "28px"
                         grid:
                           -
                             grid-template-areas: "\"dot n kwh cost share\""
                           -
                             grid-template-columns: "9px minmax(0,1fr) 43px 55px 42px"
                           -
-                            grid-template-rows: "minmax(19px,auto)"
+                            grid-template-rows: "minmax(0,1fr)"
                           -
                             column-gap: "6px"
                         name:
@@ -743,11 +751,11 @@ card:
                             -
                               border-radius: "0px"
                             -
-                              padding: "6px 0"
+                              padding: "0 2px"
                             -
                               cursor: "pointer"
                             -
-                              height: "auto"
+                              height: "33px"
                             -
                               min-width: "0"
                           grid:
@@ -756,7 +764,7 @@ card:
                             -
                               grid-template-columns: "9px minmax(0,1fr) 43px 55px 42px"
                             -
-                              grid-template-rows: "minmax(19px,auto)"
+                              grid-template-rows: "minmax(0,1fr)"
                             -
                               column-gap: "6px"
                           name:
@@ -808,7 +816,7 @@ card:
                               -
                                 white-space: "nowrap"
                         card_mod:
-                          style: "ha-card{border:0!important;border-bottom:1px solid var(--divider-color)!important;border-radius:0!important;box-shadow:none!important;min-width:0!important} ha-card:has([data-ec-selected=\"true\"]){background:var(--secondary-background-color)!important;border-radius:0!important}"
+                          style: "ha-card{height:33px!important;min-height:0!important;padding:0 2px!important;border:0!important;border-bottom:1px solid var(--divider-color)!important;border-radius:0!important;box-shadow:none!important;min-width:0!important} ha-card:has([data-ec-selected=\"true\"]){background:var(--secondary-background-color)!important;border-radius:0!important}"
                     -
                       type: "custom:button-card"
                       entity: "$base_fee_month$"
@@ -844,11 +852,11 @@ card:
                           -
                             border-radius: "0px"
                           -
-                            padding: "6px 0"
+                            padding: "0 2px"
                           -
                             cursor: "pointer"
                           -
-                            height: "auto"
+                            height: "33px"
                           -
                             min-width: "0"
                         grid:
@@ -857,7 +865,7 @@ card:
                           -
                             grid-template-columns: "9px minmax(0,1fr) 43px 55px 42px"
                           -
-                            grid-template-rows: "minmax(19px,auto)"
+                            grid-template-rows: "minmax(0,1fr)"
                           -
                             column-gap: "6px"
                         name:
@@ -909,7 +917,7 @@ card:
                             -
                               white-space: "nowrap"
                       card_mod:
-                        style: "ha-card{border:0!important;border-bottom:1px solid var(--divider-color)!important;border-radius:0!important;box-shadow:none!important;min-width:0!important} ha-card:has([data-ec-selected=\"true\"]){background:var(--secondary-background-color)!important;border-radius:0!important}"
+                        style: "ha-card{height:33px!important;min-height:0!important;padding:0 2px!important;border:0!important;border-bottom:1px solid var(--divider-color)!important;border-radius:0!important;box-shadow:none!important;min-width:0!important} ha-card:has([data-ec-selected=\"true\"]){background:var(--secondary-background-color)!important;border-radius:0!important}"
           card_mod:
             style: "ha-card {border:1px solid var(--divider-color);border-radius:12px;background:var(--ha-card-background,var(--card-background-color));box-shadow:none;overflow:hidden;min-height:420px;}"
     -
