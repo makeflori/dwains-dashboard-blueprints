@@ -138,7 +138,7 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Responsive energy overview with six-month calendar labels and a clickable cost pie linked to the device table.",
+      "description": "Energy and cost dashboard with responsive pie/table layout, clickable summary cards and linked device names.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
