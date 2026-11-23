@@ -138,7 +138,7 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Energy and cost dashboard with responsive pie/table layout, clickable summary cards and linked device names.",
+      "description": "Clickable Home Assistant entity-history KPI and device cards, aligned monthly trend and responsive pie/table.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
