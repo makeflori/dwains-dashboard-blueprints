@@ -138,7 +138,7 @@
     },
     {
       "name": "Energy & Costs",
-      "description": "Clickable Home Assistant entity-history KPI and device cards, aligned monthly trend and responsive pie/table.",
+      "description": "Energy dashboard with native ApexCharts monthly history, a non-clipping stacked pie and full-width linked cost table.",
       "type": "page",
       "version": "1.0",
       "url": "https://raw.githubusercontent.com/makeflori/dwains-dashboard-blueprints/main/page-blueprints/EnergyCosts/blueprint.yaml",
