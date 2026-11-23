@@ -658,7 +658,7 @@ card:
                             height: "auto"
                         grid:
                           -
-                            grid-template-areas: "\"\"dot name kwh cost share\"\""
+                            grid-template-areas: "\"dot n kwh cost share\""
                           -
                             grid-template-columns: "9px minmax(0,1fr) 43px 55px 42px"
                           -
@@ -752,7 +752,7 @@ card:
                               min-width: "0"
                           grid:
                             -
-                              grid-template-areas: "\"\"dot name kwh cost share\"\""
+                              grid-template-areas: "\"dot n kwh cost share\""
                             -
                               grid-template-columns: "9px minmax(0,1fr) 43px 55px 42px"
                             -
@@ -853,7 +853,7 @@ card:
                             min-width: "0"
                         grid:
                           -
-                            grid-template-areas: "\"\"dot name kwh cost share\"\""
+                            grid-template-areas: "\"dot n kwh cost share\""
                           -
                             grid-template-columns: "9px minmax(0,1fr) 43px 55px 42px"
                           -
