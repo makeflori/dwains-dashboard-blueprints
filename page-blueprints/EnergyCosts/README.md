@@ -35,3 +35,13 @@ The Grundpreis is read from `input_number.grundpreis_monat_strom`; it is never i
 ## Technical validation
 
 DDNext and GitHub blueprint source matched exactly after saving. Both the month-strip template and the table's per-row HTML markers were generated successfully. The pie's `dataPointSelection` handler was invoked with a mock document and highlighted only the selected row. The table's device values, costs, and percentages remain sourced from the same eight monthly device inputs and the standing charge.
+
+## Layout and navigation update — 2026-11-23
+
+- Desktop cost pie and table use an asymmetric inner grid (`minmax(0, 1fr) minmax(0, 1.5fr)`), giving the table greater width and keeping the pie confined to its column. On narrow viewports (up to 1000 CSS pixels), the two components stack. Pie height is 220px with `customScale: 0.81`. Both components are width constrained.
+- The selected table row now receives a theme-aware background only; the former blue/primary left border is removed.
+- All four summary tiles link to their **underlying aggregate sensor's More Info** dialog. Aggregate template sensors do not have a Home Assistant device registry ID, so a physical device page cannot be assumed.
+- Table device names are now links. The four with verified device-registry IDs (Kühlgefrierschrank, Siebträger, Waschmaschine, Testaufbau) navigate to `/config/devices/device/<device_id>`. The remaining names open their monthly consumption entities' More Info dialog instead of fabricating a device registry relationship.
+- Current event wiring uses `hass-more-info` for virtual/aggregate sensor links; a `more-info-entity-id` query parameter is provided as a fallback. Browser interaction remains to be confirmed.
+
+**Browser screenshot checks are not available through the current HA connection**, so exact desktop pie/table sizing and link interactions have not been visually validated.
