@@ -113,7 +113,7 @@ card:
                 cursor: "pointer"
             grid:
               -
-                grid-template-areas: "\"i n\" \"v v\""
+                grid-template-areas: "\"i n\" \"value value\""
               -
                 grid-template-columns: "30px minmax(0,1fr)"
               -
@@ -181,7 +181,7 @@ card:
                 cursor: "pointer"
             grid:
               -
-                grid-template-areas: "\"i n\" \"v v\""
+                grid-template-areas: "\"i n\" \"value value\""
               -
                 grid-template-columns: "30px minmax(0,1fr)"
               -
@@ -249,7 +249,7 @@ card:
                 cursor: "pointer"
             grid:
               -
-                grid-template-areas: "\"i n\" \"v v\""
+                grid-template-areas: "\"i n\" \"value value\""
               -
                 grid-template-columns: "30px minmax(0,1fr)"
               -
@@ -317,7 +317,7 @@ card:
                 cursor: "pointer"
             grid:
               -
-                grid-template-areas: "\"i n\" \"v v\""
+                grid-template-areas: "\"i n\" \"value value\""
               -
                 grid-template-columns: "30px minmax(0,1fr)"
               -
